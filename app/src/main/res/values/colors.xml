@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#125688</color>
-    <color name="colorPrimaryDark">#125688</color>
-    <color name="textColorPrimary">#FFFFFF</color>
-    <color name="windowBackground">#FFFFFF</color>
-    <color name="navigationBarColor">#000000</color>
-    <color name="colorAccent">#c8e8ff</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#ED1C24</color>
+    <color name="textColorPrimary">#ED1C24</color>
+    <color name="textColorWhite">#ffffff</color>
+    <color name="textColorRed">#ED1C24</color>
+    <color name="textColorSecondary">#929292</color>
+    <color name="textColorBlack">#303030</color>
+    <color name="textColorGray">#9E9E9E</color>
+    <color name="textColorDarkGray">#4A4A4A</color>
+    <color name="textColorBlue">#4A90E2</color>
+    <color name="windowBackground">#f7f7f7</color>
+    <color name="colorTransparent">#00ffffff</color>
+
+    <!-- navigation bar -->
+    <color name="navigationBarColor">#ffffff</color>
+
+    <!-- tab bar -->
+    <color name="tabBarBackground">#ffffff</color>
+    <color name="tabBarTextSelected">#ED1C24</color>
+    <color name="tabBarTextUnselected">#929292</color>
+    <color name="tabBarIndicator">#ED1C24</color>
+
+    <!-- platform colors -->
 </resources>

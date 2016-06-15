@@ -1,14 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/PlatformScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:fadeScrollbars="false"
+    android:scrollbars="vertical"
     tools:context="superawesome.tv.kwsappdemo.PlatformFragment">
 
-    <TextView
+    <LinearLayout
+        android:padding="16dp"
+        android:id="@+id/PlatformScrollViewContent"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="PLATFORM"/>
+        android:layout_height="wrap_content">
 
-</RelativeLayout>
+        <!-- title -->
+        <TextView
+            android:id="@+id/platformTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:textSize="24sp"
+            android:textColor="@color/textColorBlack"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:lines="2"
+            android:maxLines="2"
+            android:text="@string/platformTitle"/>
+
+        <!-- content -->
+        <TextView
+            android:id="@+id/platformContent"
+            android:paddingTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/platformContent"
+            android:textColor="@color/textColorGray"
+            android:gravity="center"/>
+
+        <!-- table -->
+        <LinearLayout
+            android:paddingTop="30dp"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/firstRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@drawable/plat_icon1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:src="@drawable/plat_icon2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/secondRow"
+                android:paddingTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/platformCell1"
+                    style="@style/PlatformCellStyle"/>
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/platformCell2"
+                    style="@style/PlatformCellStyle"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/thirdRow"
+                android:paddingTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:src="@drawable/plat_icon3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:src="@drawable/plat_icon4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fourthRow"
+                android:paddingTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/platformCell3"
+                    style="@style/PlatformCellStyle"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/platformCell4"
+                    style="@style/PlatformCellStyle"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- button -->
+        <Button
+            android:id="@+id/openKWSWebsite"
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:text="@string/platformButton"
+            style="@style/ButtonStyle"/>
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

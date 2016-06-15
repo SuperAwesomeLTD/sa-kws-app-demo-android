@@ -1,15 +1,41 @@
 <resources>
 
+    <!-- extended theme -->
     <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
-
     </style>
 
+    <!-- base theme -->
     <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- ToolBar Style -->
+    <style name="ToolBarStyle" parent="Theme.AppCompat">
+        <item name="android:background">@color/navigationBarColor</item>
+    </style>
+
+    <style name="TabBarStyle" parent="Theme.AppCompat">
+        <item name="android:background">@color/tabBarBackground</item>
+        <item name="android:textColorPrimary">@color/tabBarTextSelected</item>
+        <item name="android:textColorSecondary">@color/tabBarTextUnselected</item>
+    </style>
+
+    <style name="PlatformCellStyle" parent="Theme.AppCompat">
+        <item name="android:textColor">@color/textColorRed</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ButtonStyle">
+        <item name="android:textColor">@color/textColorBlue</item>
+        <item name="android:background">@drawable/mybutton</item>
+    </style>
+
+    <style name="ButtonStyle2">
+        <item name="android:textColor">@color/textColorBlue</item>
+        <item name="android:background">@drawable/mybutton2</item>
     </style>
 
 </resources>

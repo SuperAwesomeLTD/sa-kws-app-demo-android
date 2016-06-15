@@ -1,4 +1,24 @@
 <resources>
+    <!-- app & title -->
     <string name="app_name">KWSAppDemo</string>
-    <string name="action_settings">Settings</string>
+
+    <!-- platforms strings -->
+    <string name="platformTitle">Welcome to your\nSuperAwesome app</string>
+    <string name="platformContent">This Awesome App is powered by Kids Web Services (KWS), the platform that provides a set of compliance-as-a-service tools to create a kid-safe, COPPA-compliant sites and apps, allowing you to focus on delivering awesome content by abstracting all legal complexity related to data-collection.</string>
+    <string name="platformCell1">Verifiable\nparental\nconsent</string>
+    <string name="platformCell2">Loyalty\nplatform\nfor kids</string>
+    <string name="platformCell3">Federated\nIdentity</string>
+    <string name="platformCell4">Parent\nPortal</string>
+    <string name="platformButton">KNOW MORE ABOUT KIDS WEB SERVICES</string>
+    
+    <!-- feature strings -->
+    <string name="featureAuthTitle">User authentication</string>
+    <string name="featureAuthContent">Kids Web Services federated identity system (Single Sign-On) allows kids and parents create one secure identity to easily log into your collection of kid-safe sites and apps.</string>
+    <string name="featureAuthActionButton">AUTHENTICATE USER</string>
+    <string name="featureAuthDocButton">SEE DOCUMENTATION</string>
+    <string name="featureNotifTitle">Kid-safe push notifications</string>
+    <string name="featureNotifContent">Generate codes/vouchers to allow users to award extra points to incentivise user retention and engagement.</string>
+    <string name="featureNotifEnableButton">ENABLE PUSH NOTIFICATIONS</string>
+    <string name="featureNotifTriggerButton">TRIGGER NOTIFICATION</string>
+    <string name="featureNotifDocButton">TRIGGER NOTIFICATION</string>
 </resources>

@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     tools:context="superawesome.tv.kwsappdemo.DocumentationFragment">
 
-    <TextView
+    <WebView
+        android:id="@+id/DocumentationWebView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="DOCUMENTATION"/>
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>
