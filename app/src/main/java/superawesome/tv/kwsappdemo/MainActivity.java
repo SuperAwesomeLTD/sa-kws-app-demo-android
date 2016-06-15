@@ -3,95 +3,90 @@ package superawesome.tv.kwsappdemo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.KWSInterface;
 
 public class MainActivity extends AppCompatActivity {
 
+//    private final String API = "https://kwsapi.demo.superawesome.tv/v1/";
+//    private final String USER = "sa-mobile-app-sdk-demo-app-0-user-5";
+//    private final String OAUTHTOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc0OSwiYXBwSWQiOjMxMywiY2xpZW50SWQiOiJzYS1tb2JpbGUtYXBwLXNkay1jbGllbnQtMCIsInNjb3BlIjoidXNlciIsImlhdCI6MTQ2NTkwNTM4MCwiZXhwIjoxNDY1OTkxNzgwLCJpc3MiOiJzdXBlcmF3ZXNvbWUifQ.KPFlk_Dp_AVcWzoRpovTTHabhQlm3efLruWeEgT4NVk";
+//    private TextView UserTextView = null;
+//    private TextView OAuthTokenTextView = null;
+//    private TextView StatusTextView = null;
+//    private String statsLog = "Status:";
+
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjc0OSwiYXBwSWQiOjMxMywiY2xpZW50SWQiOiJzYS1tb2JpbGUtYXBwLXNkay1jbGllbnQtMCIsInNjb3BlIjoidXNlciIsImlhdCI6MTQ2NTgwNjg0NSwiZXhwIjoxNDY1ODkzMjQ1LCJpc3MiOiJzdXBlcmF3ZXNvbWUifQ.IiPf7JuntZKUChKl1yy0FWLnNE4I7zChcZtL0dCZnKk";
-        KWS.sdk.setApplicationContext(getApplicationContext());
-        KWS.sdk.setup(token, "https://kwsapi.demo.superawesome.tv/v1/", new KWSInterface() {
-            @Override
-            public void isAllowedToRegisterForRemoteNotifications() {
-                Log.d("SuperAwesome", "User is allowed to register for remote notifications");
-                KWS.sdk.registerForRemoteNotifications();
-            }
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
 
-            @Override
-            public void isAlreadyRegisteredForRemoteNotifications() {
-                Log.d("SuperAwesome", "User is already registered for remote notifications");
-            }
-
-            @Override
-            public void didRegisterForRemoteNotifications() {
-                Log.d("SuperAwesome", "User successfully registered for remote notifications");
-            }
-
-            @Override
-            public void didFailBecauseKWSDoesNotAllowRemoteNotifications() {
-                Log.d("SuperAwesome", "User could not register because KWS does not allow it");
-            }
-
-            @Override
-            public void didFailBecauseKWSCouldNotFindParentEmail() {
-                Log.d("SuperAwesome", "User could not register becasue KWS could not find parent email");
-            }
-
-            @Override
-            public void didFailBecauseRemoteNotificationsAreDisabled() {
-                Log.d("SuperAwesome", "User could not register because remote notifications are disabled");
-            }
-
-            @Override
-            public void didFailBecauseOfError() {
-                Log.d("SuperAwesome", "User could not register because of misc error");
-            }
-        });
-        KWS.sdk.checkIfNotificationsAreAllowed();
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new PlatformFragment(), "Platform");
+        adapter.addFragment(new FeatureFragment(), "Feature");
+        adapter.addFragment(new DocumentationFragment(), "More");
+        viewPager.setAdapter(adapter);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
         }
 
-        return super.onOptionsItemSelected(item);
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 }
