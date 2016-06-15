@@ -20,5 +20,5 @@
     <string name="featureNotifContent">Generate codes/vouchers to allow users to award extra points to incentivise user retention and engagement.</string>
     <string name="featureNotifEnableButton">ENABLE PUSH NOTIFICATIONS</string>
     <string name="featureNotifTriggerButton">TRIGGER NOTIFICATION</string>
-    <string name="featureNotifDocButton">TRIGGER NOTIFICATION</string>
+    <string name="featureNotifDocButton">SEE DOCUMENTATION</string>
 </resources>
