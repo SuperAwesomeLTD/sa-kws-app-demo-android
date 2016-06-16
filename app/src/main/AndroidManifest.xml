@@ -23,8 +23,14 @@
         </activity>
 
         <activity
-            android:name=".SignInActivity"
+            android:name=".SignUpActivity"
             android:label="@string/signin_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".LogoutActivity"
+            android:label="@string/logout_name"
             android:screenOrientation="portrait">
         </activity>
 

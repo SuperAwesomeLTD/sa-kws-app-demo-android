@@ -29,7 +29,6 @@ public class FeatureFragment extends Fragment implements KWSInterface {
     // constants
     private final String AUTHURL = "https://developers.superawesome.tv/extdocs/sa-kws-android-sdk/html/index.html";
     private final String NOTIFURL = "https://developers.superawesome.tv/extdocs/sa-kws-android-sdk/html/index.html";
-
     private final String KWS_API = "https://kwsapi.demo.superawesome.tv/v1/";
 
     // buttons
@@ -48,8 +47,10 @@ public class FeatureFragment extends Fragment implements KWSInterface {
         super.onCreate(savedInstanceState);
         KWS.sdk.setApplicationContext(getContext().getApplicationContext());
 
-        IntentFilter filter = new IntentFilter("superawesome.tv.RECEIVED_SIGNUP");
-        getActivity().registerReceiver(new SignUpReceiver(), filter);
+        IntentFilter filter1 = new IntentFilter("superawesome.tv.RECEIVED_SIGNUP");
+        IntentFilter filter2 = new IntentFilter("superawesome.tv.RECEIVED_LOGOUT");
+        getActivity().registerReceiver(new SignUpReceiver(), filter1);
+        getActivity().registerReceiver(new LogoutReceiver(), filter2);
     }
 
     @Nullable
@@ -58,20 +59,33 @@ public class FeatureFragment extends Fragment implements KWSInterface {
         View view = inflater.inflate(R.layout.fragment_feature, container, false);
 
         authAction = (Button) view.findViewById(R.id.authAction);
+
+        if (KWSSingleton.getInstance().getModel() == null) {
+            authAction.setText("AUTHENTICATE USER");
+        } else {
+            authAction.setText("Logged in as " + KWSSingleton.getInstance().getModel().username);
+        }
+
         authAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signin = new Intent(getContext(), SignInActivity.class);
-                startActivity(signin);
-         }
+                if (KWSSingleton.getInstance().getModel() == null) {
+                    Intent signin = new Intent(getContext(), SignUpActivity.class);
+                    startActivity(signin);
+                }
+                else {
+                    Intent logout = new Intent(getContext(), LogoutActivity.class);
+                    startActivity(logout);
+                }
+            }
         });
 
         authDocs = (Button) view.findViewById(R.id.authDocs);
         authDocs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AUTHURL));
-                getContext().startActivity(browserIntent);
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AUTHURL));
+                    getContext().startActivity(browserIntent);
             }
         });
 
@@ -79,7 +93,7 @@ public class FeatureFragment extends Fragment implements KWSInterface {
         notifEnable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (KWSSingleton.getInstance().model != null) {
+                if (KWSSingleton.getInstance().getModel() != null) {
                     final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
                     alert.setTitle("Hey!");
                     alert.setCancelable(false);
@@ -88,7 +102,7 @@ public class FeatureFragment extends Fragment implements KWSInterface {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            KWS.sdk.setup(KWSSingleton.getInstance().model.token, KWS_API, FeatureFragment.this);
+                            KWS.sdk.setup(KWSSingleton.getInstance().getModel().token, KWS_API, FeatureFragment.this);
                             KWS.sdk.checkIfNotificationsAreAllowed();
                         }
                     });
@@ -189,7 +203,14 @@ public class FeatureFragment extends Fragment implements KWSInterface {
     class SignUpReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            FeatureFragment.this.authAction.setText("Logged in as " + KWSSingleton.getInstance().model.username);
+            FeatureFragment.this.authAction.setText("Logged in as " + KWSSingleton.getInstance().getModel().username);
+        }
+    }
+
+    class LogoutReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            FeatureFragment.this.authAction.setText("AUTHENTICATE USER");
         }
     }
 }

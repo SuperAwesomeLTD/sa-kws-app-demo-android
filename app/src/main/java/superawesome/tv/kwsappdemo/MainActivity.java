@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import kws.superawesome.tv.kwslib.SAApplication;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // set singleton context
+        SAApplication.setSAApplicationContext(getApplicationContext());
+        KWSSingleton.getInstance();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

@@ -3,6 +3,7 @@
     <string name="app_name">KWS Demo</string>
     <string name="main_name">Demo</string>
     <string name="signin_name">Sign In</string>
+    <string name="logout_name">Log Out</string>
 
     <!-- platforms strings -->
     <string name="platformTitle">Welcome to your\nSuperAwesome app</string>
@@ -33,4 +34,10 @@
     <string name="signInMonth">MM</string>
     <string name="signInDay">DD</string>
     <string name="signInSubmit">Register</string>
+
+    <!-- logout string -->
+    <string name="logoutTitle">Current User</string>
+    <string name="logoutUserName">User Name:</string>
+    <string name="logoutToken">Token:</string>
+    <string name="logoutButton">Logout</string>
 </resources>
