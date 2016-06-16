@@ -1,5 +1,9 @@
 package superawesome.tv.kwsappdemo;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import android.support.design.widget.TabLayout;
@@ -9,6 +13,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.webkit.WebView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        IntentFilter filter = new IntentFilter("superawesome.tv.RECEIVED_BROADCAST");
+        registerReceiver(new NotificationReceiver (), filter);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -73,6 +81,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
+        }
+    }
+
+    // private Receiver class
+    private class NotificationReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context arg0, Intent arg1) {
+            String title = arg1.getExtras().getString("TITLE");
+            String message = arg1.getExtras().getString("MESSAGE");
+            KWSSimpleAlert.getInstance().show(MainActivity.this, title, message, "Great!");
         }
     }
 }

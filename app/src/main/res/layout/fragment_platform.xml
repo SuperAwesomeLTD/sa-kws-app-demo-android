@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:fadeScrollbars="false"
-    android:scrollbars="vertical"
+    android:scrollbars="none"
     tools:context="superawesome.tv.kwsappdemo.PlatformFragment">
 
     <LinearLayout

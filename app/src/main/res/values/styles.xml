@@ -38,4 +38,8 @@
         <item name="android:background">@drawable/mybutton2</item>
     </style>
 
+    <style name="ButtonStyle3">
+        <item name="android:textColor">@color/textColorWhite</item>
+        <item name="android:background">@drawable/mybutton3</item>
+    </style>
 </resources>

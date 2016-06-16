@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:fadeScrollbars="false"
-    android:scrollbars="vertical"
+    android:scrollbars="none"
     tools:context="superawesome.tv.kwsappdemo.FeatureFragment">
 
     <LinearLayout
@@ -131,16 +131,6 @@
                 android:layout_height="30dp"
                 style="@style/ButtonStyle2"
                 android:text="@string/featureNotifEnableButton"/>
-
-            <Button
-                android:id="@+id/notifSend"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                style="@style/ButtonStyle2"
-                android:text="@string/featureNotifTriggerButton"/>
 
             <Button
                 android:id="@+id/notifDocs"

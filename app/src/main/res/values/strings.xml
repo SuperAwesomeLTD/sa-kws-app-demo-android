@@ -1,6 +1,8 @@
 <resources>
     <!-- app & title -->
-    <string name="app_name">KWSAppDemo</string>
+    <string name="app_name">KWS Demo</string>
+    <string name="main_name">Demo</string>
+    <string name="signin_name">Sign In</string>
 
     <!-- platforms strings -->
     <string name="platformTitle">Welcome to your\nSuperAwesome app</string>
@@ -21,4 +23,14 @@
     <string name="featureNotifEnableButton">ENABLE PUSH NOTIFICATIONS</string>
     <string name="featureNotifTriggerButton">TRIGGER NOTIFICATION</string>
     <string name="featureNotifDocButton">SEE DOCUMENTATION</string>
+
+    <!-- sign in string -->
+    <string name="signInTitle">Register for KWS</string>
+    <string name="signInUserName">Choose a username</string>
+    <string name="signInPassword">Set a password</string>
+    <string name="signInPassword2">Repeat password</string>
+    <string name="signInYear">YYYY</string>
+    <string name="signInMonth">MM</string>
+    <string name="signInDay">DD</string>
+    <string name="signInSubmit">Register</string>
 </resources>
