@@ -1,8 +1,11 @@
 package superawesome.tv.kwsappdemo;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -44,6 +47,9 @@ public class FeatureFragment extends Fragment implements KWSInterface {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         KWS.sdk.setApplicationContext(getContext().getApplicationContext());
+
+        IntentFilter filter = new IntentFilter("superawesome.tv.RECEIVED_SIGNUP");
+        getActivity().registerReceiver(new SignUpReceiver(), filter);
     }
 
     @Nullable
@@ -178,5 +184,12 @@ public class FeatureFragment extends Fragment implements KWSInterface {
     @Override
     public void didFailBecauseOfError() {
         KWSSimpleAlert.getInstance().show(getContext(), "Ups!", "An un-identified error occured, and this user could not be registered for Remote Notifications in KWS.", "Got it!");
+    }
+
+    class SignUpReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            FeatureFragment.this.authAction.setText("Logged in as " + KWSSingleton.getInstance().model.username);
+        }
     }
 }

@@ -149,12 +149,21 @@ public class SignInActivity extends AppCompatActivity {
                     KWSModel model = new KWSModel(json);
                     model.username = username;
 
-                    // copy the model
-                    KWSSingleton.getInstance().model = model;
+                    if (model.status == 1) {
+                        // copy the model
+                        KWSSingleton.getInstance().model = model;
 
-                    // close activity
-                    onBackPressed();
+                        Intent intent = new Intent();
+                        intent.setAction("superawesome.tv.RECEIVED_SIGNUP");
+                        intent.putExtra("STATUS", 1);
+                        sendBroadcast(intent);
 
+                        // close activity
+                        onBackPressed();
+                    }
+                    else {
+                        KWSSimpleAlert.getInstance().show(SignInActivity.this, "Hey!", "The user " + username + " already exists", "Got it!");
+                    }
                 } catch (JSONException e) {
                     KWSSimpleAlert.getInstance().show(SignInActivity.this, "Hey!", "Failed to sign up user", "Got it!");
                 }
