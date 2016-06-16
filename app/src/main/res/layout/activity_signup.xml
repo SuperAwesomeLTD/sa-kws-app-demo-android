@@ -96,7 +96,6 @@
                 android:textColor="@color/textColorDarkGray"
                 android:textColorHint="@color/textColorGray"
                 android:inputType="number" />
-
         </LinearLayout>
 
 
@@ -111,5 +110,16 @@
             android:onClick="onSubmitClick"/>
 
     </LinearLayout>
+
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/loader"-->
+        <!--android:alpha="0"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="#77ffffff">-->
+
+        <!-- -->
+
+    <!--</RelativeLayout>-->
 
 </android.support.design.widget.CoordinatorLayout>

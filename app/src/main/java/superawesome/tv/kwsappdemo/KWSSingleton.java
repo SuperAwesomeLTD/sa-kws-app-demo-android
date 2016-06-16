@@ -39,10 +39,17 @@ public class KWSSingleton {
 
     public void setModel(KWSModel model) {
         this.model = model;
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("KWS_MODEL", this.model.writeToJson().toString());
-        editor.apply();
+        if (this.model != null) {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("KWS_MODEL", this.model.writeToJson().toString());
+            editor.apply();
+        } else {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.remove("KWS_MODEL");
+            editor.apply();
+        }
     }
 
     public KWSModel getModel() {

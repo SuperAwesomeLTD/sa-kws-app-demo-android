@@ -1,11 +1,17 @@
 package superawesome.tv.kwsappdemo;
 
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +36,10 @@ public class SignUpActivity extends AppCompatActivity {
     EditText monthEdit = null;
     EditText dayEdit = null;
     Button submit = null;
+    boolean makingRequest = false;
+
+    // loader
+    ProgressDialog progress;
 
     // private vars
     private String username = null;
@@ -38,6 +48,9 @@ public class SignUpActivity extends AppCompatActivity {
     private String year = null;
     private String month = null;
     private String day = null;
+
+    // error receiver
+    private ErrorReceiver errorReceiver = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +74,10 @@ public class SignUpActivity extends AppCompatActivity {
         yearEdit = (EditText) findViewById(R.id.yearEdit);
         monthEdit = (EditText) findViewById(R.id.monthEdit);
         dayEdit = (EditText) findViewById(R.id.dayEdit);
+
+        IntentFilter filter3 = new IntentFilter("superawesome.tv.RECEIVED_ERROR");
+        errorReceiver = new ErrorReceiver();
+        registerReceiver(errorReceiver, filter3);
     }
 
     public void onSubmitClick(View vi) {
@@ -121,6 +138,14 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void makeRequest () {
+        if (makingRequest) return;
+
+        progress = new ProgressDialog(this);
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.show();
+
+        makingRequest = true;
         JSONObject object = new JSONObject();
         try {
             object.put("username", username);
@@ -139,6 +164,12 @@ public class SignUpActivity extends AppCompatActivity {
         network.sendPOST("https://kwsdemobackend.herokuapp.com/create", "", object, new SANetworkInterface() {
             @Override
             public void success(Object data) {
+
+                // To dismiss the dialog
+                progress.dismiss();
+
+                // continue with request
+                makingRequest = false;
                 SANetworkResponse response = (SANetworkResponse)data;
                 int status = response.statusCode;
                 String body = response.payload;
@@ -160,17 +191,43 @@ public class SignUpActivity extends AppCompatActivity {
                         onBackPressed();
                     }
                     else {
-                        KWSSimpleAlert.getInstance().show(SignUpActivity.this, "Hey!", "The user " + username + " already exists", "Got it!");
+                        Intent intent = new Intent();
+                        intent.setAction("superawesome.tv.RECEIVED_ERROR");
+                        intent.putExtra("MESSAGE", "The user " + username + " already exists");
+                        sendBroadcast(intent);
                     }
                 } catch (JSONException e) {
-                    KWSSimpleAlert.getInstance().show(SignUpActivity.this, "Hey!", "Failed to sign up user", "Got it!");
+                    Intent intent = new Intent();
+                    intent.setAction("superawesome.tv.RECEIVED_ERROR");
+                    intent.putExtra("MESSAGE", "Failed to sign up user");
+                    sendBroadcast(intent);
                 }
             }
 
             @Override
             public void failure() {
-                KWSSimpleAlert.getInstance().show(SignUpActivity.this, "Hey!", "Failed to sign up user", "Got it!");
+                // To dismiss the dialog
+                progress.dismiss();
+                makingRequest = false;
+                Intent intent = new Intent();
+                intent.setAction("superawesome.tv.RECEIVED_ERROR");
+                intent.putExtra("MESSAGE", "Failed to sign up user");
+                sendBroadcast(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        unregisterReceiver(errorReceiver);
+    }
+
+    class ErrorReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getExtras().getString("MESSAGE");
+            KWSSimpleAlert.getInstance().show(SignUpActivity.this, "Error!", message, "Got it!");
+        }
     }
 }
