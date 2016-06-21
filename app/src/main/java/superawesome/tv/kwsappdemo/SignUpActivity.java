@@ -190,10 +190,16 @@ public class SignUpActivity extends AppCompatActivity {
                         // close activity
                         onBackPressed();
                     }
-                    else {
+                    else if (model.status == 0) {
                         Intent intent = new Intent();
                         intent.setAction("superawesome.tv.RECEIVED_ERROR");
                         intent.putExtra("MESSAGE", "The user " + username + " already exists");
+                        sendBroadcast(intent);
+                    }
+                    else {
+                        Intent intent = new Intent();
+                        intent.setAction("superawesome.tv.RECEIVED_ERROR");
+                        intent.putExtra("MESSAGE", "Failed to sign up user");
                         sendBroadcast(intent);
                     }
                 } catch (JSONException e) {

@@ -1,7 +1,7 @@
 <resources>
     <!-- app & title -->
     <string name="app_name">KWS Demo</string>
-    <string name="main_name">Demo</string>
+    <string name="main_name">AwesomeApp</string>
     <string name="signin_name">Sign In</string>
     <string name="logout_name">Log Out</string>
 

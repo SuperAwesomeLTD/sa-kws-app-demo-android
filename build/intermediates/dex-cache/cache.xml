@@ -1,2 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-23.4.0_305ae1f2dd46689a0b7ef4c5cc125741c14ee489.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.google.firebase/firebase-messaging/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="f2774b1e02e5fbc524590311a744263c3b152d63">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-messaging-9.0.2_f5a55a2b9e7082a9e6a50ae20e1aef2bf1bed1c1.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-23.4.0_c8fe5c93750c794378ac2c8cf1b88d23a21d8036.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-23.4.0_71d906d08846addf0c068c0315c609f36531c2c1.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="94d9cedd04b124aed044ac71c451a292856d854c">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-base-9.0.2_6fcd0a1f60268dd93087212830bb2d2872bd4eb3.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.android.support-animated-vector-drawable-23.4.0_e78bf5e395652394028afe42b035dcc5301a4bca.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="51a11c41a08f099a204e1b8dcc04f27217de50ec">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-analytics-9.0.2_4d0e4d667b6b9053e4c581742bbc3b5004d0ac67.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.4.0/support-annotations-23.4.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/support-annotations-23.4.0_778236fba4e81ebbb69f9bad6f25512af7fc9f29.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="4022261eeea0d92eb2997a68d2c1f084a16abad9">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-basement-9.0.2_a0d442e064d52108b68f08ba41421fec8acf2ac0.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.google.firebase/firebase-common/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="9919563cffd8e3732e944d3c437d4b9575a08448">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-common-9.0.2_1036ea2a50330d463869ed1af3f9a96372c46fb1.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="ec75036c3c52e451d0cde50a5aedaf5fd32354a0">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-23.4.0_52a3cc4470131df1073d550cf8c0cf230426f6ae.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/kws.superawesome.tv/kwssdk/1.1.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="956029b5ee7c0a13340480f626dc69f0e2ba4e89">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/kws.superawesome.tv-kwssdk-1.1.2_3e3943f813da40cc279ff752bc1c499864c2939b.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/libs/internal_impl-23.4.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/internal_impl-23.4.0_eb034bd9be559a8fed6060ddd4bc26466418b52f.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.android.support/design/23.4.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="5326d9a850d491714fef8cbfaa9ea3416f0bf0d2">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.android.support-design-23.4.0_7e5f6b3ce6c482bf4a603571656292bd384d9367.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-tasks/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="aec1bc54964a85d851c2c1b1cb7f90f7dbd755ab">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.google.android.gms-play-services-tasks-9.0.2_42b4542c061013a0761e49907b19f300e8dff604.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.google.firebase/firebase-iid/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="b3d0809a742c5f768c6aa9efc6decd5c1d6cd227">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-iid-9.0.2_e1beae1deaf5a0abc1a55945ce58da80ad03accb.jar" />
+    </item>
+    <item
+        jar="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/exploded-aar/com.google.firebase/firebase-analytics-impl/9.0.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="a511c684ea4c2cf31a3377d51e7677cb76696e07">
+        <dex dex="/Users/gabriel.coman/Workspace/sa-kws-app-demo/app/build/intermediates/pre-dexed/debug/com.google.firebase-firebase-analytics-impl-9.0.2_11893cb9ecfe50ab59bbdc0d76ae27a8ad0c9a64.jar" />
+    </item>
+
+</items>
