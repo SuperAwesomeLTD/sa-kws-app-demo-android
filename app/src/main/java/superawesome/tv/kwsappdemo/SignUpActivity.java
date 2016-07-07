@@ -16,9 +16,7 @@ import android.widget.RelativeLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import kws.superawesome.tv.kwslib.SANetwork;
-import kws.superawesome.tv.kwslib.SANetworkInterface;
-import kws.superawesome.tv.kwslib.SANetworkResponse;
+import tv.superawesome.lib.sanetwork.request.*;
 
 /**
  * Created by gabriel.coman on 16/06/16.
@@ -146,33 +144,36 @@ public class SignUpActivity extends AppCompatActivity {
         progress.show();
 
         makingRequest = true;
-        JSONObject object = new JSONObject();
+        JSONObject body = new JSONObject();
         try {
-            object.put("username", username);
-            object.put("password", password1);
+            body.put("username", username);
+            body.put("password", password1);
             int yearInt = Integer.parseInt(year);
             int monthInt = Integer.parseInt(month);
             int dayInt = Integer.parseInt(day);
             if (monthInt < 10) month = "0" + monthInt;
             if (dayInt < 10) day = "0" + dayInt;
-            object.put("dateOfBirth", year + "-" + month + "-" + day);
+            body.put("dateOfBirth", year + "-" + month + "-" + day);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject header = new JSONObject();
+        try {
+            header.put("Content-Type", "application/json");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         SANetwork network = new SANetwork();
-        network.sendPOST("https://kwsdemobackend.herokuapp.com/create", "", object, new SANetworkInterface() {
+        network.sendPOST(this, "https://kwsdemobackend.herokuapp.com/create", new JSONObject(), header, body, new SANetworkInterface() {
             @Override
-            public void success(Object data) {
-
+            public void success(int status, String body) {
                 // To dismiss the dialog
                 progress.dismiss();
 
                 // continue with request
                 makingRequest = false;
-                SANetworkResponse response = (SANetworkResponse)data;
-                int status = response.statusCode;
-                String body = response.payload;
                 try {
                     JSONObject json = new JSONObject(body);
                     KWSModel model = new KWSModel(json);

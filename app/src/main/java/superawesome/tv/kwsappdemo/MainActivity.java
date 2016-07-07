@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import kws.superawesome.tv.kwslib.SAApplication;
+import tv.superawesome.lib.sautils.SAApplication;
 
 
 public class MainActivity extends AppCompatActivity {

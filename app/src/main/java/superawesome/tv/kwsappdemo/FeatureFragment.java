@@ -21,9 +21,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.net.PortUnreachableException;
+import java.util.PriorityQueue;
 
-import kws.superawesome.tv.kwssdk.KWS;
-import kws.superawesome.tv.kwssdk.KWSInterface;
+import kws.superawesome.tv.KWS;
+import kws.superawesome.tv.KWSErrorType;
+import kws.superawesome.tv.KWSInterface;
 
 /**
  * Created by gabriel.coman on 15/06/16.
@@ -39,6 +41,7 @@ public class FeatureFragment extends Fragment implements KWSInterface {
     private Button authAction;
     private Button authDocs;
     private Button notifEnable;
+    private Button notifDisable;
     private Button notifDocs;
 
     // progress
@@ -121,7 +124,8 @@ public class FeatureFragment extends Fragment implements KWSInterface {
                             dialog.dismiss();
 
                             progress.show();
-                            KWS.sdk.setup(KWSSingleton.getInstance().getModel().token, KWS_API, FeatureFragment.this);
+
+                            KWS.sdk.setup(getContext(), KWSSingleton.getInstance().getModel().token, KWS_API, false, FeatureFragment.this);
                             KWS.sdk.checkIfNotificationsAreAllowed();
                         }
                     });
@@ -134,8 +138,17 @@ public class FeatureFragment extends Fragment implements KWSInterface {
                     alert.show();
                 }
                 else {
-                    KWSSimpleAlert.getInstance().show(getContext(), "Hey!", "Before enabling Push Notifications you must authenticate to KWS.", "Got it!");
+                    KWSSimpleAlert.getInstance().show(getContext(), "Hey!", "Before enabling Push Notifications you must authenticate with KWS.", "Got it!");
                 }
+            }
+        });
+
+        notifDisable = (Button) view.findViewById(R.id.notifDisable);
+        notifDisable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progress.show();
+                KWS.sdk.unregisterForRemoteNotifications();
             }
         });
 
@@ -153,79 +166,93 @@ public class FeatureFragment extends Fragment implements KWSInterface {
     }
 
     @Override
-    public void isAllowedToRegisterForRemoteNotifications() {
-        Log.d("SuperAwesome", "isAllowedToRegisterForRemoteNotifications");
+    public void kwsSDKDoesAllowUserToRegisterForRemoteNotifications() {
         KWS.sdk.registerForRemoteNotifications();
     }
 
     @Override
-    public void isAlreadyRegisteredForRemoteNotifications() {
-        progress.dismiss();
-        KWSSimpleAlert.getInstance().show(getContext(), "Great news!", "This user is already registered for Remote Notifications in KWS.", "Got it!");
-    }
-
-    @Override
-    public void didRegisterForRemoteNotifications(String s) {
+    public void kwsSDKDidRegisterUserForRemoteNotifications() {
         progress.dismiss();
         KWSSimpleAlert.getInstance().show(getContext(), "Great news!", "This user has been successfully registered for Remote Notifications in KWS.", "Got it!");
     }
 
     @Override
-    public void didFailBecauseKWSDoesNotAllowRemoteNotifications() {
+    public void kwsSDKDidUnregisterUserForRemoteNotifications() {
         progress.dismiss();
-        KWSSimpleAlert.getInstance().show(getContext(), "Hey!", "This user could not be registered for Remote Notifications because a parent in KWS has disabled this functionality.", "Got it!");
+        KWSSimpleAlert.getInstance().show(getContext(), "Hey!", "This user has been de-registered for Remote Notifications", "Got it!");
     }
 
     @Override
-    public void didFailBecauseKWSCouldNotFindParentEmail() {
-        progress.dismiss();
-        final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        alert.setTitle("Hey!");
-        alert.setCancelable(false);
-        alert.setMessage("To enable Push Notifications in KWS you'll need to provide a parent's email.");
-
-        final EditText input = new EditText(getContext());
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        alert.setView(input);
-
-        final AlertDialog.Builder ok = alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                if (input.getText().toString() != null && !input.getText().toString().equals("")) {
-                    progress.show();
-                    KWS.sdk.submitParentEmail(input.getText().toString());
-                } else {
-                    dialog.dismiss();
-                    KWSSimpleAlert.getInstance().show(getContext(), "Hey!", "You must input a valid parent email!", "Got it!");
-                }
+    public void kwsSDKDidFailToRegisterUserForRemoteNotificationsWithError(KWSErrorType kwsErrorType) {
+        switch (kwsErrorType) {
+            case NoKWSPermission: {
+                progress.dismiss();
+                KWSSimpleAlert.getInstance().show(getContext(), "Hey!", "This user could not be registered for Remote Notifications because a parent in KWS has disabled this functionality.", "Got it!");
+                break;
             }
-        });
-        final AlertDialog.Builder cancel = alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+            case NoSystemPermission:
+                progress.dismiss();
+                // not happening
+                break;
+            case ParentEmailNotFound: {
+                progress.dismiss();
+                final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                alert.setTitle("Hey!");
+                alert.setCancelable(false);
+                alert.setMessage("To enable Push Notifications in KWS you'll need to provide a parent's email.");
+
+                final EditText input = new EditText(getContext());
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                alert.setView(input);
+
+                final AlertDialog.Builder ok = alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        if (input.getText().toString() != null && !input.getText().toString().equals("")) {
+                            progress.show();
+                            KWS.sdk.submitParentEmail(input.getText().toString());
+                        } else {
+                            dialog.dismiss();
+                            KWSSimpleAlert.getInstance().show(getContext(), "Hey!", "You must input a valid parent email!", "Got it!");
+                        }
+                    }
+                });
+                final AlertDialog.Builder cancel = alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+                break;
             }
-        });
-        alert.show();
-    }
-
-    @Override
-    public void didFailBecauseRemoteNotificationsAreDisabled() {
-        progress.dismiss();
-        Log.d("SuperAwesome", "didFailBecauseRemoteNotificationsAreDisabled");
-    }
-
-    @Override
-    public void didFailBecauseParentEmailIsInvalid() {
-        progress.dismiss();
-        KWSSimpleAlert.getInstance().show(getContext(), "Ups!", "You must input a valid parent email!", "Got it!");
-    }
-
-    @Override
-    public void didFailBecauseOfError() {
-        progress.dismiss();
-        KWSSimpleAlert.getInstance().show(getContext(), "Ups!", "An un-identified error occured, and this user could not be registered for Remote Notifications in KWS.", "Got it!");
+            case ParentEmailInvalid: {
+                progress.dismiss();
+                KWSSimpleAlert.getInstance().show(getContext(), "Ups!", "You must input a valid parent email!", "Got it!");
+                break;
+            }
+            case FirebaseNotSetup: {
+                progress.dismiss();
+                KWSSimpleAlert.getInstance().show(getContext(), "Ups!", "Could not continue process since Firebase is not properly setup!", "Got it!");
+                break;
+            }
+            case FirebaseCouldNotGetToken: {
+                progress.dismiss();
+                KWSSimpleAlert.getInstance().show(getContext(), "Ups!", "Could not continue process since Firebase could not obtain a valid token.", "Got it!");
+                break;
+            }
+            case NetworkError: {
+                progress.dismiss();
+                KWSSimpleAlert.getInstance().show(getContext(), "Ups!", "An un-identified error occured, and this user could not be registered for Remote Notifications in KWS.", "Got it!");
+                break;
+            }
+            case CouldNotUnsubscribeInKWS: {
+                progress.dismiss();
+                KWSSimpleAlert.getInstance().show(getContext(), "Ups!", "Could not ubsubscribe user from Remote Notifications. Probably already unsubscribed!", "Got it!");
+                break;
+            }
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////

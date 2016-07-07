@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import kws.superawesome.tv.kwslib.JSONSerializable;
+import tv.superawesome.lib.sajsonparser.JSONSerializable;
 
 /**
  * Created by gabriel.coman on 16/06/16.

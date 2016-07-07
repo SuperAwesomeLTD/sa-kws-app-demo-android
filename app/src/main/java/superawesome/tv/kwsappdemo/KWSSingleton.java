@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import kws.superawesome.tv.kwslib.SAApplication;
+import tv.superawesome.lib.sautils.SAApplication;
 
 /**
  * Created by gabriel.coman on 16/06/16.

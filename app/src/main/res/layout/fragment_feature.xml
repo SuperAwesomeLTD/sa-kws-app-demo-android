@@ -133,6 +133,16 @@
                 android:text="@string/featureNotifEnableButton"/>
 
             <Button
+                android:id="@+id/notifDisable"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                style="@style/ButtonStyle2"
+                android:text="@string/featureNotifDisableButton"/>
+
+            <Button
                 android:id="@+id/notifDocs"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
