@@ -23,9 +23,11 @@ import android.widget.EditText;
 import java.net.PortUnreachableException;
 import java.util.PriorityQueue;
 
-import kws.superawesome.tv.KWS;
-import kws.superawesome.tv.KWSErrorType;
-import kws.superawesome.tv.KWSInterface;
+import kws.superawesome.tv.kwssdk.KWS;
+import kws.superawesome.tv.kwssdk.KWSErrorType;
+import kws.superawesome.tv.kwssdk.KWSInterface;
+import tv.superawesome.lib.sautils.SAAlert;
+import tv.superawesome.lib.sautils.SAProgressDialog;
 
 /**
  * Created by gabriel.coman on 15/06/16.
@@ -44,9 +46,6 @@ public class FeatureFragment extends Fragment implements KWSInterface {
     private Button notifDisable;
     private Button notifDocs;
 
-    // progress
-    ProgressDialog progress;
-
     // constructor
     public FeatureFragment () {
 
@@ -61,10 +60,6 @@ public class FeatureFragment extends Fragment implements KWSInterface {
         IntentFilter filter2 = new IntentFilter("superawesome.tv.RECEIVED_LOGOUT");
         getActivity().registerReceiver(new SignUpReceiver(), filter1);
         getActivity().registerReceiver(new LogoutReceiver(), filter2);
-
-        progress = new ProgressDialog(getContext());
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
     }
 
     @Nullable
@@ -123,10 +118,10 @@ public class FeatureFragment extends Fragment implements KWSInterface {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
 
-                            progress.show();
+                            SAProgressDialog.getInstance().showProgress(getContext());
 
                             KWS.sdk.setup(getContext(), KWSSingleton.getInstance().getModel().token, KWS_API, false, FeatureFragment.this);
-                            KWS.sdk.checkIfNotificationsAreAllowed();
+                            KWS.sdk.registerForRemoteNotifications();
                         }
                     });
                     final AlertDialog.Builder cancel = alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -138,7 +133,7 @@ public class FeatureFragment extends Fragment implements KWSInterface {
                     alert.show();
                 }
                 else {
-                    KWSSimpleAlert.getInstance().show(getContext(), "Hey!", "Before enabling Push Notifications you must authenticate with KWS.", "Got it!");
+                    SAAlert.getInstance().show(getContext(), "Hey!", "Before enabling Push Notifications you must authenticate with KWS.", "Got it!", null, false, 0, null);
                 }
             }
         });
@@ -147,7 +142,7 @@ public class FeatureFragment extends Fragment implements KWSInterface {
         notifDisable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progress.show();
+                SAProgressDialog.getInstance().showProgress(getContext());
                 KWS.sdk.unregisterForRemoteNotifications();
             }
         });
@@ -166,90 +161,73 @@ public class FeatureFragment extends Fragment implements KWSInterface {
     }
 
     @Override
-    public void kwsSDKDoesAllowUserToRegisterForRemoteNotifications() {
-        KWS.sdk.registerForRemoteNotifications();
-    }
-
-    @Override
     public void kwsSDKDidRegisterUserForRemoteNotifications() {
-        progress.dismiss();
-        KWSSimpleAlert.getInstance().show(getContext(), "Great news!", "This user has been successfully registered for Remote Notifications in KWS.", "Got it!");
+        SAProgressDialog.getInstance().hideProgress();
+        SAAlert.getInstance().show(getContext(), "Great news!", "This user has been successfully registered for Remote Notifications in KWS.", "Got it!", null, false, 0, null);
     }
 
     @Override
     public void kwsSDKDidUnregisterUserForRemoteNotifications() {
-        progress.dismiss();
-        KWSSimpleAlert.getInstance().show(getContext(), "Hey!", "This user has been de-registered for Remote Notifications", "Got it!");
+        SAProgressDialog.getInstance().hideProgress();
+        SAAlert.getInstance().show(getContext(), "Hey!", "This user has been de-registered for Remote Notifications", "Got it!", null, false, 0, null);
     }
 
     @Override
     public void kwsSDKDidFailToRegisterUserForRemoteNotificationsWithError(KWSErrorType kwsErrorType) {
+
         switch (kwsErrorType) {
-            case NoKWSPermission: {
-                progress.dismiss();
-                KWSSimpleAlert.getInstance().show(getContext(), "Hey!", "This user could not be registered for Remote Notifications because a parent in KWS has disabled this functionality.", "Got it!");
+            case ParentHasDisabledRemoteNotifications: {
+                SAProgressDialog.getInstance().hideProgress();
+                SAAlert.getInstance().show(getContext(), "Hey!", "This user could not be registered for Remote Notifications because a parent in KWS has disabled this functionality.", "Got it!", null, false, 0, null);
                 break;
             }
-            case NoSystemPermission:
-                progress.dismiss();
+            case UserHasDisabledRemoteNotifications: {
+                SAProgressDialog.getInstance().hideProgress();
                 // not happening
                 break;
-            case ParentEmailNotFound: {
-                progress.dismiss();
-                final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-                alert.setTitle("Hey!");
-                alert.setCancelable(false);
-                alert.setMessage("To enable Push Notifications in KWS you'll need to provide a parent's email.");
-
-                final EditText input = new EditText(getContext());
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                alert.setView(input);
-
-                final AlertDialog.Builder ok = alert.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        if (input.getText().toString() != null && !input.getText().toString().equals("")) {
-                            progress.show();
-                            KWS.sdk.submitParentEmail(input.getText().toString());
-                        } else {
-                            dialog.dismiss();
-                            KWSSimpleAlert.getInstance().show(getContext(), "Hey!", "You must input a valid parent email!", "Got it!");
-                        }
-                    }
-                });
-                final AlertDialog.Builder cancel = alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                alert.show();
+            }
+            case UserHasNoParentEmail: {
+                KWS.sdk.showParentEmailPopup();
                 break;
             }
             case ParentEmailInvalid: {
-                progress.dismiss();
-                KWSSimpleAlert.getInstance().show(getContext(), "Ups!", "You must input a valid parent email!", "Got it!");
+                SAProgressDialog.getInstance().hideProgress();
+                SAAlert.getInstance().show(getContext(), "Ups!", "You must input a valid parent email!", "Got it!", null, false, 0, null);
                 break;
             }
             case FirebaseNotSetup: {
-                progress.dismiss();
-                KWSSimpleAlert.getInstance().show(getContext(), "Ups!", "Could not continue process since Firebase is not properly setup!", "Got it!");
+                SAProgressDialog.getInstance().hideProgress();
+                SAAlert.getInstance().show(getContext(), "Ups!", "Could not continue process since Firebase is not properly setup!", "Got it!", null, false, 0, null);
                 break;
             }
             case FirebaseCouldNotGetToken: {
-                progress.dismiss();
-                KWSSimpleAlert.getInstance().show(getContext(), "Ups!", "Could not continue process since Firebase could not obtain a valid token.", "Got it!");
+                SAProgressDialog.getInstance().hideProgress();
+                SAAlert.getInstance().show(getContext(), "Ups!", "Could not continue process since Firebase could not obtain a valid token.", "Got it!", null, false, 0, null);
                 break;
             }
-            case NetworkError: {
-                progress.dismiss();
-                KWSSimpleAlert.getInstance().show(getContext(), "Ups!", "An un-identified error occured, and this user could not be registered for Remote Notifications in KWS.", "Got it!");
+            case FailedToCheckIfUserHasNotificationsEnabledInKWS: {
+                SAProgressDialog.getInstance().hideProgress();
+                SAAlert.getInstance().show(getContext(), "Ups!", "Failed to beck if user has Notifications enabled in KWS because of network error.", "Got it!", null, false, 0, null);
                 break;
             }
-            case CouldNotUnsubscribeInKWS: {
-                progress.dismiss();
-                KWSSimpleAlert.getInstance().show(getContext(), "Ups!", "Could not ubsubscribe user from Remote Notifications. Probably already unsubscribed!", "Got it!");
+            case FailedToRequestNotificationsPermissionInKWS: {
+                SAProgressDialog.getInstance().hideProgress();
+                SAAlert.getInstance().show(getContext(), "Ups!", "Failed to request Notification permissions in KWS because of network error.", "Got it!", null, false, 0, null);
+                break;
+            }
+            case FailedToSubmitParentEmail: {
+                SAProgressDialog.getInstance().hideProgress();
+                SAAlert.getInstance().show(getContext(), "Ups!", "Failed to submit parent email to KWS because of network error", "Got it!", null, false, 0, null);
+                break;
+            }
+            case FailedToSubscribeTokenToKWS: {
+                SAProgressDialog.getInstance().hideProgress();
+                SAAlert.getInstance().show(getContext(), "Ups!", "Failed to subscribe Firebase token to KWS because of network error.", "Got it!", null, false, 0, null);
+                break;
+            }
+            case FailedToUbsubscribeTokenToKWS: {
+                SAProgressDialog.getInstance().hideProgress();
+                SAAlert.getInstance().show(getContext(), "Ups!", "Failed to unsubscribe Firebase token from KWS because of network error.", "Got it!", null, false, 0, null);
                 break;
             }
         }

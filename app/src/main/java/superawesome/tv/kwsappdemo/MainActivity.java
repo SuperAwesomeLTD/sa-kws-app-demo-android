@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAApplication;
 
 
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context arg0, Intent arg1) {
             String title = arg1.getExtras().getString("TITLE");
             String message = arg1.getExtras().getString("MESSAGE");
-            KWSSimpleAlert.getInstance().show(MainActivity.this, title, message, "Great!");
+            SAAlert.getInstance().show(MainActivity.this, title, message, "Great!", null, false, 0, null);
         }
     }
 }

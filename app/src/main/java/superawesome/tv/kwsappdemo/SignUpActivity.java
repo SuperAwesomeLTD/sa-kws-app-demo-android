@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tv.superawesome.lib.sanetwork.request.*;
+import tv.superawesome.lib.sautils.SAAlert;
 
 /**
  * Created by gabriel.coman on 16/06/16.
@@ -88,45 +89,45 @@ public class SignUpActivity extends AppCompatActivity {
         if (dayEdit.getText() != null) { day = dayEdit.getText().toString(); }
 
         if (username == null || username.isEmpty()) {
-            KWSSimpleAlert.getInstance().show(this, "Hey!", "Please specify a valid username.", "Got it!");
+            SAAlert.getInstance().show(this, "Hey!", "Please specify a valid username.", "Got it!", null, false, 0, null);
             return;
         }
         if (password1 == null || password1.isEmpty() || password1.length() < 8) {
-            KWSSimpleAlert.getInstance().show(this, "Hey!", "Please specify a password (that is more than 8 characters)", "Got it!");
+            SAAlert.getInstance().show(this, "Hey!", "Please specify a password (that is more than 8 characters)", "Got it!", null, false, 0, null);
             return;
         }
         if (password2 == null || password2.isEmpty() || password2.length() < 8) {
-            KWSSimpleAlert.getInstance().show(this, "Hey!", "Pleace confirm the password (and make sure it also has 8 characters)", "Got it!" );
+            SAAlert.getInstance().show(this, "Hey!", "Pleace confirm the password (and make sure it also has 8 characters)", "Got it!", null, false, 0, null);
             return;
         }
         if (!password1.equals(password2)) {
-            KWSSimpleAlert.getInstance().show(this, "Hey!", "The two passwords you specified do not match.", "Got it!");
+            SAAlert.getInstance().show(this, "Hey!", "The two passwords you specified do not match.", "Got it!", null, false, 0, null);
             return;
         }
         if (year == null || year.isEmpty()) {
-            KWSSimpleAlert.getInstance().show(this, "Hey!", "Please specify a valid birth year.", "Got it!");
+            SAAlert.getInstance().show(this, "Hey!", "Please specify a valid birth year.", "Got it!", null, false, 0, null);
             return;
         } else {
             if (Integer.parseInt(year) > 2016 || Integer.parseInt(year) < 1900) {
-                KWSSimpleAlert.getInstance().show(this, "Hey!", "Please specify a valid birth year.", "Got it!");
+                SAAlert.getInstance().show(this, "Hey!", "Please specify a valid birth year.", "Got it!", null, false, 0, null);
                 return;
             }
         }
         if (month == null || month.isEmpty()) {
-            KWSSimpleAlert.getInstance().show(this, "Hey!", "Please specify a valid birth month.", "Got it!");
+            SAAlert.getInstance().show(this, "Hey!", "Please specify a valid birth month.", "Got it!", null, false, 0, null);
             return;
         } else {
             if (Integer.parseInt(month) > 12 || Integer.parseInt(year) < 1) {
-                KWSSimpleAlert.getInstance().show(this, "Hey!", "Please specify a valid birth month.", "Got it!");
+                SAAlert.getInstance().show(this, "Hey!", "Please specify a valid birth month.", "Got it!", null, false, 0, null);
                 return;
             }
         }
         if (day == null || day.isEmpty()) {
-            KWSSimpleAlert.getInstance().show(this, "Hey!", "Please specify a valid birth day.", "Got it!");
+            SAAlert.getInstance().show(this, "Hey!", "Please specify a valid birth day.", "Got it!", null, false, 0, null);
             return;
         } else {
             if (Integer.parseInt(day) > 30 || Integer.parseInt(day) < 1) {
-                KWSSimpleAlert.getInstance().show(this, "Hey!", "Please specify a valid birth day.", "Got it!");
+                SAAlert.getInstance().show(this, "Hey!", "Please specify a valid birth day.", "Got it!", null, false, 0, null);
                 return;
             }
         }
@@ -234,7 +235,7 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getExtras().getString("MESSAGE");
-            KWSSimpleAlert.getInstance().show(SignUpActivity.this, "Error!", message, "Got it!");
+            SAAlert.getInstance().show(SignUpActivity.this, "Hey!", "Error!", "Got it!", null, false, 0, null);
         }
     }
 }
