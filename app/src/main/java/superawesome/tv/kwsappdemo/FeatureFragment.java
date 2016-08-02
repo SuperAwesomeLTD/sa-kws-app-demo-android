@@ -1,7 +1,6 @@
 package superawesome.tv.kwsappdemo;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,28 +10,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.BoringLayout;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-
-import java.net.PortUnreachableException;
-import java.util.PriorityQueue;
 
 import kws.superawesome.tv.kwssdk.KWS;
+import kws.superawesome.tv.kwssdk.KWSCheckInterface;
 import kws.superawesome.tv.kwssdk.KWSErrorType;
-import kws.superawesome.tv.kwssdk.KWSInterface;
+import kws.superawesome.tv.kwssdk.KWSRegisterInterface;
+import kws.superawesome.tv.kwssdk.KWSUnregisterInterface;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
 /**
  * Created by gabriel.coman on 15/06/16.
  */
-public class FeatureFragment extends Fragment implements KWSInterface {
+public class FeatureFragment extends Fragment implements KWSRegisterInterface, KWSUnregisterInterface, KWSCheckInterface {
 
     // constants
     private final String AUTHURL = "https://developers.superawesome.tv/extdocs/sa-kws-android-sdk/html/index.html";
@@ -104,6 +98,7 @@ public class FeatureFragment extends Fragment implements KWSInterface {
         ////////////////////////////////////////////////////////////////////////////////////////////
         // Notif
         ////////////////////////////////////////////////////////////////////////////////////////////
+
         notifEnable = (Button) view.findViewById(R.id.notifEnable);
         notifEnable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,8 +115,8 @@ public class FeatureFragment extends Fragment implements KWSInterface {
 
                             SAProgressDialog.getInstance().showProgress(getContext());
 
-                            KWS.sdk.setup(getContext(), KWSSingleton.getInstance().getModel().token, KWS_API, false, FeatureFragment.this);
-                            KWS.sdk.registerForRemoteNotifications();
+                            KWS.sdk.setup(getContext(), KWSSingleton.getInstance().getModel().token, KWS_API, false);
+                            KWS.sdk.registerForRemoteNotifications(FeatureFragment.this);
                         }
                     });
                     final AlertDialog.Builder cancel = alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -143,7 +138,7 @@ public class FeatureFragment extends Fragment implements KWSInterface {
             @Override
             public void onClick(View v) {
                 SAProgressDialog.getInstance().showProgress(getContext());
-                KWS.sdk.unregisterForRemoteNotifications();
+                KWS.sdk.unregisterForRemoteNotifications(FeatureFragment.this);
             }
         });
 
@@ -164,12 +159,6 @@ public class FeatureFragment extends Fragment implements KWSInterface {
     public void kwsSDKDidRegisterUserForRemoteNotifications() {
         SAProgressDialog.getInstance().hideProgress();
         SAAlert.getInstance().show(getContext(), "Great news!", "This user has been successfully registered for Remote Notifications in KWS.", "Got it!", null, false, 0, null);
-    }
-
-    @Override
-    public void kwsSDKDidUnregisterUserForRemoteNotifications() {
-        SAProgressDialog.getInstance().hideProgress();
-        SAAlert.getInstance().show(getContext(), "Hey!", "This user has been de-registered for Remote Notifications", "Got it!", null, false, 0, null);
     }
 
     @Override
@@ -225,12 +214,35 @@ public class FeatureFragment extends Fragment implements KWSInterface {
                 SAAlert.getInstance().show(getContext(), "Ups!", "Failed to subscribe Firebase token to KWS because of network error.", "Got it!", null, false, 0, null);
                 break;
             }
-            case FailedToUbsubscribeTokenToKWS: {
-                SAProgressDialog.getInstance().hideProgress();
-                SAAlert.getInstance().show(getContext(), "Ups!", "Failed to unsubscribe Firebase token from KWS because of network error.", "Got it!", null, false, 0, null);
-                break;
-            }
         }
+    }
+
+    @Override
+    public void kwsSDKDidUnregisterUserForRemoteNotifications() {
+        SAProgressDialog.getInstance().hideProgress();
+        SAAlert.getInstance().show(getContext(), "Hey!", "This user has been de-registered for Remote Notifications", "Got it!", null, false, 0, null);
+    }
+
+    @Override
+    public void kwsSDKDidFailToUnregisterUserForRemoteNotifications() {
+        SAProgressDialog.getInstance().hideProgress();
+        SAAlert.getInstance().show(getContext(), "Ups!", "Failed to unsubscribe Firebase token from KWS because of network error.", "Got it!", null, false, 0, null);
+
+    }
+
+    @Override
+    public void kwsSDKUserIsRegistered() {
+
+    }
+
+    @Override
+    public void kwsSDKUserIsNotRegistered() {
+
+    }
+
+    @Override
+    public void kwsSDKDidFailToCheckIfUserIsRegistered() {
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
