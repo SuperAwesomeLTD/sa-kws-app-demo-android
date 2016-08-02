@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +37,11 @@ public class FeatureFragment extends Fragment implements KWSRegisterInterface, K
     // buttons
     private Button authAction;
     private Button authDocs;
-    private Button notifEnable;
-    private Button notifDisable;
+    private Button notifEnableDisable;
     private Button notifDocs;
+
+    // private vars
+    private KWSModel localModel = null;
 
     // constructor
     public FeatureFragment () {
@@ -59,30 +62,24 @@ public class FeatureFragment extends Fragment implements KWSRegisterInterface, K
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // get views
         View view = inflater.inflate(R.layout.fragment_feature, container, false);
-
         authAction = (Button) view.findViewById(R.id.authAction);
+        notifEnableDisable = (Button) view.findViewById(R.id.notifEnableDisable);
 
-        if (KWSSingleton.getInstance().getModel() == null) {
-            authAction.setText("AUTHENTICATE USER");
-        } else {
-            authAction.setText("Logged in as " + KWSSingleton.getInstance().getModel().username);
-        }
+        // get local model
+        localModel = KWSSingleton.getInstance().getModel();
 
         ////////////////////////////////////////////////////////////////////////////////////////////
         // LOGIN
         ////////////////////////////////////////////////////////////////////////////////////////////
+
+        authAction.setText(localModel == null ? "AUTHENTICATE USER" : "Logged in as " + localModel.username);
         authAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (KWSSingleton.getInstance().getModel() == null) {
-                    Intent signin = new Intent(getContext(), SignUpActivity.class);
-                    startActivity(signin);
-                }
-                else {
-                    Intent logout = new Intent(getContext(), LogoutActivity.class);
-                    startActivity(logout);
-                }
+                Intent authIntent = new Intent(getContext(), localModel == null ? SignUpActivity.class : LogoutActivity.class);
+                startActivity(authIntent);
             }
         });
 
@@ -99,11 +96,39 @@ public class FeatureFragment extends Fragment implements KWSRegisterInterface, K
         // Notif
         ////////////////////////////////////////////////////////////////////////////////////////////
 
-        notifEnable = (Button) view.findViewById(R.id.notifEnable);
-        notifEnable.setOnClickListener(new View.OnClickListener() {
+        // get the notification button
+
+        if (localModel != null) {
+            KWS.sdk.setup(getContext(), localModel.token, KWS_API, false);
+            KWS.sdk.userIsRegistered(this);
+        } else {
+            setupAsUnregistered();
+        }
+
+        // notif
+        notifDocs = (Button) view.findViewById(R.id.notifDocs);
+        notifDocs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (KWSSingleton.getInstance().getModel() != null) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(NOTIFURL));
+                getContext().startActivity(browserIntent);
+            }
+        });
+
+        return view;
+    }
+
+    public void setupAsUnregistered () {
+
+        // update local model
+        localModel = KWSSingleton.getInstance().getModel();
+
+        notifEnableDisable.setText("ENABLE PUSH NOTIFICATIONS");
+        notifEnableDisable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("SuperAwesome", "Done deal!");
+                if (localModel != null) {
                     final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
                     alert.setTitle("Hey!");
                     alert.setCancelable(false);
@@ -114,7 +139,6 @@ public class FeatureFragment extends Fragment implements KWSRegisterInterface, K
                             dialog.dismiss();
 
                             SAProgressDialog.getInstance().showProgress(getContext());
-
                             KWS.sdk.setup(getContext(), KWSSingleton.getInstance().getModel().token, KWS_API, false);
                             KWS.sdk.registerForRemoteNotifications(FeatureFragment.this);
                         }
@@ -132,31 +156,26 @@ public class FeatureFragment extends Fragment implements KWSRegisterInterface, K
                 }
             }
         });
+    }
 
-        notifDisable = (Button) view.findViewById(R.id.notifDisable);
-        notifDisable.setOnClickListener(new View.OnClickListener() {
+    public void setupAsRegistered () {
+        notifEnableDisable.setText("DISABLE PUSH NOTIFICATIONS");
+        notifEnableDisable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SAProgressDialog.getInstance().showProgress(getContext());
                 KWS.sdk.unregisterForRemoteNotifications(FeatureFragment.this);
             }
         });
-
-        notifDocs = (Button) view.findViewById(R.id.notifDocs);
-        notifDocs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(NOTIFURL));
-                getContext().startActivity(browserIntent);
-            }
-        });
-
-
-        return view;
     }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Registration callbacks
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
     public void kwsSDKDidRegisterUserForRemoteNotifications() {
+        setupAsRegistered();
         SAProgressDialog.getInstance().hideProgress();
         SAAlert.getInstance().show(getContext(), "Great news!", "This user has been successfully registered for Remote Notifications in KWS.", "Got it!", null, false, 0, null);
     }
@@ -217,8 +236,14 @@ public class FeatureFragment extends Fragment implements KWSRegisterInterface, K
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Unregistration callbacks
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
     @Override
     public void kwsSDKDidUnregisterUserForRemoteNotifications() {
+        setupAsUnregistered();
         SAProgressDialog.getInstance().hideProgress();
         SAAlert.getInstance().show(getContext(), "Hey!", "This user has been de-registered for Remote Notifications", "Got it!", null, false, 0, null);
     }
@@ -230,19 +255,24 @@ public class FeatureFragment extends Fragment implements KWSRegisterInterface, K
 
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+    // Is Registered callbacks
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+
     @Override
     public void kwsSDKUserIsRegistered() {
-
+        setupAsRegistered();
     }
 
     @Override
     public void kwsSDKUserIsNotRegistered() {
-
+        setupAsUnregistered();
     }
 
     @Override
     public void kwsSDKDidFailToCheckIfUserIsRegistered() {
-
+        setupAsUnregistered();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -253,6 +283,7 @@ public class FeatureFragment extends Fragment implements KWSRegisterInterface, K
         @Override
         public void onReceive(Context context, Intent intent) {
             FeatureFragment.this.authAction.setText("Logged in as " + KWSSingleton.getInstance().getModel().username);
+            setupAsUnregistered();
         }
     }
 
@@ -260,6 +291,8 @@ public class FeatureFragment extends Fragment implements KWSRegisterInterface, K
         @Override
         public void onReceive(Context context, Intent intent) {
             FeatureFragment.this.authAction.setText("AUTHENTICATE USER");
+            SAProgressDialog.getInstance().showProgress(getContext());
+            KWS.sdk.unregisterForRemoteNotifications(FeatureFragment.this);
         }
     }
 }

@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sanetwork.request.*;
 import tv.superawesome.lib.sautils.SAAlert;
 
@@ -145,26 +146,21 @@ public class SignUpActivity extends AppCompatActivity {
         progress.show();
 
         makingRequest = true;
-        JSONObject body = new JSONObject();
-        try {
-            body.put("username", username);
-            body.put("password", password1);
-            int yearInt = Integer.parseInt(year);
-            int monthInt = Integer.parseInt(month);
-            int dayInt = Integer.parseInt(day);
-            if (monthInt < 10) month = "0" + monthInt;
-            if (dayInt < 10) day = "0" + dayInt;
-            body.put("dateOfBirth", year + "-" + month + "-" + day);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        JSONObject header = new JSONObject();
-        try {
-            header.put("Content-Type", "application/json");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        int monthInt = Integer.parseInt(month);
+        int dayInt = Integer.parseInt(day);
+        if (monthInt < 10) month = "0" + monthInt;
+        if (dayInt < 10) day = "0" + dayInt;
+
+        JSONObject body = SAJsonParser.newObject(new Object[]{
+                "username", username,
+                "password", password1,
+                "dateOfBirth", year + "-" + month + "-" + day
+        });
+
+        JSONObject header = SAJsonParser.newObject(new Object[]{
+                "Content-Type", "application/json"
+        });
 
         SANetwork network = new SANetwork();
         network.sendPOST(this, "https://kwsdemobackend.herokuapp.com/create", new JSONObject(), header, body, new SANetworkInterface() {

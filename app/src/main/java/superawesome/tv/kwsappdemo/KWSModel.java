@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import tv.superawesome.lib.sajsonparser.JSONSerializable;
+import tv.superawesome.lib.sajsonparser.SAJsonParser;
 
 /**
  * Created by gabriel.coman on 16/06/16.
@@ -44,56 +45,6 @@ public class KWSModel implements JSONSerializable, Parcelable{
     };
 
     @Override
-    public void readFromJson(JSONObject jsonObject) {
-        if (!jsonObject.isNull("status")) {
-            status = jsonObject.optInt("status");
-        }
-        if (!jsonObject.isNull("userId")) {
-            userId = jsonObject.optInt("userId");
-        }
-        if (!jsonObject.isNull("token")) {
-            token = jsonObject.optString("token");
-        }
-        if (!jsonObject.isNull("error")) {
-            error = jsonObject.optString("error");
-        }
-        if (!jsonObject.isNull("username")) {
-            username = jsonObject.optString("username");
-        }
-    }
-
-    @Override
-    public JSONObject writeToJson() {
-        JSONObject object = new JSONObject();
-        try {
-            object.put("status", status);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            object.put("userId", userId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            object.put("token", token);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            object.put("error", error);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        try {
-            object.put("username", username);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return object;
-    }
-
-    @Override
     public int describeContents() {
         return 0;
     }
@@ -105,5 +56,30 @@ public class KWSModel implements JSONSerializable, Parcelable{
         dest.writeString(token);
         dest.writeString(error);
         dest.writeString(username);
+    }
+
+    @Override
+    public void readFromJson(JSONObject json) {
+        status = SAJsonParser.getInt(json, "status");
+        userId = SAJsonParser.getInt(json, "userId");
+        token = SAJsonParser.getString(json, "token");
+        error = SAJsonParser.getString(json, "error");
+        username = SAJsonParser.getString(json, "username");
+    }
+
+    @Override
+    public JSONObject writeToJson() {
+        return SAJsonParser.newObject(new Object[]{
+                "status", status,
+                "userId", userId,
+                "token", token,
+                "error", error,
+                "username", username
+        });
+    }
+
+    @Override
+    public boolean isValid () {
+        return true;
     }
 }
