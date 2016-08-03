@@ -34,12 +34,9 @@ public class PlatformFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_platform, container, false);
         openKWS = (Button) view.findViewById(R.id.openKWSWebsite);
-        openKWS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(KWSURL));
-                getContext().startActivity(browserIntent);
-            }
+        openKWS.setOnClickListener(v -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(KWSURL));
+            getContext().startActivity(browserIntent);
         });
         return view;
     }

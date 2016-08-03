@@ -75,21 +75,15 @@ public class FeatureFragment extends Fragment implements KWSRegisterInterface, K
         ////////////////////////////////////////////////////////////////////////////////////////////
 
         authAction.setText(localModel == null ? "AUTHENTICATE USER" : "Logged in as " + localModel.username);
-        authAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent authIntent = new Intent(getContext(), localModel == null ? SignUpActivity.class : LogoutActivity.class);
-                startActivity(authIntent);
-            }
+        authAction.setOnClickListener(v -> {
+            Intent authIntent = new Intent(getContext(), localModel == null ? SignUpActivity.class : LogoutActivity.class);
+            startActivity(authIntent);
         });
 
         authDocs = (Button) view.findViewById(R.id.authDocs);
-        authDocs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AUTHURL));
-                    getContext().startActivity(browserIntent);
-            }
+        authDocs.setOnClickListener(v -> {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AUTHURL));
+                getContext().startActivity(browserIntent);
         });
 
         ////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,12 +101,9 @@ public class FeatureFragment extends Fragment implements KWSRegisterInterface, K
 
         // notif
         notifDocs = (Button) view.findViewById(R.id.notifDocs);
-        notifDocs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(NOTIFURL));
-                getContext().startActivity(browserIntent);
-            }
+        notifDocs.setOnClickListener(v -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(NOTIFURL));
+            getContext().startActivity(browserIntent);
         });
 
         return view;
@@ -124,48 +115,42 @@ public class FeatureFragment extends Fragment implements KWSRegisterInterface, K
         localModel = KWSSingleton.getInstance().getModel();
 
         notifEnableDisable.setText("ENABLE PUSH NOTIFICATIONS");
-        notifEnableDisable.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("SuperAwesome", "Done deal!");
-                if (localModel != null) {
-                    final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-                    alert.setTitle("Hey!");
-                    alert.setCancelable(false);
-                    alert.setMessage("Do you want to enable Push Notifications for this user?");
-                    final AlertDialog.Builder ok = alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+        notifEnableDisable.setOnClickListener(v -> {
+            Log.d("SuperAwesome", "Done deal!");
+            if (localModel != null) {
+                final AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                alert.setTitle("Hey!");
+                alert.setCancelable(false);
+                alert.setMessage("Do you want to enable Push Notifications for this user?");
+                final AlertDialog.Builder ok = alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
 
-                            SAProgressDialog.getInstance().showProgress(getContext());
-                            KWS.sdk.setup(getContext(), KWSSingleton.getInstance().getModel().token, KWS_API, false);
-                            KWS.sdk.registerForRemoteNotifications(FeatureFragment.this);
-                        }
-                    });
-                    final AlertDialog.Builder cancel = alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    alert.show();
-                }
-                else {
-                    SAAlert.getInstance().show(getContext(), "Hey!", "Before enabling Push Notifications you must authenticate with KWS.", "Got it!", null, false, 0, null);
-                }
+                        SAProgressDialog.getInstance().showProgress(getContext());
+                        KWS.sdk.setup(getContext(), KWSSingleton.getInstance().getModel().token, KWS_API, false);
+                        KWS.sdk.registerForRemoteNotifications(FeatureFragment.this);
+                    }
+                });
+                final AlertDialog.Builder cancel = alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.show();
+            }
+            else {
+                SAAlert.getInstance().show(getContext(), "Hey!", "Before enabling Push Notifications you must authenticate with KWS.", "Got it!", null, false, 0, null);
             }
         });
     }
 
     public void setupAsRegistered () {
         notifEnableDisable.setText("DISABLE PUSH NOTIFICATIONS");
-        notifEnableDisable.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SAProgressDialog.getInstance().showProgress(getContext());
-                KWS.sdk.unregisterForRemoteNotifications(FeatureFragment.this);
-            }
+        notifEnableDisable.setOnClickListener(v -> {
+            SAProgressDialog.getInstance().showProgress(getContext());
+            KWS.sdk.unregisterForRemoteNotifications(FeatureFragment.this);
         });
     }
 
