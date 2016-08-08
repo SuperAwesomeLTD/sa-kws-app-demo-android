@@ -13,7 +13,7 @@
         android:theme="@style/MyMaterialTheme">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/main_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -23,19 +23,19 @@
         </activity>
 
         <activity
-            android:name=".SignUpActivity"
+            android:name=".activities.SignUpActivity"
             android:label="@string/signin_name"
             android:screenOrientation="portrait">
         </activity>
 
         <activity
-            android:name=".LogoutActivity"
+            android:name=".activities.LogoutActivity"
             android:label="@string/logout_name"
             android:screenOrientation="portrait">
         </activity>
 
         <service
-            android:name=".KWSMessageReceiver">
+            android:name=".receivers.RemoteNotificationReceiver">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>

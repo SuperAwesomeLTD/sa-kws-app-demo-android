@@ -8,7 +8,7 @@
     android:fillViewport="true"
     android:fadeScrollbars="false"
     android:scrollbars="none"
-    tools:context="superawesome.tv.kwsappdemo.PlatformFragment">
+    tools:context=".fragments.PlatformFragment">
 
     <LinearLayout
         android:padding="16dp"

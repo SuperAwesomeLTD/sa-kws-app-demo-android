@@ -8,8 +8,8 @@ android {
         applicationId "superawesome.tv.kwsappdemo"
         minSdkVersion 11
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 5
+        versionName "1.5"
         jackOptions {
             enabled true
         }
@@ -37,9 +37,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
-    compile 'kws.superawesome.tv.kwssdk:kwssdk:1.2.2'
-    compile 'tv.superawesome.lib.saevents:saevents:0.4.2'
-    //    compile ('tv.superawesome.sdk:superawesome:4.1.7') {
-    //        exclude group: 'com.google.android.gms', module: 'play-services-ads'
-    //    }
+    compile 'kws.superawesome.tv.kwssdk:kwssdk:2.0.0'
+    compile 'tv.superawesome.lib.saevents:saevents:0.4.5'
 }
