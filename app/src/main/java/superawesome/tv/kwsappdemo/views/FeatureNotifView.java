@@ -25,7 +25,6 @@ public class FeatureNotifView extends LinearLayout {
 
     // constants
     private final String NOTIFURL = "https://developers.superawesome.tv/extdocs/sa-kws-android-sdk/html/index.html";
-    private final String KWS_API = "https://kwsapi.demo.superawesome.tv/v1/";
 
     // private vars
     private Button notifEnableDisable;
@@ -48,10 +47,9 @@ public class FeatureNotifView extends LinearLayout {
         notifEnableDisable = (Button) findViewById(R.id.notifEnableDisable);
         notifDocs = (Button) findViewById(R.id.notifDocs);
 
+        // check if user is registered and setup accordingly
         localModel = KWSSingleton.getInstance().getModel();
-
         if (localModel != null) {
-            KWS.sdk.setup(getContext(), localModel.token, KWS_API);
             KWS.sdk.isRegistered(success -> {
                 if (success) {
                     setupAsRegistered();
@@ -76,17 +74,13 @@ public class FeatureNotifView extends LinearLayout {
 
     public void setupAsUnregistered () {
 
-        // get needed vars
         final Context context = getContext();
-        localModel = KWSSingleton.getInstance().getModel();
-
         notifEnableDisable.setText("ENABLE PUSH NOTIFICATIONS");
         notifEnableDisable.setOnClickListener(v -> {
             if (localModel != null) {
                 SAAlert.getInstance().show(context, "Hey!", "Do you want to enable Push Notifications for this user?", "Yes", "No", false, 0, (button, message) -> {
                     if (button == SAAlert.OK_BUTTON) {
                         SAProgressDialog.getInstance().showProgress(context);
-                        KWS.sdk.setup(context, localModel.token, KWS_API);
                         KWS.sdk.register(this::registerCallback);
                     }
                 });
