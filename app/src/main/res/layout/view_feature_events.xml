@@ -52,15 +52,6 @@
         style="@style/ButtonStyle2"
         android:text="@string/featurePointsAdd20Button"/>
 
-    <Button
-        android:id="@+id/pointsAdd50"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        style="@style/ButtonStyle2"
-        android:text="@string/featurePointsAdd50Button"/>
 
     <Button
         android:id="@+id/pointsSub10"

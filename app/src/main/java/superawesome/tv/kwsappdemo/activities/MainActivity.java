@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             localModel = KWSSingleton.getInstance().getModel();
 
             // de-setup SDK
-            KWS.sdk.setup(MainActivity.this, null, null);
+            // KWS.sdk.desetup();
         }
     }
 }

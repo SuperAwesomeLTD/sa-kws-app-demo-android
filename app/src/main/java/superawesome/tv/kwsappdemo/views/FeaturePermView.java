@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import kws.superawesome.tv.kwssdk.KWS;
+import kws.superawesome.tv.kwssdk.services.kws.KWSParentEmailInterface;
 import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionType;
 import kws.superawesome.tv.kwssdk.services.kws.KWSRequestPermissionInterface;
 import superawesome.tv.kwsappdemo.R;
@@ -32,6 +33,8 @@ public class FeaturePermView extends LinearLayout {
     private Button permissionAdd;
     private Button permissionDocs;
     private KWSModel localModel = null;
+    private KWSPermissionType[] requestedType = null;
+    private CharSequence currentTitle = null;
 
     public FeaturePermView(Context context) {
         this(context, null, 0);
@@ -50,6 +53,7 @@ public class FeaturePermView extends LinearLayout {
         permissionDocs = (Button) findViewById(R.id.permissionDocs);
 
         localModel = KWSSingleton.getInstance().getModel();
+        updateInterface();
 
         permissionAdd.setOnClickListener(v -> {
             Context c = getContext();
@@ -73,13 +77,9 @@ public class FeaturePermView extends LinearLayout {
             AlertDialog.Builder builder = new AlertDialog.Builder(c);
             builder.setTitle("Ask for a permission");
             builder.setItems(titles, (dialog, which) -> {
-                KWS.sdk.requestPermission(new KWSPermissionType[]{ types[which] }, (success, requested) -> {
-                    if (success && requested) {
-                        SAAlert.getInstance().show(c, "Great!", "You've successfully asked for permission for " + titles[which], "Got it!", null, false, 0 , null);
-                    } else {
-                        SAAlert.getInstance().show(c, "Hey!", "Something happened while asking for permissions", "Got it!", null, false, 0, null);
-                    }
-                });
+                currentTitle = titles[which];
+                requestedType = new KWSPermissionType[] { types [which] };
+                KWS.sdk.requestPermission(requestedType, this::permissionCallback);
             });
             builder.show();
         });
@@ -95,10 +95,32 @@ public class FeaturePermView extends LinearLayout {
         context.registerReceiver(new LogoutReceiver(), filter2);
     }
 
+    private void permissionCallback (boolean success, boolean requested) {
+        if (!success) {
+            SAAlert.getInstance().show(getContext(), "Hey!", "Something happened while asking for permissions", "Got it!", null, false, 0, null);
+        } else {
+            if (requested) {
+                SAAlert.getInstance().show(getContext(), "Great!", "You've successfully asked for permission for " + currentTitle, "Got it!", null, false, 0 , null);
+            } else {
+                KWS.sdk.submitParentEmailWithPopup(b -> {
+                    if (b) {
+                        KWS.sdk.requestPermission(requestedType, this::permissionCallback);
+                    }
+                });
+            }
+        }
+    }
+
+    private void updateInterface () {
+        boolean status = localModel != null;
+        permissionAdd.setEnabled(status);
+    }
+
     class SignUpReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             FeaturePermView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface();
         }
     }
 
@@ -106,6 +128,7 @@ public class FeaturePermView extends LinearLayout {
         @Override
         public void onReceive(Context context, Intent intent) {
             FeaturePermView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface();
         }
     }
 }

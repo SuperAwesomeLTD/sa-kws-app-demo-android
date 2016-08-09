@@ -49,8 +49,8 @@ public class FeatureAuthView extends LinearLayout {
         authDocs = (Button) findViewById(R.id.authDocs);
 
         localModel = KWSSingleton.getInstance().getModel();
+        updateInterface();
 
-        authAction.setText(localModel == null ? "AUTHENTICATE USER" : "Logged in as " + localModel.username);
         authAction.setOnClickListener(v -> {
             Intent authIntent = new Intent(getContext(), localModel == null ? SignUpActivity.class : LogoutActivity.class);
             context.startActivity(authIntent);
@@ -67,11 +67,16 @@ public class FeatureAuthView extends LinearLayout {
         context.registerReceiver(new LogoutReceiver(), filter2);
     }
 
+    private void updateInterface () {
+        boolean status = localModel != null;
+        authAction.setText(status ? "Logged in as " + localModel.username : "AUTHENTICATE USER");
+    }
+
     class SignUpReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             FeatureAuthView.this.localModel = KWSSingleton.getInstance().getModel();
-            FeatureAuthView.this.authAction.setText("Logged in as " + KWSSingleton.getInstance().getModel().username);
+            updateInterface();
         }
     }
 
@@ -79,7 +84,7 @@ public class FeatureAuthView extends LinearLayout {
         @Override
         public void onReceive(Context context, Intent intent) {
             FeatureAuthView.this.localModel = KWSSingleton.getInstance().getModel();
-            FeatureAuthView.this.authAction.setText("AUTHENTICATE USER");
+            updateInterface();
         }
     }
 }

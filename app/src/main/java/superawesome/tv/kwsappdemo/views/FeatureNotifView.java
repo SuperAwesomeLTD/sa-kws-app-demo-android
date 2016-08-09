@@ -47,8 +47,9 @@ public class FeatureNotifView extends LinearLayout {
         notifEnableDisable = (Button) findViewById(R.id.notifEnableDisable);
         notifDocs = (Button) findViewById(R.id.notifDocs);
 
-        // check if user is registered and setup accordingly
         localModel = KWSSingleton.getInstance().getModel();
+        updateInterface();
+
         if (localModel != null) {
             KWS.sdk.isRegistered(success -> {
                 if (success) {
@@ -73,28 +74,19 @@ public class FeatureNotifView extends LinearLayout {
     }
 
     public void setupAsUnregistered () {
-
         final Context context = getContext();
         notifEnableDisable.setText("ENABLE PUSH NOTIFICATIONS");
         notifEnableDisable.setOnClickListener(v -> {
-            if (localModel != null) {
-                SAAlert.getInstance().show(context, "Hey!", "Do you want to enable Push Notifications for this user?", "Yes", "No", false, 0, (button, message) -> {
-                    if (button == SAAlert.OK_BUTTON) {
-                        SAProgressDialog.getInstance().showProgress(context);
-                        KWS.sdk.register(this::registerCallback);
-                    }
-                });
-            }
-            else {
-                SAAlert.getInstance().show(getContext(), "Hey!", "Before enabling Push Notifications you must authenticate with KWS.", "Got it!", null, false, 0, null);
-            }
+            SAProgressDialog.getInstance().showProgress(context);
+            KWS.sdk.registerWithPopup(this::registerCallback);
         });
     }
 
     public void setupAsRegistered () {
+        final Context context = getContext();
         notifEnableDisable.setText("DISABLE PUSH NOTIFICATIONS");
         notifEnableDisable.setOnClickListener(v -> {
-            SAProgressDialog.getInstance().showProgress(getContext());
+            SAProgressDialog.getInstance().showProgress(context);
             KWS.sdk.unregister(this::unregisterCallback);
         });
     }
@@ -153,10 +145,16 @@ public class FeatureNotifView extends LinearLayout {
         }
     }
 
+    private void updateInterface () {
+        boolean status = localModel != null;
+        notifEnableDisable.setEnabled(status);
+    }
+
     class SignUpReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             FeatureNotifView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface ();
             setupAsUnregistered();
         }
     }
@@ -165,8 +163,12 @@ public class FeatureNotifView extends LinearLayout {
         @Override
         public void onReceive(Context context, Intent intent) {
             FeatureNotifView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface ();
+
+            // unregister & desetup (has to be here)
             SAProgressDialog.getInstance().showProgress(getContext());
             KWS.sdk.unregister(FeatureNotifView.this::unregisterCallback);
+            KWS.sdk.desetup();
         }
     }
 }

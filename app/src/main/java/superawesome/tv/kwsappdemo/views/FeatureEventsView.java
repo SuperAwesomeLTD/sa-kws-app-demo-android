@@ -35,7 +35,6 @@ public class FeatureEventsView extends LinearLayout {
 
     // private vars
     private Button pointsAdd20;
-    private Button pointsAdd50;
     private Button pointsSub10;
     private Button pointsSeeLeader;
     private Button pointsDocs;
@@ -55,25 +54,17 @@ public class FeatureEventsView extends LinearLayout {
         inflater.inflate(R.layout.view_feature_events, this, true);
 
         pointsAdd20 = (Button) findViewById(R.id.pointsAdd20);
-        pointsAdd50 = (Button) findViewById(R.id.pointsAdd50);
         pointsSub10 = (Button) findViewById(R.id.pointsSub10);
         pointsSeeLeader = (Button) findViewById(R.id.pointsLeader);
         pointsDocs = (Button) findViewById(R.id.pointsDocs);
 
         localModel = KWSSingleton.getInstance().getModel();
+        updateInterface();
 
         pointsAdd20.setOnClickListener(v -> {
             KWS.sdk.triggerEvent("GabrielAdd20ForAwesomeApp", 20, "You just earned 20 points!", b -> {
                 if (b) {
                     SAAlert.getInstance().show(getContext(), "Congrats!", "You just earned 20 points!", "Great!", null, false, 0, null);
-                }
-            });
-        });
-
-        pointsAdd50.setOnClickListener(v -> {
-            KWS.sdk.triggerEvent("GabrielAdd50ForAwesomeApp", 50, "You just earned 50 points!!!", b -> {
-                if (b) {
-                    SAAlert.getInstance().show(getContext(), "Congrats!", "You just earned 50 points!!!", "Great!", null, false, 0, null);
                 }
             });
         });
@@ -114,10 +105,18 @@ public class FeatureEventsView extends LinearLayout {
         context.registerReceiver(new LogoutReceiver(), filter2);
     }
 
+    private void updateInterface () {
+        boolean state = localModel != null;
+        pointsAdd20.setEnabled(state);
+        pointsSub10.setEnabled(state);
+        pointsSeeLeader.setEnabled(state);
+    }
+
     class SignUpReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             FeatureEventsView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface();
         }
     }
 
@@ -125,6 +124,7 @@ public class FeatureEventsView extends LinearLayout {
         @Override
         public void onReceive(Context context, Intent intent) {
             FeatureEventsView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface();
         }
     }
 }
