@@ -25,14 +25,17 @@
         <activity
             android:name=".activities.SignUpActivity"
             android:label="@string/signin_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".activities.LogoutActivity"
             android:label="@string/logout_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".activities.LeaderboardActivity"
+            android:label="@string/leaderboard_name"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".receivers.RemoteNotificationReceiver">

@@ -4,6 +4,7 @@
     <string name="main_name">AwesomeApp</string>
     <string name="signin_name">Sign In</string>
     <string name="logout_name">Log Out</string>
+    <string name="leaderboard_name">Leaderboard</string>
 
     <!-- platforms strings -->
     <string name="platformTitle">Welcome to your\nSuperAwesome app</string>
@@ -19,11 +20,25 @@
     <string name="featureAuthContent">Kids Web Services federated identity system (Single Sign-On) allows kids and parents create one secure identity to easily log into your collection of kid-safe sites and apps.</string>
     <string name="featureAuthActionButton">AUTHENTICATE USER</string>
     <string name="featureAuthDocButton">SEE DOCUMENTATION</string>
+
     <string name="featureNotifTitle">Kid-safe push notifications</string>
     <string name="featureNotifContent">Generate codes/vouchers to allow users to award extra points to incentivise user retention and engagement.</string>
     <string name="featureNotifEnableButton">ENABLE PUSH NOTIFICATIONS</string>
     <string name="featureNotifDisableButton">DISABLE PUSH NOTIFICATION</string>
     <string name="featureNotifDocButton">SEE DOCUMENTATION</string>
+
+    <string name="featurePermissionTitle">Manage permissions</string>
+    <string name="featurePermissionContent">Add permissions for your users</string>
+    <string name="featurePermissionAddButton">ADD PERMISSIONS</string>
+    <string name="featurePermissionDocButton">SEE DOCUMENTATION</string>
+
+    <string name="featurePointsTitle">Events and points</string>
+    <string name="featurePointsContent">Add, subtract points and manage application events for each user</string>
+    <string name="featurePointsAdd20Button">ADD 20 POINTS</string>
+    <string name="featurePointsAdd50Button">ADD 50 POINTS</string>
+    <string name="featurePointsSub10Button">SUBTRACT 10 POINTS</string>
+    <string name="featurePointsSeeLeaderboardButton">SEE LEADERBOARD</string>
+    <string name="featurePointsDocButton">SEE DOCUMENTATION</string>
 
     <!-- sign in string -->
     <string name="signInTitle">Register for KWS</string>
@@ -40,4 +55,12 @@
     <string name="logoutUserName">User Name:</string>
     <string name="logoutToken">Token:</string>
     <string name="logoutButton">Logout</string>
+
+    <!-- leaderboard item default strings -->
+    <string name="leaderItemDefaultRank">1</string>
+    <string name="leaderItemDefaultUsername">Test User</string>
+    <string name="leaderItemDefaultPoints">20</string>
+    <string name="leaderItemActualRank">%1$d</string>
+    <string name="leaderItemActualUsername">%1$s</string>
+    <string name="leaderItemActualPoints">%1$d</string>
 </resources>

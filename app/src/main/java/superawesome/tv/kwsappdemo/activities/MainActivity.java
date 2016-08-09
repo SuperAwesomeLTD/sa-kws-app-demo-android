@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     // fragment array
     private List<Fragment> fragments = Arrays.asList(new PlatformFragment(), new FeatureFragment(), new DocumentationFragment());
-    private List<String> tabs = Arrays.asList("Platform", "Feature", "More");
+    private List<String> tabs = Arrays.asList("Platform", "Features", "More");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
