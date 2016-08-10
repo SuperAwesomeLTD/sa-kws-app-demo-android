@@ -17,7 +17,7 @@
         <!--toolbar-->
         <android.support.v7.widget.Toolbar
             android:id="@+id/leaderboardToolbar"
-            android:title="@string/logoutTitle"
+            android:title="@string/leaderboard_name"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimaryDark"

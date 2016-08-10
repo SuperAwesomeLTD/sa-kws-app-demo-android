@@ -15,6 +15,7 @@ import kws.superawesome.tv.kwssdk.KWS;
 import superawesome.tv.kwsappdemo.R;
 import superawesome.tv.kwsappdemo.activities.LogoutActivity;
 import superawesome.tv.kwsappdemo.activities.SignUpActivity;
+import superawesome.tv.kwsappdemo.activities.UserActivity;
 import superawesome.tv.kwsappdemo.aux.KWSSingleton;
 import superawesome.tv.kwsappdemo.models.KWSModel;
 import tv.superawesome.lib.sautils.SAProgressDialog;
@@ -52,7 +53,7 @@ public class FeatureAuthView extends LinearLayout {
         updateInterface();
 
         authAction.setOnClickListener(v -> {
-            Intent authIntent = new Intent(getContext(), localModel == null ? SignUpActivity.class : LogoutActivity.class);
+            Intent authIntent = new Intent(getContext(), localModel == null ? SignUpActivity.class : UserActivity.class);
             context.startActivity(authIntent);
         });
 
