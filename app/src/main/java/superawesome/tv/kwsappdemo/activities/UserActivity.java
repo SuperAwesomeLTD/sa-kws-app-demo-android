@@ -98,8 +98,8 @@ public class UserActivity extends AppCompatActivity {
                         userDetailsModels.add(UserDetailsModel.Item("City", kwsUser.applicationPermissions.accessCity + ""));
                         userDetailsModels.add(UserDetailsModel.Item("Postal code", kwsUser.applicationPermissions.accessPostalCode+ ""));
                         userDetailsModels.add(UserDetailsModel.Item("Country", kwsUser.applicationPermissions.accessCountry+ ""));
-                        userDetailsModels.add(UserDetailsModel.Item("Push Notifications", kwsUser.applicationPermissions.sendPushNotification+ ""));
-                        userDetailsModels.add(UserDetailsModel.Item("Send Newsletter", kwsUser.applicationPermissions.sendNewsletter+ ""));
+                        userDetailsModels.add(UserDetailsModel.Item("Notifications", kwsUser.applicationPermissions.sendPushNotification+ ""));
+                        userDetailsModels.add(UserDetailsModel.Item("Newsletter", kwsUser.applicationPermissions.sendNewsletter+ ""));
                     }
 
                     // populate table
