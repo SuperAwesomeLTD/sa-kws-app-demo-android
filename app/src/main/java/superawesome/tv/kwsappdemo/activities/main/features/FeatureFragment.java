@@ -17,7 +17,7 @@ public class FeatureFragment extends Fragment {
 
     // constructor
     public FeatureFragment () {
-
+        // do nothing
     }
 
     @Override

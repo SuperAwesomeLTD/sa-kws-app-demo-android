@@ -15,7 +15,9 @@ import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionType;
 import superawesome.tv.kwsappdemo.R;
 import superawesome.tv.kwsappdemo.aux.KWSSingleton;
-import superawesome.tv.kwsappdemo.models.KWSModel;
+import superawesome.tv.kwsappdemo.aux.KWSModel;
+import superawesome.tv.kwsappdemo.aux.SmartReceiver;
+import superawesome.tv.kwsappdemo.aux.SmartReceiverInterface;
 import tv.superawesome.lib.sautils.SAAlert;
 
 /**
@@ -29,10 +31,13 @@ public class FeaturePermView extends LinearLayout {
     // private vars
     private Button permissionAdd;
     private Button permissionDocs;
+    private CharSequence currentTitle = null;
     private KWSModel localModel = null;
     private KWSPermissionType[] requestedType = null;
-    private CharSequence currentTitle = null;
+    private IntentFilter signupFilter = null;
+    private IntentFilter logoutFilter = null;
 
+    // constructor
     public FeaturePermView(Context context) {
         this(context, null, 0);
     }
@@ -86,10 +91,17 @@ public class FeaturePermView extends LinearLayout {
             getContext().startActivity(browserIntent);
         });
 
-        IntentFilter filter1 = new IntentFilter("superawesome.tv.RECEIVED_SIGNUP");
-        IntentFilter filter2 = new IntentFilter("superawesome.tv.RECEIVED_LOGOUT");
-        context.registerReceiver(new SignUpReceiver(), filter1);
-        context.registerReceiver(new LogoutReceiver(), filter2);
+        signupFilter = new IntentFilter("superawesome.tv.RECEIVED_SIGNUP");
+        context.registerReceiver(new SmartReceiver(getContext(), (context1, intent) -> {
+            FeaturePermView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface();
+        }), signupFilter);
+
+        logoutFilter = new IntentFilter("superawesome.tv.RECEIVED_LOGOUT");
+        context.registerReceiver(new SmartReceiver(getContext(), (context1, intent) -> {
+            FeaturePermView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface();
+        }), logoutFilter);
     }
 
     private void permissionCallback (boolean success, boolean requested) {
@@ -111,21 +123,5 @@ public class FeaturePermView extends LinearLayout {
     private void updateInterface () {
         boolean status = localModel != null;
         permissionAdd.setEnabled(status);
-    }
-
-    class SignUpReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            FeaturePermView.this.localModel = KWSSingleton.getInstance().getModel();
-            updateInterface();
-        }
-    }
-
-    class LogoutReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            FeaturePermView.this.localModel = KWSSingleton.getInstance().getModel();
-            updateInterface();
-        }
     }
 }

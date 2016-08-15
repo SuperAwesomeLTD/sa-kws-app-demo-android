@@ -14,7 +14,9 @@ import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.process.KWSErrorType;
 import superawesome.tv.kwsappdemo.R;
 import superawesome.tv.kwsappdemo.aux.KWSSingleton;
-import superawesome.tv.kwsappdemo.models.KWSModel;
+import superawesome.tv.kwsappdemo.aux.KWSModel;
+import superawesome.tv.kwsappdemo.aux.SmartReceiver;
+import superawesome.tv.kwsappdemo.aux.SmartReceiverInterface;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
@@ -30,6 +32,8 @@ public class FeatureNotifView extends LinearLayout {
     private Button notifEnableDisable;
     private Button notifDocs;
     private KWSModel localModel = null;
+    private IntentFilter signupFilter = null;
+    private IntentFilter logoutFilter = null;
 
     public FeatureNotifView(Context context) {
         this(context, null, 0);
@@ -67,10 +71,23 @@ public class FeatureNotifView extends LinearLayout {
             getContext().startActivity(browserIntent);
         });
 
-        IntentFilter filter1 = new IntentFilter("superawesome.tv.RECEIVED_SIGNUP");
-        IntentFilter filter2 = new IntentFilter("superawesome.tv.RECEIVED_LOGOUT");
-        context.registerReceiver(new SignUpReceiver(), filter1);
-        context.registerReceiver(new LogoutReceiver(), filter2);
+        signupFilter = new IntentFilter("superawesome.tv.RECEIVED_SIGNUP");
+        context.registerReceiver(new SmartReceiver(getContext(), (context1, intent) -> {
+            FeatureNotifView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface ();
+            setupAsUnregistered();
+        }), signupFilter);
+
+        logoutFilter = new IntentFilter("superawesome.tv.RECEIVED_LOGOUT");
+        context.registerReceiver(new SmartReceiver(getContext(), (context1, intent) -> {
+            FeatureNotifView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface ();
+
+            // unregister & desetup (has to be here)
+            SAProgressDialog.getInstance().showProgress(getContext());
+            KWS.sdk.unregister(FeatureNotifView.this::unregisterCallback);
+            KWS.sdk.desetup();
+        }), logoutFilter);
     }
 
     public void setupAsUnregistered () {
@@ -148,27 +165,5 @@ public class FeatureNotifView extends LinearLayout {
     private void updateInterface () {
         boolean status = localModel != null;
         notifEnableDisable.setEnabled(status);
-    }
-
-    class SignUpReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            FeatureNotifView.this.localModel = KWSSingleton.getInstance().getModel();
-            updateInterface ();
-            setupAsUnregistered();
-        }
-    }
-
-    class LogoutReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            FeatureNotifView.this.localModel = KWSSingleton.getInstance().getModel();
-            updateInterface ();
-
-            // unregister & desetup (has to be here)
-            SAProgressDialog.getInstance().showProgress(getContext());
-            KWS.sdk.unregister(FeatureNotifView.this::unregisterCallback);
-            KWS.sdk.desetup();
-        }
     }
 }

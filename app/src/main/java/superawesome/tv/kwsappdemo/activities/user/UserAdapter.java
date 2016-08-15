@@ -1,29 +1,22 @@
 package superawesome.tv.kwsappdemo.activities.user;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import kws.superawesome.tv.kwssdk.KWS;
-import kws.superawesome.tv.kwssdk.models.user.KWSUser;
-import kws.superawesome.tv.kwssdk.services.kws.KWSGetUserInterface;
-import superawesome.tv.kwsappdemo.R;
 import superawesome.tv.kwsappdemo.aux.DataSource;
 import superawesome.tv.kwsappdemo.aux.DataSourceInterface;
 import superawesome.tv.kwsappdemo.aux.ViewModel;
-import superawesome.tv.kwsappdemo.models.UserDetailModelType;
-import superawesome.tv.kwsappdemo.models.UserDetailsModel;
 
 /**
  * Created by gabriel.coman on 09/08/16.
  */
-public class UserAdapter extends ArrayAdapter<UserDetailsModel> implements DataSource {
+public class UserAdapter extends ArrayAdapter<ViewModel> implements DataSource {
 
     private List<ViewModel> items = null;
 

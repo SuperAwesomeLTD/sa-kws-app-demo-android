@@ -15,7 +15,9 @@ import org.json.JSONObject;
 
 import superawesome.tv.kwsappdemo.R;
 import superawesome.tv.kwsappdemo.aux.KWSSingleton;
-import superawesome.tv.kwsappdemo.models.KWSModel;
+import superawesome.tv.kwsappdemo.aux.KWSModel;
+import superawesome.tv.kwsappdemo.aux.SmartReceiver;
+import superawesome.tv.kwsappdemo.aux.SmartReceiverInterface;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sanetwork.request.*;
 import tv.superawesome.lib.sautils.SAAlert;
@@ -50,7 +52,8 @@ public class SignUpActivity extends AppCompatActivity {
     private String day = null;
 
     // error receiver
-    private ErrorReceiver errorReceiver = null;
+    private IntentFilter errorFilter = null;
+    private SmartReceiver errorReceiver = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,9 +73,12 @@ public class SignUpActivity extends AppCompatActivity {
         monthEdit = (EditText) findViewById(R.id.monthEdit);
         dayEdit = (EditText) findViewById(R.id.dayEdit);
 
-        IntentFilter filter3 = new IntentFilter("superawesome.tv.RECEIVED_ERROR");
-        errorReceiver = new ErrorReceiver();
-        registerReceiver(errorReceiver, filter3);
+        errorFilter = new IntentFilter("superawesome.tv.RECEIVED_ERROR");
+        errorReceiver = new SmartReceiver(this, (context, intent) -> {
+            String message = intent.getExtras().getString("MESSAGE");
+            SAAlert.getInstance().show(SignUpActivity.this, "Hey!", message, "Got it!", null, false, 0, null);
+        });
+        registerReceiver(errorReceiver, errorFilter);
     }
 
     public void onSubmitClick(View vi) {
@@ -209,13 +215,5 @@ public class SignUpActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         unregisterReceiver(errorReceiver);
-    }
-
-    class ErrorReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String message = intent.getExtras().getString("MESSAGE");
-            SAAlert.getInstance().show(SignUpActivity.this, "Hey!", "Error!", "Got it!", null, false, 0, null);
-        }
     }
 }

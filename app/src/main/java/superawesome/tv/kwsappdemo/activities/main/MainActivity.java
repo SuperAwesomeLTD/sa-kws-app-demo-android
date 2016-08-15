@@ -21,7 +21,9 @@ import superawesome.tv.kwsappdemo.aux.KWSSingleton;
 import superawesome.tv.kwsappdemo.activities.main.documentation.DocumentationFragment;
 import superawesome.tv.kwsappdemo.activities.main.features.FeatureFragment;
 import superawesome.tv.kwsappdemo.activities.main.platform.PlatformFragment;
-import superawesome.tv.kwsappdemo.models.KWSModel;
+import superawesome.tv.kwsappdemo.aux.KWSModel;
+import superawesome.tv.kwsappdemo.aux.SmartReceiver;
+import superawesome.tv.kwsappdemo.aux.SmartReceiverInterface;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAApplication;
 
@@ -35,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private List<Fragment> fragments = Arrays.asList(new PlatformFragment(), new FeatureFragment(), new DocumentationFragment());
     private List<String> tabs = Arrays.asList("Platform", "Features", "More");
     private KWSModel localModel = null;
+    private IntentFilter notifFilter = null;
+    private IntentFilter signupFilter = null;
+    private IntentFilter logoutFilter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,49 +70,25 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         // setup filters
-        IntentFilter filter1 = new IntentFilter("superawesome.tv.RECEIVED_BROADCAST");
-        IntentFilter filter2 = new IntentFilter("superawesome.tv.RECEIVED_SIGNUP");
-        IntentFilter filter3 = new IntentFilter("superawesome.tv.RECEIVED_LOGOUT");
-        registerReceiver(new NotificationReceiver (this), filter1);
-        registerReceiver(new SignUpReceiver(), filter2);
-        registerReceiver(new LogoutReceiver(), filter3);
-    }
-
-    private class NotificationReceiver extends BroadcastReceiver {
-
-        private Context context = null;
-
-        public NotificationReceiver  (Context context) {
-            this.context = context;
-        }
-
-        @Override
-        public void onReceive(Context arg0, Intent arg1) {
-            String title = arg1.getExtras().getString("TITLE");
-            String message = arg1.getExtras().getString("MESSAGE");
+        notifFilter = new IntentFilter("superawesome.tv.RECEIVED_BROADCAST");
+        registerReceiver(new SmartReceiver(this, (context, intent) -> {
+            String title = intent.getExtras().getString("TITLE");
+            String message = intent.getExtras().getString("MESSAGE");
             SAAlert.getInstance().show(context, title, message, "Got it!", null, false, 0, null);
-        }
-    }
+        }), notifFilter);
 
-    class SignUpReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // update local model
+        signupFilter = new IntentFilter("superawesome.tv.RECEIVED_SIGNUP");
+        registerReceiver(new SmartReceiver(this, (context, intent) -> {
             localModel = KWSSingleton.getInstance().getModel();
-
-            // setup SDK w/ new token
             KWS.sdk.setup(MainActivity.this, localModel.token, KWS_API);
-        }
-    }
+        }), signupFilter);
 
-    class LogoutReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // update local model (to null)
-            localModel = KWSSingleton.getInstance().getModel();
-
-            // de-setup SDK
-            // KWS.sdk.desetup();
-        }
+        logoutFilter = new IntentFilter("superawesome.tv.RECEIVED_LOGOUT");
+        registerReceiver(new SmartReceiver(this, new SmartReceiverInterface() {
+            @Override
+            public void execute(Context context, Intent intent) {
+                localModel = KWSSingleton.getInstance().getModel();
+            }
+        }), logoutFilter);
     }
 }

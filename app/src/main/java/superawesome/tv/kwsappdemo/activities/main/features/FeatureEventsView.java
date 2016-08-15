@@ -5,21 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
-import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import java.util.ArrayList;
-
 import kws.superawesome.tv.kwssdk.KWS;
 import superawesome.tv.kwsappdemo.R;
 import superawesome.tv.kwsappdemo.activities.leader.LeaderboardActivity;
 import superawesome.tv.kwsappdemo.aux.KWSSingleton;
-import superawesome.tv.kwsappdemo.models.KWSModel;
+import superawesome.tv.kwsappdemo.aux.KWSModel;
+import superawesome.tv.kwsappdemo.aux.SmartReceiver;
+import superawesome.tv.kwsappdemo.aux.SmartReceiverInterface;
 import tv.superawesome.lib.sautils.SAAlert;
-import tv.superawesome.lib.sautils.SAProgressDialog;
 
 /**
  * Created by gabriel.coman on 08/08/16.
@@ -35,7 +33,10 @@ public class FeatureEventsView extends LinearLayout {
     private Button pointsSeeLeader;
     private Button pointsDocs;
     private KWSModel localModel = null;
+    private IntentFilter signupFilter = null;
+    private IntentFilter logoutFilter = null;
 
+    // constructors
     public FeatureEventsView(Context context) {
         this(context, null, 0);
     }
@@ -84,10 +85,17 @@ public class FeatureEventsView extends LinearLayout {
             getContext().startActivity(browserIntent);
         });
         
-        IntentFilter filter1 = new IntentFilter("superawesome.tv.RECEIVED_SIGNUP");
-        IntentFilter filter2 = new IntentFilter("superawesome.tv.RECEIVED_LOGOUT");
-        context.registerReceiver(new SignUpReceiver(), filter1);
-        context.registerReceiver(new LogoutReceiver(), filter2);
+        signupFilter = new IntentFilter("superawesome.tv.RECEIVED_SIGNUP");
+        context.registerReceiver(new SmartReceiver(getContext(), (context1, intent) -> {
+            FeatureEventsView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface();
+        }), signupFilter);
+
+        logoutFilter = new IntentFilter("superawesome.tv.RECEIVED_LOGOUT");
+        context.registerReceiver(new SmartReceiver(getContext(), (context1, intent) -> {
+            FeatureEventsView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface();
+        }), logoutFilter);
     }
 
     private void updateInterface () {
@@ -95,21 +103,5 @@ public class FeatureEventsView extends LinearLayout {
         pointsAdd20.setEnabled(state);
         pointsSub10.setEnabled(state);
         pointsSeeLeader.setEnabled(state);
-    }
-
-    class SignUpReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            FeatureEventsView.this.localModel = KWSSingleton.getInstance().getModel();
-            updateInterface();
-        }
-    }
-
-    class LogoutReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            FeatureEventsView.this.localModel = KWSSingleton.getInstance().getModel();
-            updateInterface();
-        }
     }
 }

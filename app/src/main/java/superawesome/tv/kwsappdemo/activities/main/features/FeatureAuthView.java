@@ -1,6 +1,5 @@
 package superawesome.tv.kwsappdemo.activities.main.features;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -14,7 +13,8 @@ import superawesome.tv.kwsappdemo.R;
 import superawesome.tv.kwsappdemo.activities.signup.SignUpActivity;
 import superawesome.tv.kwsappdemo.activities.user.UserActivity;
 import superawesome.tv.kwsappdemo.aux.KWSSingleton;
-import superawesome.tv.kwsappdemo.models.KWSModel;
+import superawesome.tv.kwsappdemo.aux.KWSModel;
+import superawesome.tv.kwsappdemo.aux.SmartReceiver;
 
 /**
  * Created by gabriel.coman on 08/08/16.
@@ -24,11 +24,14 @@ public class FeatureAuthView extends LinearLayout {
     // constants
     private final String AUTHURL = "https://developers.superawesome.tv/extdocs/sa-kws-android-sdk/html/index.html";
 
-    // layout
+    // vars
     private Button authAction;
     private Button authDocs;
     private KWSModel localModel = null;
+    private IntentFilter signupFilter = null;
+    private IntentFilter logoutFilter = null;
 
+    // constructors
     public FeatureAuthView(Context context) {
         this(context, null, 0);
     }
@@ -58,30 +61,21 @@ public class FeatureAuthView extends LinearLayout {
             context.startActivity(browserIntent);
         });
 
-        IntentFilter filter1 = new IntentFilter("superawesome.tv.RECEIVED_SIGNUP");
-        IntentFilter filter2 = new IntentFilter("superawesome.tv.RECEIVED_LOGOUT");
-        context.registerReceiver(new SignUpReceiver(), filter1);
-        context.registerReceiver(new LogoutReceiver(), filter2);
+        signupFilter = new IntentFilter("superawesome.tv.RECEIVED_SIGNUP");
+        context.registerReceiver(new SmartReceiver(getContext(), (context1, intent) -> {
+            FeatureAuthView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface();
+        }), signupFilter);
+
+        logoutFilter = new IntentFilter("superawesome.tv.RECEIVED_LOGOUT");
+        context.registerReceiver(new SmartReceiver(getContext(), (context1, intent) -> {
+            FeatureAuthView.this.localModel = KWSSingleton.getInstance().getModel();
+            updateInterface();
+        }), logoutFilter);
     }
 
     private void updateInterface () {
         boolean status = localModel != null;
         authAction.setText(status ? "Logged in as " + localModel.username : "AUTHENTICATE USER");
-    }
-
-    class SignUpReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            FeatureAuthView.this.localModel = KWSSingleton.getInstance().getModel();
-            updateInterface();
-        }
-    }
-
-    class LogoutReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            FeatureAuthView.this.localModel = KWSSingleton.getInstance().getModel();
-            updateInterface();
-        }
     }
 }
