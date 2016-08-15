@@ -8,7 +8,7 @@
     android:fillViewport="true"
     android:fadeScrollbars="false"
     android:scrollbars="none"
-    tools:context=".fragments.PlatformFragment">
+    tools:context=".activities.main.platform.PlatformFragment">
 
     <LinearLayout
         android:padding="16dp"

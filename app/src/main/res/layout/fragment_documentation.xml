@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="superawesome.tv.kwsappdemo.fragments.DocumentationFragment">
+    tools:context=".activities.main.documentation.DocumentationFragment">
 
     <WebView
         android:id="@+id/DocumentationWebView"

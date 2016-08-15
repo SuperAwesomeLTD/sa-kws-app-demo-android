@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:background="@color/windowBackground"
-    tools:context=".activities.UserActivity">
+    tools:context=".activities.user.UserActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

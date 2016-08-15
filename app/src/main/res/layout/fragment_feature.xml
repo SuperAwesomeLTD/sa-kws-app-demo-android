@@ -8,7 +8,7 @@
     android:fillViewport="true"
     android:fadeScrollbars="false"
     android:scrollbars="none"
-    tools:context="superawesome.tv.kwsappdemo.fragments.FeatureFragment">
+    tools:context=".activities.main.features.FeatureFragment">
 
     <LinearLayout
         android:orientation="vertical"
@@ -16,16 +16,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <superawesome.tv.kwsappdemo.views.FeatureAuthView
+        <superawesome.tv.kwsappdemo.activities.main.features.FeatureAuthView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
-        <superawesome.tv.kwsappdemo.views.FeatureNotifView
+        <superawesome.tv.kwsappdemo.activities.main.features.FeatureNotifView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <superawesome.tv.kwsappdemo.views.FeaturePermView
+        <superawesome.tv.kwsappdemo.activities.main.features.FeaturePermView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-        <superawesome.tv.kwsappdemo.views.FeatureEventsView
+        <superawesome.tv.kwsappdemo.activities.main.features.FeatureEventsView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

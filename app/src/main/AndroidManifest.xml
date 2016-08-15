@@ -14,7 +14,7 @@
 
         <!-- activities -->
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.main.MainActivity"
             android:label="@string/main_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -23,19 +23,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.SignUpActivity"
+            android:name=".activities.signup.SignUpActivity"
             android:label="@string/signin_name"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activities.LogoutActivity"
-            android:label="@string/logout_name"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".activities.LeaderboardActivity"
+            android:name=".activities.leader.LeaderboardActivity"
             android:label="@string/leaderboard_name"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".activities.UserActivity"
+            android:name=".activities.user.UserActivity"
             android:label="@string/user_name"
             android:screenOrientation="portrait"/>
 
