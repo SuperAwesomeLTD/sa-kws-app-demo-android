@@ -39,7 +39,8 @@
             <ListView
                 android:id="@+id/userDetailsListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:scrollbars="none"/>
         </LinearLayout>
 
         <LinearLayout
@@ -54,8 +55,7 @@
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 style="@style/ButtonStyle3"
-                android:text="@string/logoutButton"
-                android:onClick="onLogout"/>
+                android:text="@string/logoutButton"/>
         </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

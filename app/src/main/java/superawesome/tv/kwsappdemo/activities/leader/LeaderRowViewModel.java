@@ -29,7 +29,7 @@ public class LeaderRowViewModel implements ViewModel {
     public View representationAsRow(Context context, View convertView) {
         View v = convertView;
         if (v == null) {
-            v = LayoutInflater.from(context).inflate(R.layout.listitem_leaderrow, null);
+            v = LayoutInflater.from(context).inflate(R.layout.listitem_leader_row, null);
         }
 
         TextView rankTextView = (TextView) v.findViewById(R.id.leaderRank);

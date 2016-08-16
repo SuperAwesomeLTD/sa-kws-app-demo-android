@@ -16,7 +16,7 @@ public class LeaderHeaderViewModel implements ViewModel {
     public View representationAsRow(Context context, View convertView) {
         View v = convertView;
         if (v == null) {
-            v = LayoutInflater.from(context).inflate(R.layout.listitem_leaderheader, null);
+            v = LayoutInflater.from(context).inflate(R.layout.listitem_leader_header, null);
         }
 
         TextView rankTextView = (TextView) v.findViewById(R.id.leaderRank);

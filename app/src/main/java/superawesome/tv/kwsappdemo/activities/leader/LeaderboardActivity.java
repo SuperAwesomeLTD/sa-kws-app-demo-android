@@ -31,7 +31,7 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         Context c = this;
         leadersListView = (ListView) findViewById(R.id.leadersListView);
-        LeaderboardAdapter adapter = new LeaderboardAdapter(this, R.layout.listitem_leaderrow);
+        LeaderboardAdapter adapter = new LeaderboardAdapter(this, R.layout.listitem_leader_row);
         adapter.update(() -> {
             SAProgressDialog.getInstance().showProgress(c);
         }, () -> {

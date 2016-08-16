@@ -24,7 +24,7 @@ public class UserHeaderViewModel implements ViewModel {
         View v = convertView;
 
         if (v == null) {
-            v = LayoutInflater.from(context).inflate(R.layout.listitem_userheader, null);
+            v = LayoutInflater.from(context).inflate(R.layout.listitem_user_header, null);
         }
 
         TextView headerTextView = (TextView) v.findViewById(R.id.UserHeader);

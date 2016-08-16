@@ -43,7 +43,7 @@ public class UserRowViewModel implements ViewModel {
     public View representationAsRow(Context context, View convertView) {
         View v = convertView;
         if (v == null) {
-            v = LayoutInflater.from(context).inflate(R.layout.listitem_userrow, null);
+            v = LayoutInflater.from(context).inflate(R.layout.listitem_user_row, null);
         }
 
         TextView itemTitleTextView = (TextView) v.findViewById(R.id.UserItemTitle);

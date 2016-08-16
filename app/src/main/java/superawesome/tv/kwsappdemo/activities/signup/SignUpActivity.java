@@ -1,26 +1,23 @@
 package superawesome.tv.kwsappdemo.activities.signup;
 
-import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding.widget.RxTextView;
 
 import org.json.JSONObject;
 
 import superawesome.tv.kwsappdemo.R;
 import superawesome.tv.kwsappdemo.aux.KWSSingleton;
 import superawesome.tv.kwsappdemo.aux.KWSModel;
-import superawesome.tv.kwsappdemo.aux.SmartReceiver;
-import superawesome.tv.kwsappdemo.aux.SmartReceiverInterface;
+import superawesome.tv.kwsappdemo.aux.UniversalNotifier;
+import superawesome.tv.kwsappdemo.rxkws.RXKWS;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
-import tv.superawesome.lib.sanetwork.request.*;
 import tv.superawesome.lib.sautils.SAAlert;
+import tv.superawesome.lib.sautils.SAProgressDialog;
 
 /**
  * Created by gabriel.coman on 16/06/16.
@@ -38,22 +35,17 @@ public class SignUpActivity extends AppCompatActivity {
     EditText monthEdit = null;
     EditText dayEdit = null;
     Button submit = null;
-    boolean makingRequest = false;
-
-    // loader
-    ProgressDialog progress;
 
     // private vars
     private String username = null;
-    private String password1 = null;
-    private String password2 = null;
-    private String year = null;
-    private String month = null;
-    private String day = null;
+    private String password = null;
+    private int year = 0, month = 0, day = 0;
+    private String date = null;
 
-    // error receiver
-    private IntentFilter errorFilter = null;
-    private SmartReceiver errorReceiver = null;
+    private Boolean usernameOK = false;
+    private Boolean passwordOK = false;
+    private Boolean dateOK = false;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,93 +64,67 @@ public class SignUpActivity extends AppCompatActivity {
         yearEdit = (EditText) findViewById(R.id.yearEdit);
         monthEdit = (EditText) findViewById(R.id.monthEdit);
         dayEdit = (EditText) findViewById(R.id.dayEdit);
+        submit = (Button) findViewById(R.id.RegisterUserButton);
 
-        errorFilter = new IntentFilter("superawesome.tv.RECEIVED_ERROR");
-        errorReceiver = new SmartReceiver(this, (context, intent) -> {
-            String message = intent.getExtras().getString("MESSAGE");
-            SAAlert.getInstance().show(SignUpActivity.this, "Hey!", message, "Got it!", null, false, 0, null);
-        });
-        registerReceiver(errorReceiver, errorFilter);
+
+        // process the username
+        RxTextView.textChanges(usernameEdit).
+                map(charSequence -> charSequence.toString().trim()).
+                map(s -> s != null && !s.isEmpty()).
+                doOnNext(usernameValid -> username = usernameValid ? usernameEdit.getText().toString() : null).
+                subscribe(aBoolean -> usernameOK = aBoolean );
+
+        // process passwords
+        rx.Observable<String> pass1Obs = RxTextView.textChanges(password1Edit).
+                map(charSequence -> charSequence.toString().trim());
+        rx.Observable<Boolean> pass1ValidObs = pass1Obs.
+                map(s -> !s.isEmpty() && s.length() >= 8);
+        rx.Observable<String> pass2Obs = RxTextView.textChanges(password2Edit).
+                map(charSequence -> charSequence.toString().trim());
+        rx.Observable<Boolean> pass2ValidObs = pass2Obs.
+                map(s -> !s.isEmpty() && s.length() >= 8);
+        rx.Observable.combineLatest(pass1Obs, pass2Obs, pass1ValidObs, pass2ValidObs, (pass1, pass2, pass1Ok, pass2Ok) -> pass1.equals(pass2) && pass1Ok && pass2Ok).
+                doOnNext(passwordsValid -> password = passwordsValid ? password1Edit.getText().toString() : null).
+                subscribe(aBoolean -> passwordOK = aBoolean );
+
+        // process year
+        rx.Observable<Integer> yearObs = RxTextView.textChanges(yearEdit).
+                map(charSequence -> charSequence.toString()).
+                map(s -> s != null && !s.isEmpty() ? Integer.parseInt(s) : 0).
+                doOnNext(integer -> year = integer);
+        rx.Observable<Integer> monthObs = RxTextView.textChanges(monthEdit).
+                map(charSequence -> charSequence.toString()).
+                map(s -> s != null && !s.isEmpty() ? Integer.parseInt(s) : 0).
+                doOnNext(integer -> month = integer);
+        rx.Observable<Integer> dayObs = RxTextView.textChanges(dayEdit).
+                map(charSequence -> charSequence.toString()).
+                map(s -> s != null && !s.isEmpty() ? Integer.parseInt(s) : 0).
+                doOnNext(integer -> day = integer);
+
+        rx.Observable.combineLatest(yearObs, monthObs, dayObs, (year1, month1, day1) -> year1 > 1900 && (month1 >= 1 && month1 <= 12) && (day1 >= 1 && day1 <= 30)).
+                doOnNext(dateValid -> {
+                    date = dateValid ? (year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day)) : null;
+                }).subscribe(aBoolean -> dateOK = aBoolean );
+
+        RxView.clicks(submit).subscribe(aVoid -> onSubmitClick());
     }
 
-    public void onSubmitClick(View vi) {
-        // get values
-        if (usernameEdit.getText() != null) { username = usernameEdit.getText().toString(); }
-        if (password1Edit.getText() != null) { password1 = password1Edit.getText().toString(); }
-        if (password2Edit.getText() != null) { password2 = password2Edit.getText().toString(); }
-        if (yearEdit.getText() != null) { year = yearEdit.getText().toString(); }
-        if (monthEdit.getText() != null) { month = monthEdit.getText().toString(); }
-        if (dayEdit.getText() != null) { day = dayEdit.getText().toString(); }
-
-        if (username == null || username.isEmpty()) {
-            SAAlert.getInstance().show(this, "Hey!", "Please specify a valid username.", "Got it!", null, false, 0, null);
-            return;
-        }
-        if (password1 == null || password1.isEmpty() || password1.length() < 8) {
-            SAAlert.getInstance().show(this, "Hey!", "Please specify a password (that is more than 8 characters)", "Got it!", null, false, 0, null);
-            return;
-        }
-        if (password2 == null || password2.isEmpty() || password2.length() < 8) {
-            SAAlert.getInstance().show(this, "Hey!", "Pleace confirm the password (and make sure it also has 8 characters)", "Got it!", null, false, 0, null);
-            return;
-        }
-        if (!password1.equals(password2)) {
-            SAAlert.getInstance().show(this, "Hey!", "The two passwords you specified do not match.", "Got it!", null, false, 0, null);
-            return;
-        }
-        if (year == null || year.isEmpty()) {
-            SAAlert.getInstance().show(this, "Hey!", "Please specify a valid birth year.", "Got it!", null, false, 0, null);
-            return;
+    private void onSubmitClick() {
+        if (usernameOK && dateOK && passwordOK) {
+            makeRequest();
         } else {
-            if (Integer.parseInt(year) > 2016 || Integer.parseInt(year) < 1900) {
-                SAAlert.getInstance().show(this, "Hey!", "Please specify a valid birth year.", "Got it!", null, false, 0, null);
-                return;
-            }
+            SAAlert.getInstance().show(this, "Hey!", "Please specify a valid username, valid, matching passwords and a valid date of birth!", "Got it!", null, false, 0, null);
         }
-        if (month == null || month.isEmpty()) {
-            SAAlert.getInstance().show(this, "Hey!", "Please specify a valid birth month.", "Got it!", null, false, 0, null);
-            return;
-        } else {
-            if (Integer.parseInt(month) > 12 || Integer.parseInt(year) < 1) {
-                SAAlert.getInstance().show(this, "Hey!", "Please specify a valid birth month.", "Got it!", null, false, 0, null);
-                return;
-            }
-        }
-        if (day == null || day.isEmpty()) {
-            SAAlert.getInstance().show(this, "Hey!", "Please specify a valid birth day.", "Got it!", null, false, 0, null);
-            return;
-        } else {
-            if (Integer.parseInt(day) > 30 || Integer.parseInt(day) < 1) {
-                SAAlert.getInstance().show(this, "Hey!", "Please specify a valid birth day.", "Got it!", null, false, 0, null);
-                return;
-            }
-        }
-
-        // finally make request
-        makeRequest();
     }
 
     private void makeRequest () {
-        if (makingRequest) return;
-
-        progress = new ProgressDialog(this);
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.show();
-
-        makingRequest = true;
-
-        int monthInt = Integer.parseInt(month);
-        int dayInt = Integer.parseInt(day);
-        if (monthInt < 10) month = "0" + monthInt;
-        if (dayInt < 10) day = "0" + dayInt;
 
         JSONObject query = SAJsonParser.newObject(new Object[]{});
 
         JSONObject body = SAJsonParser.newObject(new Object[]{
                 "username", username,
-                "password", password1,
-                "dateOfBirth", year + "-" + month + "-" + day,
+                "password", password,
+                "dateOfBirth", date,
                 "country", "US"
         });
 
@@ -166,54 +132,19 @@ public class SignUpActivity extends AppCompatActivity {
                 "Content-Type", "application/json"
         });
 
-        SANetwork network = new SANetwork();
-        network.sendPOST(this, "https://kwsdemobackend.herokuapp.com/create", query, header, body, (status, payload, success) -> {
-            // To dismiss the dialog
-            progress.dismiss();
-            makingRequest = false;
-
-            if (!success) {
-                Intent intent = new Intent();
-                intent.setAction("superawesome.tv.RECEIVED_ERROR");
-                intent.putExtra("MESSAGE", "Failed to sign up user");
-                sendBroadcast(intent);
-                return;
-            }
-
-            JSONObject json = SAJsonParser.newObject(payload);
-            KWSModel model = new KWSModel(json);
-            model.username = username;
-
-            if (model.status == 1) {
-                // copy the model
-                KWSSingleton.getInstance().setModel(model);
-
-                Intent intent = new Intent();
-                intent.setAction("superawesome.tv.RECEIVED_SIGNUP");
-                intent.putExtra("STATUS", 1);
-                sendBroadcast(intent);
-
-                // close activity
-                onBackPressed();
-            }
-            else if (model.status == 0) {
-                Intent intent = new Intent();
-                intent.setAction("superawesome.tv.RECEIVED_ERROR");
-                intent.putExtra("MESSAGE", "The user " + username + " already exists");
-                sendBroadcast(intent);
-            }
-            else {
-                Intent intent = new Intent();
-                intent.setAction("superawesome.tv.RECEIVED_ERROR");
-                intent.putExtra("MESSAGE", "Failed to sign up user");
-                sendBroadcast(intent);
-            }
-        });
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        unregisterReceiver(errorReceiver);
+        RXKWS.createUserObserver(this, query, header, body).
+                doOnSubscribe(() -> SAProgressDialog.getInstance().showProgress(SignUpActivity.this)).
+                subscribe(kwsModel -> {
+                    KWSModel model = kwsModel;
+                    model.username = username;
+                    KWSSingleton.getInstance().loginUser(model);
+                }, throwable -> {
+                    SAProgressDialog.getInstance().hideProgress();
+                    SAAlert.getInstance().show(SignUpActivity.this, "Hey!", "Error trying to create user. Please try again!", "Got it!", null, false, 0, null);
+                }, () -> {
+                    SAProgressDialog.getInstance().hideProgress();
+                    UniversalNotifier.getInstance().postNotification("RECEIVED_SIGNUP");
+                    onBackPressed();
+                });
     }
 }

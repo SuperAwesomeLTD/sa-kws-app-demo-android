@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "superawesome.tv.kwsappdemo"
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 5
         versionName "1.5"
@@ -30,6 +30,7 @@ repositories {
     maven {
         url  "http://dl.bintray.com/gabrielcoman/maven"
     }
+    maven { url 'https://oss.jfrog.org/libs-snapshot' }
 }
 
 dependencies {
@@ -39,4 +40,7 @@ dependencies {
     compile 'com.android.support:design:23.4.0'
     compile 'kws.superawesome.tv.kwssdk:kwssdk:2.0.1'
     compile 'tv.superawesome.lib.saevents:saevents:0.4.5'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
+    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
 }
