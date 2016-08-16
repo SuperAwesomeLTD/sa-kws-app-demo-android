@@ -30,6 +30,27 @@ public class LeaderboardAdapter extends ArrayAdapter<ViewModel> implements DataS
         super(context, resource);
     }
 
+//    public rx.Observable<Boolean> startObserver () {
+//
+//        RXKWS.getLeaderboardObserver().
+//                doOnSubscribe(() -> {
+//                    leaders = new ArrayList<>();
+//                    leaders.add(new LeaderHeaderViewModel());
+//                }).
+//                flatMap(leaders1 -> Observable.from(leaders1)).
+//                flatMap((Func1<KWSLeader, Observable<ViewModel>>) kwsLeader -> {
+//                    LeaderRowViewModel viewModel = new LeaderRowViewModel(kwsLeader.rank, kwsLeader.score, kwsLeader.user);
+//                    return Observable.just(viewModel);
+//                }).
+//                subscribe(viewModel -> {
+//                    leaders.add(viewModel);
+//                }, throwable -> {
+//                    //
+//                }, () -> {
+//                    //
+//                });
+//    }
+
     @Override public void update(DataSourceInterface start, DataSourceInterface success, DataSourceInterface error) {
         RXKWS.getLeaderboardObserver().
                 doOnSubscribe(() -> {

@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
+import rx.functions.Action0;
+import rx.functions.Action1;
 import superawesome.tv.kwsappdemo.R;
+import superawesome.tv.kwsappdemo.aux.ViewModel;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
@@ -32,6 +35,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         Context c = this;
         leadersListView = (ListView) findViewById(R.id.leadersListView);
         LeaderboardAdapter adapter = new LeaderboardAdapter(this, R.layout.listitem_leader_row);
+
         adapter.update(() -> {
             SAProgressDialog.getInstance().showProgress(c);
         }, () -> {
