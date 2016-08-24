@@ -11,6 +11,7 @@ import android.widget.ListView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.jakewharton.rxbinding.view.RxView;
 
+import kws.superawesome.tv.kwssdk.KWS;
 import rx.functions.Action1;
 import superawesome.tv.kwsappdemo.R;
 import superawesome.tv.kwsappdemo.aux.KWSSingleton;
@@ -57,6 +58,7 @@ public class UserActivity extends AppCompatActivity {
 
         RxView.clicks(logoutButton).
                 subscribe(aVoid -> {
+                    KWSSingleton.getInstance().logoutUser();
                     UniversalNotifier.getInstance().postNotification("RECEIVED_LOGOUT");
                     onBackPressed();
                 });

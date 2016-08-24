@@ -2,6 +2,7 @@ package superawesome.tv.kwsappdemo.activities.main.features;
 
 import android.content.Context;
 import android.content.Intent;
+import android.inputmethodservice.Keyboard;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,20 +15,16 @@ import android.widget.ListView;
 
 import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.process.KWSErrorType;
-import kws.superawesome.tv.kwssdk.process.RegisterInterface;
-import kws.superawesome.tv.kwssdk.process.UnregisterInterface;
 import kws.superawesome.tv.kwssdk.services.kws.KWSParentEmailInterface;
 import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionType;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import superawesome.tv.kwsappdemo.R;
 import superawesome.tv.kwsappdemo.activities.leader.LeaderboardActivity;
 import superawesome.tv.kwsappdemo.activities.signup.SignUpActivity;
 import superawesome.tv.kwsappdemo.activities.user.UserActivity;
 import superawesome.tv.kwsappdemo.aux.KWSSingleton;
 import superawesome.tv.kwsappdemo.aux.UniversalNotifier;
-import superawesome.tv.kwsappdemo.rxkws.RXKWS;
 import tv.superawesome.lib.sautils.SAAlert;
+import tv.superawesome.lib.sautils.SAAlertInterface;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
 /**
@@ -66,7 +63,7 @@ public class FeaturesFragment extends Fragment {
         adapter.update(() -> {}, () -> featureListView.setAdapter(adapter), () -> {});
 
         // set registered or not
-        RXKWS.getIsRegistered().
+        KWSSingleton.getInstance().getIsRegistered().
                 subscribe(aBoolean -> {
                     KWSSingleton.getInstance().markUserRegistrationStatus(aBoolean);
                     adapter.notifyDataSetChanged();
@@ -88,14 +85,11 @@ public class FeaturesFragment extends Fragment {
         UniversalNotifier.getInstance().getChangeObservable().
                 filter(notif -> notif.equals("RECEIVED_SIGNUP")).
                 subscribe(s -> {
-                    KWS.sdk.setup(getActivity(), KWSSingleton.getInstance().getUser().token, KWS_API);
                     adapter.notifyDataSetChanged();
                 });
         UniversalNotifier.getInstance().getChangeObservable().
                 filter(notif -> notif.equals("RECEIVED_LOGOUT")).
                 subscribe(s -> {
-                    KWS.sdk.desetup();
-                    KWSSingleton.getInstance().logoutUser();
                     adapter.notifyDataSetChanged();
                 });
         UniversalNotifier.getInstance().getChangeObservable().
@@ -188,12 +182,14 @@ public class FeaturesFragment extends Fragment {
             if (requested) {
                 SAAlert.getInstance().show(getContext(), "Great!", "You've successfully asked for permission for " + currentTitle, "Got it!", null, false, 0 , null);
             } else {
-                KWS.sdk.submitParentEmailWithPopup(b -> {
-                    if (b) {
-                        SAProgressDialog.getInstance().showProgress(getActivity());
-                        KWS.sdk.requestPermission(requestedType, FeaturesFragment.this::permissionCallback);
-                    } else {
-
+                SAAlert.getInstance().show(getActivity(), "Parent email", "You have to add your parent email", "Submit", "Cancel", true, 32, (button, email) -> {
+                    if (button == 0) {
+                        KWS.sdk.submitParentEmail(email, b -> {
+                            if (b) {
+                                SAProgressDialog.getInstance().showProgress(getActivity());
+                                KWS.sdk.requestPermission(requestedType, FeaturesFragment.this::permissionCallback);
+                            }
+                        });
                     }
                 });
             }
@@ -203,21 +199,24 @@ public class FeaturesFragment extends Fragment {
     private void registerCallback (boolean success, KWSErrorType kwsErrorType) {
         SAProgressDialog.getInstance().hideProgress();
         if (success) {
-            KWSSingleton.getInstance().isUserMarkedAsRegistered();
+            KWSSingleton.getInstance().markUserRegistrationStatus(true);
             adapter.notifyDataSetChanged();
             SAAlert.getInstance().show(getContext(), "Hey!", "You successfully registered for remote notifications in KWS.", "Got it!", null, false, 0, null);
         } else {
             if (kwsErrorType == KWSErrorType.UserHasNoParentEmail) {
-                KWS.sdk.submitParentEmailWithPopup(b -> {
-                    if (b) {
-                        SAProgressDialog.getInstance().showProgress(getActivity());
-                        KWS.sdk.register(FeaturesFragment.this::registerCallback);
-                    } else {
-                        SAAlert.getInstance().show(getActivity(), "Hey!", "Parent email was invalid!", "Got it!", null, false, 0, null);
+                SAAlert.getInstance().show(getActivity(), "Parent email", "You have to add your parent email", "Submit", "Cancel", true, 32, (button, email) -> {
+                    if (button == 0) {
+                        KWS.sdk.submitParentEmail(email, b -> {
+                            if (b) {
+                                SAProgressDialog.getInstance().showProgress(getActivity());
+                                KWS.sdk.register(FeaturesFragment.this::registerCallback);
+                            }
+                        });
+
                     }
                 });
             } else {
-                SAAlert.getInstance().show(getActivity(), "Hey!", "Error occured trying to register for Push Notifications: " + kwsErrorType.toString(), "Got it!", null, false, 0, null);
+                SAAlert.getInstance().show(getActivity(), "Hey!", "Error occurred trying to register for Push Notifications: " + kwsErrorType.toString(), "Got it!", null, false, 0, null);
             }
         }
     }

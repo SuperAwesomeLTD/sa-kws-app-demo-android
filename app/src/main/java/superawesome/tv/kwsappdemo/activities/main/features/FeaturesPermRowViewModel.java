@@ -29,7 +29,6 @@ public class FeaturesPermRowViewModel implements ViewModel {
         Button permDocs = (Button) v.findViewById(R.id.permissionDocs);
 
         addPermission.setEnabled(isLogged);
-        permDocs.setEnabled(isLogged);
 
         RxView.clicks(addPermission).subscribe(aVoid -> UniversalNotifier.getInstance().postNotification("REQUEST_PERMISSION"));
         RxView.clicks(permDocs).subscribe(aVoid -> UniversalNotifier.getInstance().postNotification("DOCS_NOTIFICATION"));

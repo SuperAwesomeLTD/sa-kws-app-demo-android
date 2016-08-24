@@ -8,14 +8,12 @@ import android.widget.ArrayAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.models.user.KWSUser;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func1;
+import rx.Observable;
 import superawesome.tv.kwsappdemo.aux.DataSource;
 import superawesome.tv.kwsappdemo.aux.DataSourceInterface;
 import superawesome.tv.kwsappdemo.aux.ViewModel;
-import superawesome.tv.kwsappdemo.rxkws.RXKWS;
 
 /**
  * Created by gabriel.coman on 09/08/16.
@@ -30,7 +28,7 @@ public class UserAdapter extends ArrayAdapter<ViewModel> implements DataSource {
 
     @Override public void update(DataSourceInterface start, DataSourceInterface success, DataSourceInterface error) {
 
-        RXKWS.getUserDetailsObserver().
+        getUserDetailsObserver().
                 doOnSubscribe(() -> {
                     if (start != null) start.event();
                 }).
@@ -92,6 +90,19 @@ public class UserAdapter extends ArrayAdapter<ViewModel> implements DataSource {
                 }, () -> {
                     if (success != null) success.event();
                 });
+    }
+
+    private rx.Observable<KWSUser> getUserDetailsObserver() {
+        return rx.Observable.create((Observable.OnSubscribe<KWSUser>) subscriber -> {
+            KWS.sdk.getUser(kwsUser -> {
+                if (kwsUser != null) {
+                    subscriber.onNext(kwsUser);
+                    subscriber.onCompleted();
+                } else {
+                    subscriber.onError(new Exception());
+                }
+            });
+        });
     }
 
     @Override public int getCount() { return items.size(); }

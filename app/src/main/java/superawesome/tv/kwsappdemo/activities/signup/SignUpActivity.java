@@ -8,14 +8,9 @@ import android.widget.EditText;
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
-import org.json.JSONObject;
-
 import superawesome.tv.kwsappdemo.R;
 import superawesome.tv.kwsappdemo.aux.KWSSingleton;
-import superawesome.tv.kwsappdemo.aux.KWSModel;
 import superawesome.tv.kwsappdemo.aux.UniversalNotifier;
-import superawesome.tv.kwsappdemo.rxkws.RXKWS;
-import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
@@ -106,45 +101,28 @@ public class SignUpActivity extends AppCompatActivity {
                     date = dateValid ? (year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day)) : null;
                 }).subscribe(aBoolean -> dateOK = aBoolean );
 
-        RxView.clicks(submit).subscribe(aVoid -> onSubmitClick());
-    }
+        RxView.clicks(submit).subscribe(aVoid -> {
+            if (usernameOK && dateOK && passwordOK) {
+                // start progress dialog
+                SAProgressDialog.getInstance().showProgress(SignUpActivity.this);
 
-    private void onSubmitClick() {
-        if (usernameOK && dateOK && passwordOK) {
-            makeRequest();
-        } else {
-            SAAlert.getInstance().show(this, "Hey!", "Please specify a valid username, valid, matching passwords and a valid date of birth!", "Got it!", null, false, 0, null);
-        }
-    }
-
-    private void makeRequest () {
-
-        JSONObject query = SAJsonParser.newObject(new Object[]{});
-
-        JSONObject body = SAJsonParser.newObject(new Object[]{
-                "username", username,
-                "password", password,
-                "dateOfBirth", date,
-                "country", "US"
+                // perform singup
+                KWSSingleton.getInstance().loginUser(username, password, date).
+                        subscribe(aBoolean -> {
+                            // user logged OK
+                        }, throwable -> {
+                            // error case
+                            SAProgressDialog.getInstance().hideProgress();
+                            SAAlert.getInstance().show(SignUpActivity.this, "Hey!", "Error trying to create user. Please try again!", "Got it!", null, false, 0, null);
+                        }, () -> {
+                            // completed case
+                            SAProgressDialog.getInstance().hideProgress();
+                            UniversalNotifier.getInstance().postNotification("RECEIVED_SIGNUP");
+                            onBackPressed();
+                        });
+            } else {
+                SAAlert.getInstance().show(SignUpActivity.this, "Hey!", "Please specify a valid username, valid, matching passwords and a valid date of birth!", "Got it!", null, false, 0, null);
+            }
         });
-
-        JSONObject header = SAJsonParser.newObject(new Object[]{
-                "Content-Type", "application/json"
-        });
-
-        RXKWS.createUserObserver(this, query, header, body).
-                doOnSubscribe(() -> SAProgressDialog.getInstance().showProgress(SignUpActivity.this)).
-                subscribe(kwsModel -> {
-                    KWSModel model = kwsModel;
-                    model.username = username;
-                    KWSSingleton.getInstance().loginUser(model);
-                }, throwable -> {
-                    SAProgressDialog.getInstance().hideProgress();
-                    SAAlert.getInstance().show(SignUpActivity.this, "Hey!", "Error trying to create user. Please try again!", "Got it!", null, false, 0, null);
-                }, () -> {
-                    SAProgressDialog.getInstance().hideProgress();
-                    UniversalNotifier.getInstance().postNotification("RECEIVED_SIGNUP");
-                    onBackPressed();
-                });
     }
 }
