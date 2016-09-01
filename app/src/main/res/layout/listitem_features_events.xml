@@ -69,6 +69,16 @@
             android:text="@string/featurePointsSub10Button"/>
 
         <Button
+            android:id="@+id/getScore"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            style="@style/ButtonStyle2"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="@string/featurePointsGetScore"/>
+
+        <Button
             android:id="@+id/pointsLeader"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"

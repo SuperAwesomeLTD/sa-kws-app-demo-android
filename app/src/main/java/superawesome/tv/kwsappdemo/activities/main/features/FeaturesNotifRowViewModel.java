@@ -31,8 +31,8 @@ public class FeaturesNotifRowViewModel implements ViewModel {
         subButton.setEnabled(isLogged);
         subButton.setText(isRegistered ? "DISABLE PUSH NOTIFICATIONS" : "ENABLE PUSH NOTIFICATIONS");
 
-        RxView.clicks(docButton).subscribe(aVoid -> UniversalNotifier.getInstance().postNotification("DOCS_NOTIFICATION") );
-        RxView.clicks(subButton).subscribe(aVoid -> UniversalNotifier.getInstance().postNotification("SUBSCRIBE_NOTIFICATION"));
+        RxView.clicks(docButton).subscribe(aVoid -> UniversalNotifier.postNotification("DOCS_NOTIFICATION") );
+        RxView.clicks(subButton).subscribe(aVoid -> UniversalNotifier.postNotification("SUBSCRIBE_NOTIFICATION"));
 
         return v;
     }

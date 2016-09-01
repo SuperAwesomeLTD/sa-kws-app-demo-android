@@ -27,17 +27,20 @@ public class FeaturesEventsRowViewModel implements ViewModel {
 
         Button add20Points = (Button) v.findViewById(R.id.pointsAdd20);
         Button sub10Points = (Button) v.findViewById(R.id.pointsSub10);
+        Button getScore = (Button) v.findViewById(R.id.getScore);
         Button seeLeaders = (Button) v.findViewById(R.id.pointsLeader);
         Button seeDocs = (Button) v.findViewById(R.id.pointsDocs);
 
         add20Points.setEnabled(isLogged);
         sub10Points.setEnabled(isLogged);
         seeLeaders.setEnabled(isLogged);
+        getScore.setEnabled(isLogged);
 
-        RxView.clicks(add20Points).subscribe(aVoid -> UniversalNotifier.getInstance().postNotification("ADD_20_POINTS"));
-        RxView.clicks(sub10Points).subscribe(aVoid -> UniversalNotifier.getInstance().postNotification("SUB_10_POINTS"));
-        RxView.clicks(seeLeaders).subscribe(aVoid -> UniversalNotifier.getInstance().postNotification("SEE_LEADERBOARD"));
-        RxView.clicks(seeDocs).subscribe(aVoid -> UniversalNotifier.getInstance().postNotification("DOCS_NOTIFICATION"));
+        RxView.clicks(add20Points).subscribe(aVoid -> UniversalNotifier.postNotification("ADD_20_POINTS"));
+        RxView.clicks(sub10Points).subscribe(aVoid -> UniversalNotifier.postNotification("SUB_10_POINTS"));
+        RxView.clicks(getScore).subscribe(aVoid -> UniversalNotifier.postNotification("GET_SCORE"));
+        RxView.clicks(seeLeaders).subscribe(aVoid -> UniversalNotifier.postNotification("SEE_LEADERBOARD"));
+        RxView.clicks(seeDocs).subscribe(aVoid -> UniversalNotifier.postNotification("DOCS_NOTIFICATION"));
 
         return v;
     }

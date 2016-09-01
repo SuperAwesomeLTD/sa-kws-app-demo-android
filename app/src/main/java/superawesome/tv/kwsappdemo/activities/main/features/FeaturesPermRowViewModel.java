@@ -30,8 +30,8 @@ public class FeaturesPermRowViewModel implements ViewModel {
 
         addPermission.setEnabled(isLogged);
 
-        RxView.clicks(addPermission).subscribe(aVoid -> UniversalNotifier.getInstance().postNotification("REQUEST_PERMISSION"));
-        RxView.clicks(permDocs).subscribe(aVoid -> UniversalNotifier.getInstance().postNotification("DOCS_NOTIFICATION"));
+        RxView.clicks(addPermission).subscribe(aVoid -> UniversalNotifier.postNotification("REQUEST_PERMISSION"));
+        RxView.clicks(permDocs).subscribe(aVoid -> UniversalNotifier.postNotification("DOCS_NOTIFICATION"));
 
         return v;
     }

@@ -38,8 +38,8 @@ public class FeaturesAuthRowViewModel implements ViewModel {
 
         authButton.setText(isLogged ? "Logged in as " + local.username : "AUTHENTICATE USER");
 
-        RxView.clicks(docsButton).subscribe(aVoid -> UniversalNotifier.getInstance().postNotification("DOCS_NOTIFICATION"));
-        RxView.clicks(authButton).subscribe(aVoid -> UniversalNotifier.getInstance().postNotification("AUTH_NOTIFICATION"));
+        RxView.clicks(docsButton).subscribe(aVoid -> UniversalNotifier.postNotification("DOCS_NOTIFICATION"));
+        RxView.clicks(authButton).subscribe(aVoid -> UniversalNotifier.postNotification("AUTH_NOTIFICATION"));
 
         return v;
     }

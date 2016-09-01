@@ -6,6 +6,8 @@
     <string name="logout_name">Log Out</string>
     <string name="leaderboard_name">Leaderboard</string>
     <string name="user_name">User Details</string>
+    <string name="appdata_get_name">Current App Data</string>
+    <string name="appdata_set_name">Add App Data</string>
 
     <!-- platforms strings -->
     <string name="platformTitle">Welcome to your\nSuperAwesome app</string>
@@ -38,8 +40,19 @@
     <string name="featurePointsAdd20Button">ADD 20 POINTS</string>
     <string name="featurePointsAdd50Button">ADD 50 POINTS</string>
     <string name="featurePointsSub10Button">SUBTRACT 10 POINTS</string>
+    <string name="featurePointsGetScore">GET SCORE</string>
     <string name="featurePointsSeeLeaderboardButton">SEE LEADERBOARD</string>
     <string name="featurePointsDocButton">SEE DOCUMENTATION</string>
+
+    <string name="featureInviteTitle">Invite friends</string>
+    <string name="featureInviteContent">Add your friends via email.</string>
+    <string name="featureInviteAddUserButton">INVITE USER</string>
+    <string name="featureInviteDocButton">SEE DOCUMENTATION</string>
+
+    <string name="featureAppDataTitle">App data</string>
+    <string name="featureAppDataContent">Set app data as name | value pairs</string>
+    <string name="featureAppDataSeeButton">SEE APP DATA</string>
+    <string name="featureAppDataDocButton">SEE DOCUMENTATION</string>
 
     <!-- sign in string -->
     <string name="signInTitle">Register for KWS</string>
@@ -56,6 +69,16 @@
     <string name="logoutUserName">User Name:</string>
     <string name="logoutToken">Token:</string>
     <string name="logoutButton">Logout</string>
+
+    <!-- app data - get -->
+    <string name="appDataGetTitle">Current App Data</string>
+    <string name="appDataGetButton">Add</string>
+
+    <!-- app data - set -->
+    <string name="appDataSetTitle">Add App Data</string>
+    <string name="appDataSetNameHint">Pair Name</string>
+    <string name="appDataSetValueHint">Pair Value</string>
+    <string name="appDataSetButton">Submit</string>
 
     <!-- leaderboard item default strings -->
     <string name="leaderItemDefaultRank">1</string>

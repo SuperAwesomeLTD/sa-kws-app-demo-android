@@ -34,6 +34,14 @@
             android:name=".activities.user.UserActivity"
             android:label="@string/user_name"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.appdata.GetAppDataActivity"
+            android:label="@string/appdata_get_name"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.appdata.SetAppDataActivity"
+            android:label="@string/appdata_set_name"
+            android:screenOrientation="portrait"/>
 
         <!-- services -->
     </application>

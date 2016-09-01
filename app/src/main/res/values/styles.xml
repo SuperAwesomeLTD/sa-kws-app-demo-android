@@ -40,6 +40,6 @@
 
     <style name="ButtonStyle3">
         <item name="android:textColor">@color/textColorWhite</item>
-        <item name="android:background">@drawable/mybutton3</item>
+        <item name="android:background">@drawable/mybutton3_state</item>
     </style>
 </resources>

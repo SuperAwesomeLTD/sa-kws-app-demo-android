@@ -7,24 +7,13 @@ import rx.subjects.PublishSubject;
  */
 public class UniversalNotifier {
 
-    private String notification = null;
-    private PublishSubject<String> changeObservable = null;
+    private static PublishSubject<String> changeObservable = PublishSubject.create();;
 
-    private static UniversalNotifier instance = new UniversalNotifier();
-    public static UniversalNotifier getInstance(){
-        return instance;
-    }
-
-    private UniversalNotifier () {
-        changeObservable = PublishSubject.create();
-    }
-
-    public void postNotification (String notification) {
-        this.notification = notification;
+    public static void postNotification (String notification) {
         changeObservable.onNext(notification);
     }
 
-    public PublishSubject<String> getChangeObservable () {
+    public static PublishSubject<String> getObservable() {
         return changeObservable;
     }
 }

@@ -2,7 +2,6 @@ package superawesome.tv.kwsappdemo.activities.main.features;
 
 import android.content.Context;
 import android.content.Intent;
-import android.inputmethodservice.Keyboard;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,18 +12,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.util.List;
+
 import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.process.KWSErrorType;
-import kws.superawesome.tv.kwssdk.services.kws.KWSParentEmailInterface;
+import kws.superawesome.tv.kwssdk.services.kws.KWSInviteUserInterface;
 import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionType;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import superawesome.tv.kwsappdemo.R;
+import superawesome.tv.kwsappdemo.activities.appdata.GetAppDataActivity;
 import superawesome.tv.kwsappdemo.activities.leader.LeaderboardActivity;
 import superawesome.tv.kwsappdemo.activities.signup.SignUpActivity;
 import superawesome.tv.kwsappdemo.activities.user.UserActivity;
 import superawesome.tv.kwsappdemo.aux.KWSSingleton;
 import superawesome.tv.kwsappdemo.aux.UniversalNotifier;
+import superawesome.tv.kwsappdemo.aux.ViewModel;
 import tv.superawesome.lib.sautils.SAAlert;
-import tv.superawesome.lib.sautils.SAAlertInterface;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
 /**
@@ -32,10 +37,8 @@ import tv.superawesome.lib.sautils.SAProgressDialog;
  */
 public class FeaturesFragment extends Fragment {
 
-    private final String KWS_API = "https://kwsapi.demo.superawesome.tv/v1/";
     private final String DOCSURL = "https://developers.superawesome.tv/extdocs/sa-kws-android-sdk/html/index.html";
 
-    private ListView featureListView = null;
     private FeaturesAdapter adapter = null;
 
     // for permissions
@@ -57,10 +60,25 @@ public class FeaturesFragment extends Fragment {
         // get views
         View view = inflater.inflate(R.layout.fragment_features, container, false);
 
+        // create adapter
+        adapter = new FeaturesAdapter(getContext());
+
         // set adapter
-        featureListView = (ListView)view.findViewById(R.id.FeaturesListView);
-        adapter = new FeaturesAdapter(getContext(), R.layout.listitem_features_auth);
-        adapter.update(() -> {}, () -> featureListView.setAdapter(adapter), () -> {});
+        ListView featureListView = (ListView) view.findViewById(R.id.FeaturesListView);
+        featureListView.setAdapter(adapter);
+
+        // get data source
+        FeaturesSource source = new FeaturesSource();
+        source.getFeatures().
+                toList().
+                subscribe(viewModels -> {
+                    adapter.updateData(viewModels);
+                }, throwable -> {
+                    // do nothing
+                }, () -> {
+                    // do nothing
+                });
+
 
         // set registered or not
         KWSSingleton.getInstance().getIsRegistered().
@@ -69,30 +87,30 @@ public class FeaturesFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                 });
 
-        UniversalNotifier.getInstance().getChangeObservable().
+        UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("DOCS_NOTIFICATION")).
                 subscribe(notif -> {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(DOCSURL));
                     getActivity().startActivity(browserIntent);
                 });
-        UniversalNotifier.getInstance().getChangeObservable().
+        UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("AUTH_NOTIFICATION")).
                 subscribe(notif -> {
                     boolean isLogged = KWSSingleton.getInstance().isUserLogged();
                     Intent authIntent = new Intent(getActivity(), !isLogged ? SignUpActivity.class : UserActivity.class);
                     getActivity().startActivity(authIntent);
                 });
-        UniversalNotifier.getInstance().getChangeObservable().
+        UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("RECEIVED_SIGNUP")).
                 subscribe(s -> {
                     adapter.notifyDataSetChanged();
                 });
-        UniversalNotifier.getInstance().getChangeObservable().
+        UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("RECEIVED_LOGOUT")).
                 subscribe(s -> {
                     adapter.notifyDataSetChanged();
                 });
-        UniversalNotifier.getInstance().getChangeObservable().
+        UniversalNotifier.getObservable().
                 filter(nofif -> nofif.equals("ADD_20_POINTS")).
                 subscribe(s -> {
                     KWS.sdk.triggerEvent("GabrielAdd20ForAwesomeApp", 20, "You just earned 20 points!", b -> {
@@ -101,7 +119,7 @@ public class FeaturesFragment extends Fragment {
                         }
                     });
                 });
-        UniversalNotifier.getInstance().getChangeObservable().
+        UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("SUB_10_POINTS")).
                 subscribe(s -> {
                     KWS.sdk.triggerEvent("GabrielSub10ForAwesomeApp", -10, "You just lost 10 points!", b -> {
@@ -110,13 +128,22 @@ public class FeaturesFragment extends Fragment {
                         }
                     });
                 });
-        UniversalNotifier.getInstance().getChangeObservable().
+        UniversalNotifier.getObservable().
+                filter(notif -> notif.equals("GET_SCORE")).
+                subscribe(s -> {
+                    KWS.sdk.getScore(kwsScore -> {
+                        if (kwsScore != null) {
+                            SAAlert.getInstance().show(getContext(), "Hey!", "You're ranked " + kwsScore.rank + " with " + kwsScore.score + " points!", "Great!", null, false, 0, null);
+                        }
+                    });
+                });
+        UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("SEE_LEADERBOARD")).
                 subscribe(s -> {
                     Intent leaderboard = new Intent(getActivity(), LeaderboardActivity.class);
                     getActivity().startActivity(leaderboard);
                 });
-        UniversalNotifier.getInstance().getChangeObservable().
+        UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("REQUEST_PERMISSION")).
                 subscribe(s -> {
                     Context c = getContext();
@@ -148,7 +175,7 @@ public class FeaturesFragment extends Fragment {
                     builder.show();
                 });
 
-        UniversalNotifier.getInstance().getChangeObservable().
+        UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("SUBSCRIBE_NOTIFICATION")).
                 subscribe(s -> {
                     boolean isRegisterd = KWSSingleton.getInstance().isUserMarkedAsRegistered();
@@ -168,6 +195,33 @@ public class FeaturesFragment extends Fragment {
                         SAProgressDialog.getInstance().showProgress(getActivity());
                         KWS.sdk.register(FeaturesFragment.this::registerCallback);
                     }
+                });
+        UniversalNotifier.getObservable().
+                filter(notif -> notif.equals("ADD_USER_NOTIFICATION")).
+                subscribe(s -> {
+                    SAAlert.getInstance().show(getActivity(), "Friend email", "Invite your friend via email", "Invite", "Cancel", true, 32, (button, email) -> {
+                        if (button == 0) {
+
+                            SAProgressDialog.getInstance().showProgress(getActivity());
+
+                            KWS.sdk.inviteUser(email, invited -> {
+
+                                SAProgressDialog.getInstance().hideProgress();
+
+                                if (invited) {
+                                    SAAlert.getInstance().show(getContext(), "Hey!", "You successfully invited " + email + " in KWS.", "Thanks!", null, false, 0, null);
+                                } else {
+                                    SAAlert.getInstance().show(getContext(), "Hey!", "An error occurred while inviting " + email + " in KWS. Plase make sure the email is valid.", "Got it!", null, false, 0, null);
+                                }
+                            });
+                        }
+                    });
+                });
+        UniversalNotifier.getObservable().
+                filter(notif -> notif.equals("SEE_APP_DATA_NOTIFICATION")).
+                subscribe(s -> {
+                    Intent getappdata = new Intent(getActivity(), GetAppDataActivity.class);
+                    getActivity().startActivity(getappdata);
                 });
 
 
