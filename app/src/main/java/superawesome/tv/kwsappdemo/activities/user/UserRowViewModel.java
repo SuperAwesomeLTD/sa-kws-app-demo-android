@@ -15,26 +15,40 @@ import superawesome.tv.kwsappdemo.aux.ViewModel;
 public class UserRowViewModel implements ViewModel {
 
     private String itemTxt = null;
+    private Object value = null;
     private String valueTxt = null;
     private int valueColor = Color.BLACK;
 
     public UserRowViewModel (String item, Object value) {
         itemTxt = item;
+        this.value = value;
+    }
+
+    private void processValue(Context c, String item, Object value) {
         if (value != null) {
             valueTxt = "" + value;
-            if (value instanceof  Integer && !item.equals("ID")) {
+            if (value instanceof Integer && !item.equals("ID")) {
                 if ((Integer)value > 0) {
                     valueColor = Color.rgb(57, 97, 4);
                 } else {
                     valueColor = Color.rgb(97,4,4);
                 }
             }
+            if (value instanceof Boolean) {
+                if ((Boolean) value) {
+                    valueColor = Color.rgb(57, 97, 4);
+                    valueTxt = c.getString(R.string.user_row_value_true);
+                } else {
+                    valueColor = Color.rgb(97, 4, 4);
+                    valueTxt = c.getString(R.string.user_row_value_false);
+                }
+            }
             if (valueTxt.equals("")) {
-                valueTxt = "undefined";
+                valueTxt = c.getString(R.string.user_row_value_undefined);
                 valueColor = Color.LTGRAY;
             }
         } else {
-            valueTxt = "undefined";
+            valueTxt = c.getString(R.string.user_row_value_undefined);
             valueColor = Color.LTGRAY;
         }
     }
@@ -53,6 +67,7 @@ public class UserRowViewModel implements ViewModel {
             itemTitleTextView.setText(itemTxt);
         }
         if (itemValueTextView != null) {
+            processValue(context, itemTxt, value);
             itemValueTextView.setText(valueTxt);
             itemValueTextView.setTextColor(valueColor);
         }

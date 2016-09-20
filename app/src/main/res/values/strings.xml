@@ -9,82 +9,188 @@
     <string name="appdata_get_name">Current App Data</string>
     <string name="appdata_set_name">Add App Data</string>
 
+    <!-- tabs -->
+    <string name="tab_platform">Platform</string>
+    <string name="tab_features">Features</string>
+    <string name="tab_doc">Docs</string>
+
     <!-- platforms strings -->
-    <string name="platformTitle">Welcome to your\nSuperAwesome app</string>
-    <string name="platformContent">This Awesome App is powered by Kids Web Services (KWS), the platform that provides a set of compliance-as-a-service tools to create a kid-safe, COPPA-compliant sites and apps, allowing you to focus on delivering awesome content by abstracting all legal complexity related to data-collection.</string>
-    <string name="platformCell1">Verifiable\nparental\nconsent</string>
-    <string name="platformCell2">Loyalty\nplatform\nfor kids</string>
-    <string name="platformCell3">Federated\nIdentity</string>
-    <string name="platformCell4">Parent\nPortal</string>
-    <string name="platformButton">KNOW MORE ABOUT KIDS WEB SERVICES</string>
-    
+    <string name="platform_title">Welcome to your\nSuperAwesome app</string>
+    <string name="platform_content">This Awesome App is powered by Kids Web Services (KWS), the platform that provides a set of compliance-as-a-service tools to create a kid-safe, COPPA-compliant sites and apps, allowing you to focus on delivering awesome content by abstracting all legal complexity related to data-collection.</string>
+    <string name="platform_feature_1">Verifiable\nparental\nconsent</string>
+    <string name="platform_feature_2">Loyalty\nplatform\nfor kids</string>
+    <string name="platform_feature_3">Federated\nIdentity</string>
+    <string name="platform_feature_4">Parent\nPortal</string>
+    <string name="platform_main_button">KNOW MORE ABOUT KIDS WEB SERVICES</string>
+
     <!-- feature strings -->
-    <string name="featureAuthTitle">User authentication</string>
-    <string name="featureAuthContent">Kids Web Services federated identity system (Single Sign-On) allows kids and parents create one secure identity to easily log into your collection of kid-safe sites and apps.</string>
-    <string name="featureAuthActionButton">AUTHENTICATE USER</string>
-    <string name="featureAuthDocButton">SEE DOCUMENTATION</string>
+    <string name="feature_cell_auth_title">User authentication</string>
+    <string name="feature_cell_auth_content">Kids Web Services federated identity system (Single Sign-On) allows kids and parents create one secure identity to easily log into your collection of kid-safe sites and apps.</string>
+    <string name="feature_cell_auth_button_1_loggedout">AUTHENTICATE USER</string>
+    <string name="feature_cell_auth_button_1_loggedin">LOGED IN AS</string>
+    <string name="feature_cell_auth_button_2">SEE DOCUMENTATION</string>
 
-    <string name="featureNotifTitle">Kid-safe push notifications</string>
-    <string name="featureNotifContent">Generate codes/vouchers to allow users to award extra points to incentivise user retention and engagement.</string>
-    <string name="featureNotifEnableButton">ENABLE PUSH NOTIFICATIONS</string>
-    <string name="featureNotifDisableButton">DISABLE PUSH NOTIFICATION</string>
-    <string name="featureNotifDocButton">SEE DOCUMENTATION</string>
+    <string name="feature_cell_notif_title">Kid-safe push notifications</string>
+    <string name="feature_cell_notif_content">Generate codes/vouchers to allow users to award extra points to incentivise user retention and engagement.</string>
+    <string name="feature_cell_notif_button_1_enable">ENABLE PUSH NOTIFICATIONS</string>
+    <string name="feature_cell_notif_button_1_disable">DISABLE PUSH NOTIFICATION</string>
+    <string name="feature_cell_notif_button_2">SEE DOCUMENTATION</string>
 
-    <string name="featurePermissionTitle">Manage permissions</string>
-    <string name="featurePermissionContent">Add permissions for your users</string>
-    <string name="featurePermissionAddButton">ADD PERMISSIONS</string>
-    <string name="featurePermissionDocButton">SEE DOCUMENTATION</string>
+    <string name="feature_cell_perm_title">Manage permissions</string>
+    <string name="feature_cell_perm_content">Handle all the permissions your users might need</string>
+    <string name="feature_cell_perm_button_1">ADD PERMISSIONS</string>
+    <string name="feature_cell_perm_button_2">SEE DOCUMENTATION</string>
 
-    <string name="featurePointsTitle">Events and points</string>
-    <string name="featurePointsContent">Add, subtract points and manage application events for each user</string>
-    <string name="featurePointsAdd20Button">ADD 20 POINTS</string>
-    <string name="featurePointsAdd50Button">ADD 50 POINTS</string>
-    <string name="featurePointsSub10Button">SUBTRACT 10 POINTS</string>
-    <string name="featurePointsGetScore">GET SCORE</string>
-    <string name="featurePointsSeeLeaderboardButton">SEE LEADERBOARD</string>
-    <string name="featurePointsDocButton">SEE DOCUMENTATION</string>
+    <string name="feature_cell_evt_title">Events and points</string>
+    <string name="feature_cell_evt_message">Add or subtract points and manage application events for each user.</string>
+    <string name="feature_cell_evt_button_1">ADD 20 POINTS</string>
+    <string name="feature_cell_evt_button_2">SUBTRACT 10 POINTS</string>
+    <string name="feature_cell_evt_button_3">GET SCORE</string>
+    <string name="feature_cell_evt_button_4">SEE LEADERBOARD</string>
+    <string name="feature_cell_evt_button_5">SEE DOCUMENTATION</string>
 
-    <string name="featureInviteTitle">Invite friends</string>
-    <string name="featureInviteContent">Add your friends via email.</string>
-    <string name="featureInviteAddUserButton">INVITE USER</string>
-    <string name="featureInviteDocButton">SEE DOCUMENTATION</string>
+    <string name="feature_cell_inv_title">Invite friends</string>
+    <string name="feature_cell_inv_message">Add your friends via email.</string>
+    <string name="feature_cell_inv_button_1">INVITE FRIEND</string>
+    <string name="feature_cell_inv_button_2">SEE DOCUMENTATION</string>
 
-    <string name="featureAppDataTitle">App data</string>
-    <string name="featureAppDataContent">Set app data as name | value pairs</string>
-    <string name="featureAppDataSeeButton">SEE APP DATA</string>
-    <string name="featureAppDataDocButton">SEE DOCUMENTATION</string>
+    <string name="feature_cell_appd_title">App data</string>
+    <string name="feature_cell_appd_message">Set app data as name | value pairs</string>
+    <string name="feature_cell_appd_button_1">SEE APP DATA</string>
+    <string name="feature_cell_appd_button_2">SEE DOCUMENTATION</string>
+
+
+    <string name="feature_event_add20_popup_success_title">Congrats!</string>
+    <string name="feature_event_add20_popup_success_message">You just earned 20 points!</string>
+    <string name="feature_event_sub10_popup_success_title">Oh no!</string>
+    <string name="feature_event_sub10_popup_success_message">You just lost 10 points!</string>
+
+    <string name="feature_event_getscore_success_title">Hey</string>
+    <string name="feature_event_getscore_success_message">You\'re ranked %1$d with %2$d points!</string>
+
+    <string name="feature_perm_alert_title">KWS Permissions</string>
+    <string name="feature_perm_alert_message">What information would you like permission for?</string>
+    <string name="feature_perm_popup_success_title">Great</string>
+    <string name="feature_perm_popup_success_message">You\'ve successfully asked for the permission.</string>
+    <string name="feature_perm_popup_error_title">Error</string>
+    <string name="feature_perm_popup_error_message">Something happened while trying to ask for permission.</string>
+
+    <string name="feature_parent_email_request_popup_title">Parent email missing</string>
+    <string name="feature_parent_email_request_popup_message">You have to input a valid parent\'s email in order to continue</string>
+    <string name="feature_parent_email_request_popup_submit">Submit</string>
+    <string name="feature_parent_email_request_popup_cancel">Cancel</string>
+
+    <string name="feature_notif_reg_popup_success_title">Great</string>
+    <string name="feature_notif_reg_popup_success_message">Successfully registered for Remote Notifications.</string>
+    <string name="feature_notif_reg_popup_error_title">Error</string>
+    <string name="feature_notif_reg_popup_error_message">An error occured trying to subscribe to Push Notifications.</string>
+
+    <string name="feature_notif_unreg_popup_success_title">Great</string>
+    <string name="feature_notif_unreg_popup_success_message">You have successfully un-registered for Remote Notifications in KWS!</string>
+    <string name="feature_notif_unreg_popup_error_title">Error</string>
+    <string name="feature_notif_unreg_popup_error_message">There was a network error trying to un-register for Remote Notifications in KWS. Please try again!</string>
+
+    <string name="feature_friend_email_popup_title">Friend email</string>
+    <string name="feature_friend_email_popup_message">Please input your friend\'s email in order to invite him</string>
+    <string name="feature_friend_email_popup_submit">Submit</string>
+    <string name="feature_friend_email_popup_cancel">Cancel</string>
+
+    <string name="feature_friend_email_popup_success_title">Hey</string>
+    <string name="feature_friend_email_popup_success_message">You successfully invited %1$s in KWS.</string>
+    <string name="feature_friend_email_popup_error_title">Error</string>
+    <string name="feature_friend_email_popup_error_message">An error occurred while inviting %1$s in KWS!</string>
+
+    <string name="feature_popup_dismiss_button">Got it</string>
+
+    <!-- documentation -->
 
     <!-- sign in string -->
-    <string name="signInTitle">Register for KWS</string>
-    <string name="signInUserName">Choose a username</string>
-    <string name="signInPassword">Set a password</string>
-    <string name="signInPassword2">Repeat password</string>
-    <string name="signInYear">YYYY</string>
-    <string name="signInMonth">MM</string>
-    <string name="signInDay">DD</string>
-    <string name="signInSubmit">Register</string>
+    <string name="sign_up_vc_title">Sign Up to KWS</string>
+    <string name="sign_up_username_placeholder">Enter a username</string>
+    <string name="sign_up_password1_placeholder">Enter a password</string>
+    <string name="sign_up_password2_placeholder">Repeat the password</string>
+    <string name="sign_up_year_placeholder">YYYY</string>
+    <string name="sign_up_month_placeholder">MM</string>
+    <string name="sign_up_day_placeholder">DD</string>
+    <string name="sign_up_submit">Submit</string>
 
-    <!-- logout string -->
-    <string name="logoutTitle">Current User</string>
-    <string name="logoutUserName">User Name:</string>
-    <string name="logoutToken">Token:</string>
-    <string name="logoutButton">Logout</string>
+    <string name="sign_up_popup_error_title">Error</string>
+    <string name="sign_up_popup_dismiss_button">Got it</string>
+    <string name="sign_up_popup_error_message">Failed to sign up user</string>
+
+    <!-- user strings -->
+    <string name="user_vc_title">User details</string>
+    <string name="user_logout">Logout</string>
+
+    <string name="user_header_address">Address</string>
+    <string name="user_header_points">Points</string>
+    <string name="user_header_perm">Permissions</string>
+
+    <string name="user_row_details_first_name">First name</string>
+    <string name="user_row_details_last_name">Last name</string>
+    <string name="user_row_details_birth_date">Birth date</string>
+    <string name="user_row_details_gender">Gender</string>
+    <string name="user_row_details_phone">Phone</string>
+    <string name="user_row_details_language">Language</string>
+    <string name="user_row_details_email">Email</string>
+    <string name="user_row_address_street">Street</string>
+    <string name="user_row_address_city">City</string>
+    <string name="user_row_address_post_code">Postal code</string>
+    <string name="user_row_address_country">Country</string>
+    <string name="user_row_points_received">Received</string>
+    <string name="user_row_points_total">Total</string>
+    <string name="user_row_points_app">In this app</string>
+    <string name="user_row_points_available">Available</string>
+    <string name="user_row_points_pending">Pending</string>
+    <string name="user_row_perm_address">Address</string>
+    <string name="user_row_perm_phone">Phone number</string>
+    <string name="user_row_perm_first_name">First name</string>
+    <string name="user_row_perm_last_name">Last name</string>
+    <string name="user_row_perm_email">Email</string>
+    <string name="user_row_perm_street">Street</string>
+    <string name="user_row_perm_city">City</string>
+    <string name="user_row_perm_post_code">Postal code</string>
+    <string name="user_row_perm_country">Country</string>
+    <string name="user_row_perm_notifications">Notifications</string>
+    <string name="user_row_perm_newsletter">Newsletter</string>
+
+    <string name="user_row_value_true">True</string>
+    <string name="user_row_value_false">False</string>
+    <string name="user_row_value_undefined">Undefined</string>
+
+    <string name="user_popup_error_title">Error</string>
+    <string name="user_popup_error_message">An error occured and we could not get the user details. Please try again.</string>
+    <string name="user_popup_dismiss_button">Got it</string>
+
+    <!-- leader board item default strings -->
+    <string name="leader_col_1_default">0</string>
+    <string name="leader_col_2_default">Unknown</string>
+    <string name="leader_col_3_default">0</string>
+    <string name="leader_col_1_title">#</string>
+    <string name="leader_col_2_title">Username</string>
+    <string name="leader_col_3_title">Score</string>
+
+    <string name="leader_popup_error_title">Error</string>
+    <string name="leader_popup_error_message">An error occured and we could not get the Leaderboard. Please try again.</string>
+    <string name="leader_popup_dismiss_button">Got it</string>
 
     <!-- app data - get -->
-    <string name="appDataGetTitle">Current App Data</string>
-    <string name="appDataGetButton">Add</string>
+    <string name="get_app_data_vc_title">App Data</string>
+    <string name="get_app_data_add_button">Add</string>
+
+    <string name="get_app_data_col_unknown_username">Unknown</string>
+
+    <string name="get_app_data_popup_error_title">Error</string>
+    <string name="get_app_data_popup_error_message">An error occured and we could not get the current app data. Please try again.</string>
+    <string name="get_app_data_popup_dismiss_button">Got it</string>
 
     <!-- app data - set -->
-    <string name="appDataSetTitle">Add App Data</string>
-    <string name="appDataSetNameHint">Pair Name</string>
-    <string name="appDataSetValueHint">Pair Value</string>
-    <string name="appDataSetButton">Submit</string>
+    <string name="add_app_data_vc_title">New app data</string>
+    <string name="add_app_data_name_placeholder">Enter a new name pair</string>
+    <string name="add_app_data_value_placeholder">Enter a new value pair</string>
+    <string name="add_app_data_submit">Submit</string>
 
-    <!-- leaderboard item default strings -->
-    <string name="leaderItemDefaultRank">1</string>
-    <string name="leaderItemDefaultUsername">Test User</string>
-    <string name="leaderItemDefaultPoints">20</string>
-    <string name="leaderItemActualRank">%1$d</string>
-    <string name="leaderItemActualUsername">%1$s</string>
-    <string name="leaderItemActualPoints">%1$d</string>
+    <string name="add_app_data_popup_error_title">Error</string>
+    <string name="add_app_data_popup_dismiss_button">Got it</string>
+    <string name="add_app_data_error_message">Could not save name and value pair because of network error</string>
 </resources>

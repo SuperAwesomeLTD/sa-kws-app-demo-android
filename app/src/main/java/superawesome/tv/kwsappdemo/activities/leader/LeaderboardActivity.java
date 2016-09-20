@@ -49,7 +49,14 @@ public class LeaderboardActivity extends AppCompatActivity {
                 subscribe(viewModels -> {
                     adapter.updateData(viewModels);
                 }, throwable -> {
-                    SAAlert.getInstance().show(c, "Hey!", "There are no leaders to display right now!", "Got i1!", null, false, 0, null);
+                    SAAlert.getInstance().show(c,
+                            getString(R.string.leader_popup_error_title),
+                            getString(R.string.leader_popup_error_message),
+                            getString(R.string.leader_popup_dismiss_button),
+                            null,
+                            false,
+                            0,
+                            null);
                 }, () -> {
                     // do nothing
                 });

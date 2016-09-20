@@ -46,7 +46,7 @@ public class UserActivity extends AppCompatActivity {
         userDetailsListView.setAdapter(adapter);
 
         UserSource source = new UserSource();
-        source.getUser().
+        source.getUser(UserActivity.this).
                 doOnSubscribe(() -> SAProgressDialog.getInstance().showProgress(UserActivity.this)).
                 toList().
                 doOnError(throwable -> SAProgressDialog.getInstance().hideProgress()).
@@ -54,7 +54,14 @@ public class UserActivity extends AppCompatActivity {
                 subscribe(viewModels -> {
                     adapter.updateData(viewModels);
                 }, throwable -> {
-                    SAAlert.getInstance().show(UserActivity.this, "Hey!", "An error occurred retrieving user data, please try again.", "Got it!", null, false, 0, null);
+                    SAAlert.getInstance().show(UserActivity.this,
+                            getString(R.string.user_popup_error_title),
+                            getString(R.string.user_popup_error_message),
+                            getString(R.string.user_popup_dismiss_button),
+                            null,
+                            false,
+                            0,
+                            null);
                 });
 
         RxView.clicks(logoutButton).

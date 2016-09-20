@@ -36,7 +36,9 @@ public class FeaturesAuthRowViewModel implements ViewModel {
         boolean isLogged = KWSSingleton.getInstance().isUserLogged();
         KWSModel local = KWSSingleton.getInstance().getUser();
 
-        authButton.setText(isLogged ? "Logged in as " + local.username : "AUTHENTICATE USER");
+        authButton.setText(isLogged ?
+                context.getString(R.string.feature_cell_auth_button_1_loggedout) + local.username :
+                context.getString(R.string.feature_cell_auth_button_1_loggedout));
 
         RxView.clicks(docsButton).subscribe(aVoid -> UniversalNotifier.postNotification("DOCS_NOTIFICATION"));
         RxView.clicks(authButton).subscribe(aVoid -> UniversalNotifier.postNotification("AUTH_NOTIFICATION"));

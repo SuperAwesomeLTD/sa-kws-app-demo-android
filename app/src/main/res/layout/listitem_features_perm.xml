@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/featurePermissionTitle"
+                android:text="@string/feature_cell_perm_title"
                 android:textColor="@color/textColorBlack"
                 android:textStyle="bold"
                 android:textSize="20sp"
@@ -44,7 +44,7 @@
             android:textColor="@color/textColorDarkGray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/featurePermissionContent"/>
+            android:text="@string/feature_cell_perm_content"/>
 
         <!-- button -->
         <Button
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             style="@style/ButtonStyle2"
-            android:text="@string/featurePermissionAddButton"/>
+            android:text="@string/feature_cell_perm_button_1"/>
 
         <Button
             android:id="@+id/permissionDocs"
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             style="@style/ButtonStyle2"
-            android:text="@string/featurePermissionDocButton"/>
+            android:text="@string/feature_cell_perm_button_2"/>
 
     </LinearLayout>
 </LinearLayout>

@@ -13,16 +13,14 @@ import superawesome.tv.kwsappdemo.aux.ViewModel;
  */
 public class LeaderRowViewModel implements ViewModel {
 
-    private String rankTxt = "0";
-    private String scoreTxt = "0";
-    private String usernameTxt = "unknown";
+    private String rankTxt = null;
+    private String scoreTxt = null;
+    private String usernameTxt = null;
 
     public LeaderRowViewModel(int rank, int score, String username) {
         rankTxt = Integer.toString(rank);
         scoreTxt = Integer.toString(score);
-        if (username != null) {
-            usernameTxt = username;
-        }
+        usernameTxt = username;
     }
 
     @Override
@@ -37,13 +35,13 @@ public class LeaderRowViewModel implements ViewModel {
         TextView scoreTextView = (TextView) v.findViewById(R.id.leaderPoints);
 
         if (rankTextView != null) {
-            rankTextView.setText(rankTxt);
+            rankTextView.setText(rankTxt != null ? rankTxt : context.getString(R.string.leader_col_1_default));
         }
         if (usernameTextView != null) {
-            usernameTextView.setText(usernameTxt);
+            usernameTextView.setText(usernameTxt != null ? usernameTxt : context.getString(R.string.leader_col_2_default));
         }
         if (scoreTextView != null) {
-            scoreTextView.setText(scoreTxt);
+            scoreTextView.setText(scoreTxt != null ? scoreTxt : context.getString(R.string.leader_col_3_default));
         }
 
         return v;

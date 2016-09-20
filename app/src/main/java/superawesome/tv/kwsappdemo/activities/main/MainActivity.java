@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     // private vars
     private List<Fragment> fragments = Arrays.asList(new PlatformFragment(), new FeaturesFragment(), new DocumentationFragment());
-    private List<String> tabs = Arrays.asList("Platform", "Features", "More");
+    private List<String> tabs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
         // UI stuff
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        tabs = Arrays.asList(
+                getString(R.string.tab_platform),
+                getString(R.string.tab_features),
+                getString(R.string.tab_doc));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
@@ -42,5 +47,10 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+
+
+
+
     }
 }

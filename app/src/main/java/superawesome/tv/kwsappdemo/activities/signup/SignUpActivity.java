@@ -71,7 +71,14 @@ public class SignUpActivity extends AppCompatActivity {
                             subscribe(aBoolean -> {
                                 // do nothing
                             }, throwable -> {
-                                SAAlert.getInstance().show(SignUpActivity.this, "Hey!", "Error trying to create user. Please try again!", "Got it!", null, false, 0, null);
+                                SAAlert.getInstance().show(SignUpActivity.this,
+                                        getString(R.string.sign_up_popup_error_title),
+                                        getString(R.string.sign_up_popup_error_message),
+                                        getString(R.string.sign_up_popup_dismiss_button),
+                                        null,
+                                        false,
+                                        0,
+                                        null);
                             }, () -> {
                                 UniversalNotifier.postNotification("RECEIVED_SIGNUP");
                                 onBackPressed();

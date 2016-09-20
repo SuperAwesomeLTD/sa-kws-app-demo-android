@@ -17,8 +17,6 @@ import superawesome.tv.kwsappdemo.R;
  */
 public class PlatformFragment extends Fragment {
 
-    // private
-    private Button openKWS;
     private final String KWSURL = "http://www.superawesome.tv/en/";
 
     // constructor
@@ -35,7 +33,7 @@ public class PlatformFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_platform, container, false);
-        openKWS = (Button) view.findViewById(R.id.openKWSWebsite);
+        Button openKWS = (Button) view.findViewById(R.id.openKWSWebsite);
         openKWS.setOnClickListener(v -> {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(KWSURL));
             getContext().startActivity(browserIntent);

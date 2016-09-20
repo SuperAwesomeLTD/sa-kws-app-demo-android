@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:text="#"
+        android:text="@string/leader_col_1_title"
         android:gravity="center"
         android:textSize="18sp"
         android:textStyle="bold"/>
@@ -21,7 +21,7 @@
         android:layout_width="0dp"
         android:layout_weight="7"
         android:layout_height="match_parent"
-        android:text="Username"
+        android:text="@string/leader_col_2_title"
         android:gravity="center_vertical"
         android:textSize="18sp"
         android:textStyle="bold"/>
@@ -30,7 +30,7 @@
         android:layout_width="0dp"
         android:layout_weight="2"
         android:layout_height="match_parent"
-        android:text="Score"
+        android:text="@string/leader_col_3_title"
         android:gravity="center"
         android:textSize="18sp"
         android:textStyle="bold"/>

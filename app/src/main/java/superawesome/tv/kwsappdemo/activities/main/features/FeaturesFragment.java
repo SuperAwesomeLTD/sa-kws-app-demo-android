@@ -12,23 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import java.util.List;
-
 import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.process.KWSErrorType;
-import kws.superawesome.tv.kwssdk.services.kws.KWSInviteUserInterface;
 import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionType;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import superawesome.tv.kwsappdemo.R;
-import superawesome.tv.kwsappdemo.activities.appdata.GetAppDataActivity;
+import superawesome.tv.kwsappdemo.activities.getappdata.GetAppDataActivity;
 import superawesome.tv.kwsappdemo.activities.leader.LeaderboardActivity;
 import superawesome.tv.kwsappdemo.activities.signup.SignUpActivity;
 import superawesome.tv.kwsappdemo.activities.user.UserActivity;
 import superawesome.tv.kwsappdemo.aux.KWSSingleton;
 import superawesome.tv.kwsappdemo.aux.UniversalNotifier;
-import superawesome.tv.kwsappdemo.aux.ViewModel;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
@@ -115,7 +108,8 @@ public class FeaturesFragment extends Fragment {
                 subscribe(s -> {
                     KWS.sdk.triggerEvent("GabrielAdd20ForAwesomeApp", 20, "You just earned 20 points!", b -> {
                         if (b) {
-                            SAAlert.getInstance().show(getContext(), "Congrats!", "You just earned 20 points!", "Great!", null, false, 0, null);
+                            alert(getString(R.string.feature_event_add20_popup_success_title),
+                                    getString(R.string.feature_event_add20_popup_success_message));
                         }
                     });
                 });
@@ -124,7 +118,8 @@ public class FeaturesFragment extends Fragment {
                 subscribe(s -> {
                     KWS.sdk.triggerEvent("GabrielSub10ForAwesomeApp", -10, "You just lost 10 points!", b -> {
                         if (b) {
-                            SAAlert.getInstance().show(getContext(), "Hey!", "You just lost 10 points!", "Ok!", null, false, 0, null);
+                            alert(getString(R.string.feature_event_sub10_popup_success_title),
+                                    getString(R.string.feature_event_sub10_popup_success_message));
                         }
                     });
                 });
@@ -133,7 +128,8 @@ public class FeaturesFragment extends Fragment {
                 subscribe(s -> {
                     KWS.sdk.getScore(kwsScore -> {
                         if (kwsScore != null) {
-                            SAAlert.getInstance().show(getContext(), "Hey!", "You're ranked " + kwsScore.rank + " with " + kwsScore.score + " points!", "Great!", null, false, 0, null);
+                            alert(getString(R.string.feature_event_getscore_success_title),
+                                    getString(R.string.feature_event_getscore_success_message, kwsScore.rank, kwsScore.score));
                         }
                     });
                 });
@@ -165,7 +161,7 @@ public class FeaturesFragment extends Fragment {
                     };
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(c);
-                    builder.setTitle("Ask for a permission");
+                    builder.setTitle(getString(R.string.feature_perm_alert_title));
                     builder.setItems(titles, (dialog, which) -> {
                         currentTitle = titles[which];
                         requestedType = new KWSPermissionType[] { types[which] };
@@ -186,9 +182,11 @@ public class FeaturesFragment extends Fragment {
                             if (b) {
                                 adapter.notifyDataSetChanged();
                                 KWSSingleton.getInstance().markUserAsUnregistered();
-                                SAAlert.getInstance().show(getActivity(), "Hey!", "You successfully unregistered for remote notifications!", "Got it!", null, false, 0, null);
+                                alert(getString(R.string.feature_notif_unreg_popup_success_title),
+                                        getString(R.string.feature_notif_unreg_popup_success_message));
                             } else {
-                                SAAlert.getInstance().show(getActivity(), "Hey!", "There was an error trying to unregister for remote notifications. Try again later!", "Got it!", null, false, 0, null);
+                                alert(getString(R.string.feature_notif_unreg_popup_error_title),
+                                        getString(R.string.feature_notif_unreg_popup_error_message));
                             }
                         });
                     } else {
@@ -199,7 +197,14 @@ public class FeaturesFragment extends Fragment {
         UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("ADD_USER_NOTIFICATION")).
                 subscribe(s -> {
-                    SAAlert.getInstance().show(getActivity(), "Friend email", "Invite your friend via email", "Invite", "Cancel", true, 32, (button, email) -> {
+                    SAAlert.getInstance().show(getActivity(),
+                            getString(R.string.feature_friend_email_popup_title),
+                            getString(R.string.feature_friend_email_popup_message),
+                            getString(R.string.feature_friend_email_popup_submit),
+                            getString(R.string.feature_friend_email_popup_cancel),
+                            true,
+                            32,
+                            (button, email) -> {
                         if (button == 0) {
 
                             SAProgressDialog.getInstance().showProgress(getActivity());
@@ -209,9 +214,11 @@ public class FeaturesFragment extends Fragment {
                                 SAProgressDialog.getInstance().hideProgress();
 
                                 if (invited) {
-                                    SAAlert.getInstance().show(getContext(), "Hey!", "You successfully invited " + email + " in KWS.", "Thanks!", null, false, 0, null);
+                                    alert(getString(R.string.feature_friend_email_popup_success_title),
+                                            getString(R.string.feature_friend_email_popup_success_message, email));
                                 } else {
-                                    SAAlert.getInstance().show(getContext(), "Hey!", "An error occurred while inviting " + email + " in KWS. Plase make sure the email is valid.", "Got it!", null, false, 0, null);
+                                    alert(getString(R.string.feature_friend_email_popup_error_title),
+                                            getString(R.string.feature_friend_email_popup_error_message, email));
                                 }
                             });
                         }
@@ -231,20 +238,29 @@ public class FeaturesFragment extends Fragment {
     private void permissionCallback (boolean success, boolean requested) {
         SAProgressDialog.getInstance().hideProgress();
         if (!success) {
-            SAAlert.getInstance().show(getContext(), "Hey!", "Something happened while asking for permissions", "Got it!", null, false, 0, null);
+            alert(getString(R.string.feature_perm_popup_error_title),
+                    getString(R.string.feature_perm_popup_error_message));
         } else {
             if (requested) {
-                SAAlert.getInstance().show(getContext(), "Great!", "You've successfully asked for permission for " + currentTitle, "Got it!", null, false, 0 , null);
+                alert(getString(R.string.feature_perm_popup_success_title),
+                        getString(R.string.feature_perm_popup_success_message));
             } else {
-                SAAlert.getInstance().show(getActivity(), "Parent email", "You have to add your parent email", "Submit", "Cancel", true, 32, (button, email) -> {
-                    if (button == 0) {
-                        KWS.sdk.submitParentEmail(email, b -> {
-                            if (b) {
-                                SAProgressDialog.getInstance().showProgress(getActivity());
-                                KWS.sdk.requestPermission(requestedType, FeaturesFragment.this::permissionCallback);
+                SAAlert.getInstance().show(getActivity(),
+                        getString(R.string.feature_parent_email_request_popup_title),
+                        getString(R.string.feature_parent_email_request_popup_message),
+                        getString(R.string.feature_parent_email_request_popup_submit),
+                        getString(R.string.feature_parent_email_request_popup_cancel),
+                        true,
+                        32,
+                        (button, email) -> {
+                            if (button == 0) {
+                                KWS.sdk.submitParentEmail(email, b -> {
+                                    if (b) {
+                                        SAProgressDialog.getInstance().showProgress(getActivity());
+                                        KWS.sdk.requestPermission(requestedType, FeaturesFragment.this::permissionCallback);
+                                    }
+                                });
                             }
-                        });
-                    }
                 });
             }
         }
@@ -255,10 +271,18 @@ public class FeaturesFragment extends Fragment {
         if (success) {
             KWSSingleton.getInstance().markUserRegistrationStatus(true);
             adapter.notifyDataSetChanged();
-            SAAlert.getInstance().show(getContext(), "Hey!", "You successfully registered for remote notifications in KWS.", "Got it!", null, false, 0, null);
+            alert(getString(R.string.feature_notif_reg_popup_success_title),
+                    getString(R.string.feature_notif_reg_popup_success_message));
         } else {
             if (kwsErrorType == KWSErrorType.UserHasNoParentEmail) {
-                SAAlert.getInstance().show(getActivity(), "Parent email", "You have to add your parent email", "Submit", "Cancel", true, 32, (button, email) -> {
+                SAAlert.getInstance().show(getActivity(),
+                        getString(R.string.feature_parent_email_request_popup_title),
+                        getString(R.string.feature_parent_email_request_popup_message),
+                        getString(R.string.feature_parent_email_request_popup_submit),
+                        getString(R.string.feature_parent_email_request_popup_cancel),
+                        true,
+                        32,
+                        (button, email) -> {
                     if (button == 0) {
                         KWS.sdk.submitParentEmail(email, b -> {
                             if (b) {
@@ -270,8 +294,21 @@ public class FeaturesFragment extends Fragment {
                     }
                 });
             } else {
-                SAAlert.getInstance().show(getActivity(), "Hey!", "Error occurred trying to register for Push Notifications: " + kwsErrorType.toString(), "Got it!", null, false, 0, null);
+                alert(getString(R.string.feature_notif_reg_popup_error_title),
+                        getString(R.string.feature_notif_reg_popup_error_message));
             }
         }
+    }
+
+    private void alert(String title, String message) {
+        SAAlert.getInstance().show(
+                getActivity(),
+                title,
+                message,
+                getString(R.string.feature_popup_dismiss_button),
+                null,
+                false,
+                0,
+                null);
     }
 }

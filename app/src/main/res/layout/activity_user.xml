@@ -17,7 +17,7 @@
         <!--toolbar-->
         <android.support.v7.widget.Toolbar
             android:id="@+id/userToolbar"
-            android:title="@string/user_name"
+            android:title="@string/user_vc_title"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimaryDark"
@@ -55,7 +55,7 @@
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 style="@style/ButtonStyle3"
-                android:text="@string/logoutButton"/>
+                android:text="@string/user_logout"/>
         </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -24,13 +24,13 @@ public class LeaderHeaderViewModel implements ViewModel {
         TextView scoreTextView = (TextView) v.findViewById(R.id.leaderPoints);
 
         if (rankTextView != null) {
-            rankTextView.setText("#");
+            rankTextView.setText(context.getString(R.string.leader_col_1_title));
         }
         if (usernameTextView != null) {
-            usernameTextView.setText("Username");
+            usernameTextView.setText(context.getString(R.string.leader_col_2_title));
         }
         if (scoreTextView != null) {
-            scoreTextView.setText("Score");
+            scoreTextView.setText(context.getString(R.string.leader_col_3_title));
         }
 
         return v;
