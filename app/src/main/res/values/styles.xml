@@ -29,12 +29,12 @@
     </style>
 
     <style name="ButtonStyle">
-        <item name="android:textColor">@color/textColorBlue</item>
+        <item name="android:textColor">@color/btn_color</item>
         <item name="android:background">@drawable/mybutton</item>
     </style>
 
     <style name="ButtonStyle2">
-        <item name="android:textColor">@color/textColorBlue</item>
+        <item name="android:textColor">@color/btn_color</item>
         <item name="android:background">@drawable/mybutton2</item>
     </style>
 

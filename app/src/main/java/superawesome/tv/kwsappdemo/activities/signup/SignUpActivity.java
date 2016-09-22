@@ -10,6 +10,8 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import superawesome.tv.kwsappdemo.R;
 import superawesome.tv.kwsappdemo.aux.KWSSingleton;
 import superawesome.tv.kwsappdemo.aux.UniversalNotifier;
@@ -61,6 +63,18 @@ public class SignUpActivity extends AppCompatActivity {
 
         rxModel.map(SignUpModel::isValid).
                 subscribe(submit::setEnabled);
+
+        rxButton.subscribe(new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+
+            }
+        });
 
         Observable.combineLatest(rxModel, rxButton, (signUpModel, aVoid) -> signUpModel).
                 subscribe(model -> {
