@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kws.superawesome.tv.kwssdk.KWS;
+import kws.superawesome.tv.kwssdk.models.user.KWSUser;
+import kws.superawesome.tv.kwssdk.services.kws.KWSGetUserInterface;
 import rx.Observable;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.aux.ViewModel;
@@ -17,8 +19,8 @@ public class UserSource {
 
     public Observable<ViewModel> getUser (Context context) {
         return Observable.create((Observable.OnSubscribe<ViewModel>) subscriber -> {
-            KWS.sdk.getUser(kwsUser -> {
 
+            KWS.sdk.getUser(context, kwsUser -> {
                 if (kwsUser == null) {
                     subscriber.onError(new Throwable());
                 } else {
@@ -75,8 +77,6 @@ public class UserSource {
                     }
                     subscriber.onCompleted();
                 }
-
-
             });
         });
     }

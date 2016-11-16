@@ -13,14 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import kws.superawesome.tv.kwssdk.KWS;
-import kws.superawesome.tv.kwssdk.process.KWSErrorType;
 import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionType;
+import rx.functions.Action1;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.getappdata.GetAppDataActivity;
 import superawesome.tv.kwsdemoapp.activities.leader.LeaderboardActivity;
-import superawesome.tv.kwsdemoapp.activities.signup.SignUpActivity;
+import superawesome.tv.kwsdemoapp.activities.login.LoginActivity;
 import superawesome.tv.kwsdemoapp.activities.user.UserActivity;
-import superawesome.tv.kwsdemoapp.aux.KWSSingleton;
 import superawesome.tv.kwsdemoapp.aux.UniversalNotifier;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
@@ -30,13 +29,13 @@ import tv.superawesome.lib.sautils.SAProgressDialog;
  */
 public class FeaturesFragment extends Fragment {
 
-    private final String DOCSURL = "https://developers.superawesome.tv/extdocs/sa-kws-android-sdk/html/index.html";
+    private static final String CLIENT = "sa-mobile-app-sdk-client-0";
+    private static final String SECRET = "_apikey_5cofe4ppp9xav2t9";
+    private static final String API = "https://kwsapi.demo.superawesome.tv/";
+
+    private final String DOCSURL = "http://doc.superawesome.tv/sa-kws-android-sdk/latest/";
 
     private FeaturesAdapter adapter = null;
-
-    // for permissions
-    private CharSequence currentTitle = null;
-    private KWSPermissionType[] requestedType = null;
 
     // constructor
     public FeaturesFragment() {
@@ -45,8 +44,7 @@ public class FeaturesFragment extends Fragment {
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        KWS.sdk.setApplicationContext(getContext().getApplicationContext());
-        KWSSingleton.getInstance().start();
+        KWS.sdk.startSession(getContext(), CLIENT, SECRET, API);
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,13 +70,7 @@ public class FeaturesFragment extends Fragment {
                     // do nothing
                 });
 
-
-        // set registered or not
-        KWSSingleton.getInstance().getIsRegistered().
-                subscribe(aBoolean -> {
-                    KWSSingleton.getInstance().markUserRegistrationStatus(aBoolean);
-                    adapter.notifyDataSetChanged();
-                });
+        KWS.sdk.isRegistered(getContext(), b -> adapter.notifyDataSetChanged());
 
         UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("DOCS_NOTIFICATION")).
@@ -86,59 +78,73 @@ public class FeaturesFragment extends Fragment {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(DOCSURL));
                     getActivity().startActivity(browserIntent);
                 });
+
         UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("AUTH_NOTIFICATION")).
                 subscribe(notif -> {
-                    boolean isLogged = KWSSingleton.getInstance().isUserLogged();
-                    Intent authIntent = new Intent(getActivity(), !isLogged ? SignUpActivity.class : UserActivity.class);
+                    boolean isLogged = KWS.sdk.getLoggedUser() != null;
+                    Intent authIntent = new Intent(getActivity(), !isLogged ? LoginActivity.class : UserActivity.class);
                     getActivity().startActivity(authIntent);
                 });
+
         UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("RECEIVED_SIGNUP")).
                 subscribe(s -> {
                     adapter.notifyDataSetChanged();
                 });
+
         UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("RECEIVED_LOGOUT")).
                 subscribe(s -> {
                     adapter.notifyDataSetChanged();
                 });
+
         UniversalNotifier.getObservable().
                 filter(nofif -> nofif.equals("ADD_20_POINTS")).
                 subscribe(s -> {
-                    KWS.sdk.triggerEvent("GabrielAdd20ForAwesomeApp", 20, "You just earned 20 points!", b -> {
+                    KWS.sdk.triggerEvent(getContext(), "GabrielAdd20ForAwesomeApp", 20, b -> {
                         if (b) {
                             alert(getString(R.string.feature_event_add20_popup_success_title),
                                     getString(R.string.feature_event_add20_popup_success_message));
+                        } else {
+                            // failure
                         }
                     });
                 });
+
         UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("SUB_10_POINTS")).
                 subscribe(s -> {
-                    KWS.sdk.triggerEvent("GabrielSub10ForAwesomeApp", -10, "You just lost 10 points!", b -> {
+                    KWS.sdk.triggerEvent(getContext(), "GabrielSub10ForAwesomeApp", -10, b -> {
                         if (b) {
-                            alert(getString(R.string.feature_event_sub10_popup_success_title),
-                                    getString(R.string.feature_event_sub10_popup_success_message));
+                        alert(getString(R.string.feature_event_sub10_popup_success_title),
+                                getString(R.string.feature_event_sub10_popup_success_message));
+                        } else {
+                            // failure
                         }
                     });
                 });
+
         UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("GET_SCORE")).
                 subscribe(s -> {
-                    KWS.sdk.getScore(kwsScore -> {
+                    KWS.sdk.getScore(getContext(), kwsScore -> {
                         if (kwsScore != null) {
                             alert(getString(R.string.feature_event_getscore_success_title),
                                     getString(R.string.feature_event_getscore_success_message, kwsScore.rank, kwsScore.score));
+                        } else {
+                            // failure
                         }
                     });
                 });
+
         UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("SEE_LEADERBOARD")).
                 subscribe(s -> {
                     Intent leaderboard = new Intent(getActivity(), LeaderboardActivity.class);
                     getActivity().startActivity(leaderboard);
                 });
+
         UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("REQUEST_PERMISSION")).
                 subscribe(s -> {
@@ -163,37 +169,83 @@ public class FeaturesFragment extends Fragment {
                     AlertDialog.Builder builder = new AlertDialog.Builder(c);
                     builder.setTitle(getString(R.string.feature_perm_alert_title));
                     builder.setItems(titles, (dialog, which) -> {
-                        currentTitle = titles[which];
-                        requestedType = new KWSPermissionType[] { types[which] };
+                        KWSPermissionType[] requestedType = new KWSPermissionType[] { types[which] };
                         SAProgressDialog.getInstance().showProgress(getActivity());
-                        KWS.sdk.requestPermission(requestedType, this::permissionCallback);
+
+                        KWS.sdk.requestPermission(getContext(), requestedType, kwsPermissionStatus -> {
+
+                            SAProgressDialog.getInstance().hideProgress();
+
+                            switch (kwsPermissionStatus) {
+                                case Success: {
+                                    alert(getString(R.string.feature_perm_popup_success_title),
+                                            getString(R.string.feature_perm_popup_success_message));
+                                    break;
+                                }
+                                case NoParentEmail: {
+                                    // this should not happen anymore, I think
+                                    break;
+                                }
+                                case NeworkError: {
+                                    alert(getString(R.string.feature_perm_popup_error_title),
+                                            getString(R.string.feature_perm_popup_error_message));
+                                    break;
+                                }
+                            }
+                        });
                     });
                     builder.show();
                 });
 
         UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("SUBSCRIBE_NOTIFICATION")).
-                subscribe(s -> {
-                    boolean isRegisterd = KWSSingleton.getInstance().isUserMarkedAsRegistered();
-                    if (isRegisterd) {
-                        SAProgressDialog.getInstance().showProgress(getActivity());
-                        KWS.sdk.unregister(b -> {
-                            SAProgressDialog.getInstance().hideProgress();
-                            if (b) {
-                                adapter.notifyDataSetChanged();
-                                KWSSingleton.getInstance().markUserAsUnregistered();
-                                alert(getString(R.string.feature_notif_unreg_popup_success_title),
-                                        getString(R.string.feature_notif_unreg_popup_success_message));
-                            } else {
-                                alert(getString(R.string.feature_notif_unreg_popup_error_title),
-                                        getString(R.string.feature_notif_unreg_popup_error_message));
-                            }
-                        });
-                    } else {
-                        SAProgressDialog.getInstance().showProgress(getActivity());
-                        KWS.sdk.register(FeaturesFragment.this::registerCallback);
+                subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        boolean isRegistered = KWS.sdk.getLoggedUser() != null && KWS.sdk.getLoggedUser().isRegisteredForNotifications();
+
+                        if (isRegistered) {
+                            SAProgressDialog.getInstance().showProgress(getActivity());
+                            KWS.sdk.unregister(getContext(), b -> {
+                                SAProgressDialog.getInstance().hideProgress();
+                                if (b) {
+                                    adapter.notifyDataSetChanged();
+                                    alert(getString(R.string.feature_notif_unreg_popup_success_title),
+                                            getString(R.string.feature_notif_unreg_popup_success_message));
+                                } else {
+                                    alert(getString(R.string.feature_notif_unreg_popup_error_title),
+                                            getString(R.string.feature_notif_unreg_popup_error_message));
+                                }
+                            });
+                        } else {
+                            SAProgressDialog.getInstance().showProgress(getActivity());
+                            KWS.sdk.register(getContext(), kwsNotificationStatus -> {
+                                SAProgressDialog.getInstance().hideProgress();
+                                switch (kwsNotificationStatus) {
+                                    case ParentDisabledNotifications:
+                                    case UserDisabledNotifications:
+                                    case NoParentEmail:
+                                    case FirebaseNotSetup:
+                                    case FirebaseCouldNotGetToken: {
+                                        break;
+                                    }
+                                    case NetworkError: {
+                                        alert(getString(R.string.feature_notif_reg_popup_error_title),
+                                                getString(R.string.feature_notif_reg_popup_error_message));
+                                        break;
+                                    }
+                                    case Success: {
+                                        adapter.notifyDataSetChanged();
+                                        alert(getString(R.string.feature_notif_reg_popup_success_title),
+                                                getString(R.string.feature_notif_reg_popup_success_message));
+                                        break;
+                                    }
+                                }
+                            });
+                        }
                     }
                 });
+
         UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("ADD_USER_NOTIFICATION")).
                 subscribe(s -> {
@@ -209,11 +261,10 @@ public class FeaturesFragment extends Fragment {
 
                             SAProgressDialog.getInstance().showProgress(getActivity());
 
-                            KWS.sdk.inviteUser(email, invited -> {
-
+                            KWS.sdk.inviteUser(getContext(), email, b -> {
                                 SAProgressDialog.getInstance().hideProgress();
 
-                                if (invited) {
+                                if (b) {
                                     alert(getString(R.string.feature_friend_email_popup_success_title),
                                             getString(R.string.feature_friend_email_popup_success_message, email));
                                 } else {
@@ -224,6 +275,7 @@ public class FeaturesFragment extends Fragment {
                         }
                     });
                 });
+
         UniversalNotifier.getObservable().
                 filter(notif -> notif.equals("SEE_APP_DATA_NOTIFICATION")).
                 subscribe(s -> {
@@ -233,71 +285,6 @@ public class FeaturesFragment extends Fragment {
 
 
         return view;
-    }
-
-    private void permissionCallback (boolean success, boolean requested) {
-        SAProgressDialog.getInstance().hideProgress();
-        if (!success) {
-            alert(getString(R.string.feature_perm_popup_error_title),
-                    getString(R.string.feature_perm_popup_error_message));
-        } else {
-            if (requested) {
-                alert(getString(R.string.feature_perm_popup_success_title),
-                        getString(R.string.feature_perm_popup_success_message));
-            } else {
-                SAAlert.getInstance().show(getActivity(),
-                        getString(R.string.feature_parent_email_request_popup_title),
-                        getString(R.string.feature_parent_email_request_popup_message),
-                        getString(R.string.feature_parent_email_request_popup_submit),
-                        getString(R.string.feature_parent_email_request_popup_cancel),
-                        true,
-                        32,
-                        (button, email) -> {
-                            if (button == 0) {
-                                KWS.sdk.submitParentEmail(email, b -> {
-                                    if (b) {
-                                        SAProgressDialog.getInstance().showProgress(getActivity());
-                                        KWS.sdk.requestPermission(requestedType, FeaturesFragment.this::permissionCallback);
-                                    }
-                                });
-                            }
-                });
-            }
-        }
-    }
-
-    private void registerCallback (boolean success, KWSErrorType kwsErrorType) {
-        SAProgressDialog.getInstance().hideProgress();
-        if (success) {
-            KWSSingleton.getInstance().markUserRegistrationStatus(true);
-            adapter.notifyDataSetChanged();
-            alert(getString(R.string.feature_notif_reg_popup_success_title),
-                    getString(R.string.feature_notif_reg_popup_success_message));
-        } else {
-            if (kwsErrorType == KWSErrorType.UserHasNoParentEmail) {
-                SAAlert.getInstance().show(getActivity(),
-                        getString(R.string.feature_parent_email_request_popup_title),
-                        getString(R.string.feature_parent_email_request_popup_message),
-                        getString(R.string.feature_parent_email_request_popup_submit),
-                        getString(R.string.feature_parent_email_request_popup_cancel),
-                        true,
-                        32,
-                        (button, email) -> {
-                    if (button == 0) {
-                        KWS.sdk.submitParentEmail(email, b -> {
-                            if (b) {
-                                SAProgressDialog.getInstance().showProgress(getActivity());
-                                KWS.sdk.register(FeaturesFragment.this::registerCallback);
-                            }
-                        });
-
-                    }
-                });
-            } else {
-                alert(getString(R.string.feature_notif_reg_popup_error_title),
-                        getString(R.string.feature_notif_reg_popup_error_message));
-            }
-        }
     }
 
     private void alert(String title, String message) {

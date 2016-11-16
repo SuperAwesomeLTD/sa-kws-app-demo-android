@@ -1,21 +1,18 @@
 package superawesome.tv.kwsdemoapp.activities.leader;
 
-import java.util.List;
+import android.content.Context;
 
 import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.models.leaderboard.KWSLeader;
-import kws.superawesome.tv.kwssdk.services.kws.KWSGetLeaderboardInterface;
 import rx.Observable;
-import rx.Subscriber;
 
 /**
- * Created by gabriel.coman on 31/08/16.
+ * Created by gabriel.coman on 16/11/16.
  */
 public class LeaderboardSource {
-
-    public Observable<KWSLeader> getLeaderboard() {
+    public Observable<KWSLeader> getLeaderboard(Context context) {
         return Observable.create((Observable.OnSubscribe<KWSLeader>) subscriber -> {
-            KWS.sdk.getLeaderBoard(leaders -> {
+            KWS.sdk.getLeaderBoard(context, leaders -> {
                 for (KWSLeader leader : leaders) {
                     subscriber.onNext(leader);
                 }

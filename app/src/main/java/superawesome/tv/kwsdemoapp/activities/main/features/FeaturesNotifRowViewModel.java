@@ -7,8 +7,8 @@ import android.widget.Button;
 
 import com.jakewharton.rxbinding.view.RxView;
 
+import kws.superawesome.tv.kwssdk.KWS;
 import superawesome.tv.kwsdemoapp.R;
-import superawesome.tv.kwsdemoapp.aux.KWSSingleton;
 import superawesome.tv.kwsdemoapp.aux.UniversalNotifier;
 import superawesome.tv.kwsdemoapp.aux.ViewModel;
 
@@ -22,8 +22,8 @@ public class FeaturesNotifRowViewModel implements ViewModel {
             v = LayoutInflater.from(context).inflate(R.layout.listitem_features_notif, null);
         }
 
-        boolean isLogged = KWSSingleton.getInstance().isUserLogged();
-        boolean isRegistered = KWSSingleton.getInstance().isUserMarkedAsRegistered();
+        boolean isLogged = KWS.sdk.getLoggedUser() != null;
+        boolean isRegistered = KWS.sdk.getLoggedUser() != null && KWS.sdk.getLoggedUser().isRegisteredForNotifications();
 
         Button docButton = (Button) v.findViewById(R.id.notifDocs);
         Button subButton = (Button) v.findViewById(R.id.notifEnableDisable);

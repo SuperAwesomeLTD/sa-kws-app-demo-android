@@ -7,9 +7,8 @@ import android.widget.Button;
 
 import com.jakewharton.rxbinding.view.RxView;
 
-import rx.functions.Action1;
+import kws.superawesome.tv.kwssdk.KWS;
 import superawesome.tv.kwsdemoapp.R;
-import superawesome.tv.kwsdemoapp.aux.KWSSingleton;
 import superawesome.tv.kwsdemoapp.aux.UniversalNotifier;
 import superawesome.tv.kwsdemoapp.aux.ViewModel;
 
@@ -23,7 +22,7 @@ public class FeaturesPermRowViewModel implements ViewModel {
             v = LayoutInflater.from(context).inflate(R.layout.listitem_features_perm, null);
         }
 
-        boolean isLogged = KWSSingleton.getInstance().isUserLogged();
+        boolean isLogged = KWS.sdk.getLoggedUser() != null;
 
         Button addPermission = (Button) v.findViewById(R.id.permissionAddButton);
         Button permDocs = (Button) v.findViewById(R.id.permissionDocs);

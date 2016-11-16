@@ -8,102 +8,71 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:335316960677:android:3fb4978f07236ab4",
-        "android_client_info": {
-          "package_name": "kws.superawesome.tv.kwssdk"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "335316960677-3eflbi6lkhot4d2qboqrfdgca6u36cir.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCsANZRddw5TU1NPnHUgHjkHUtly1qiZ0E"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:335316960677:android:20f569f1f129d32c",
-        "android_client_info": {
-          "package_name": "kws.superawesome.tv.kwsdemo"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "335316960677-3eflbi6lkhot4d2qboqrfdgca6u36cir.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCsANZRddw5TU1NPnHUgHjkHUtly1qiZ0E"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:335316960677:android:76ca6d26399105d3",
-        "android_client_info": {
-          "package_name": "superawesome.tv.gabbotestfirebase"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "335316960677-3eflbi6lkhot4d2qboqrfdgca6u36cir.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCsANZRddw5TU1NPnHUgHjkHUtly1qiZ0E"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:335316960677:android:c5b892714c949f22",
         "android_client_info": {
           "package_name": "superawesome.tv.kwsappdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "335316960677-3eflbi6lkhot4d2qboqrfdgca6u36cir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsANZRddw5TU1NPnHUgHjkHUtly1qiZ0E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335316960677:android:7fc41616cae822bd",
+        "android_client_info": {
+          "package_name": "com.mindcandy.popjam.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "335316960677-3eflbi6lkhot4d2qboqrfdgca6u36cir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsANZRddw5TU1NPnHUgHjkHUtly1qiZ0E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335316960677:android:a588c3359b845a7a",
+        "android_client_info": {
+          "package_name": "superawesome.tv.kwsdemoapp"
         }
       },
       "oauth_client": [

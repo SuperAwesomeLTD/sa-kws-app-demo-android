@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.jakewharton.rxbinding.view.RxView;
+
+import rx.functions.Action1;
 import superawesome.tv.kwsdemoapp.R;
 
 /**
@@ -21,7 +24,6 @@ public class PlatformFragment extends Fragment {
 
     // constructor
     public PlatformFragment(){
-
     }
 
     @Override
@@ -34,10 +36,12 @@ public class PlatformFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_platform, container, false);
         Button openKWS = (Button) view.findViewById(R.id.openKWSWebsite);
-        openKWS.setOnClickListener(v -> {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(KWSURL));
-            getContext().startActivity(browserIntent);
-        });
+        RxView.clicks(openKWS).subscribe(aVoid -> onClick());
         return view;
+    }
+
+    private void onClick () {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(KWSURL));
+        getContext().startActivity(browserIntent);
     }
 }

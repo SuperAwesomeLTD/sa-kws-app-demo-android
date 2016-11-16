@@ -51,7 +51,7 @@ public class GetAppDataActivity extends AppCompatActivity {
         appDataListView.setAdapter(adapter);
 
         source = new GetAppDataSource();
-        appDataObservable = source.getAppData().
+        appDataObservable = source.getAppData(GetAppDataActivity.this).
                 doOnSubscribe(() -> SAProgressDialog.getInstance().showProgress(GetAppDataActivity.this)).
                 map((Func1<KWSAppData, ViewModel>) kwsAppData -> new GetAppDataRowViewModel(kwsAppData.name, kwsAppData.value)).
                 toList().

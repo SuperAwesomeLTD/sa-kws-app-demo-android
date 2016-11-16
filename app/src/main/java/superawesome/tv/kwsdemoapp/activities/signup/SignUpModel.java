@@ -2,6 +2,8 @@ package superawesome.tv.kwsdemoapp.activities.signup;
 
 import android.util.Log;
 
+import tv.superawesome.lib.sautils.SAUtils;
+
 /**
  * Created by gabriel.coman on 31/08/16.
  */
@@ -14,28 +16,59 @@ public class SignUpModel {
     private String username;
     private String password1;
     private String password2;
+    private String parentEmail;
     private Integer year;
     private Integer month;
     private Integer day;
 
-    public SignUpModel (String username, String password1, String password2, String year, String month, String day) {
+    public SignUpModel (String username, String password1, String password2, String parentEmail, String year, String month, String day) {
         this.username = username;
         this.password1 = password1;
         this.password2 = password2;
+        this.parentEmail = parentEmail;
         this.year = year != null && !year.isEmpty() ? Integer.parseInt(year) : INVALID_DATE;
         this.month = month != null && !month.isEmpty() ? Integer.parseInt(month) : INVALID_DATE;
         this.day = day != null && !day.isEmpty() ? Integer.parseInt(day) : INVALID_DATE;
     }
 
+    public boolean isUserOK () {
+        return username != null && !username.isEmpty();
+    }
+
+    public boolean isPassword1OK () {
+        return password1 != null && !password1.isEmpty() && password1.length() >= 8;
+    }
+
+    public boolean isPassword2OK () {
+        return password2 != null && !password2.isEmpty() && password2.length() >= 8;
+    }
+
+    public boolean arePasswordsSame () {
+        return password1 != null && password2 != null && password1.equals(password2);
+    }
+
+    public boolean isParentEmailOK () {
+        return SAUtils.isValidEmail(parentEmail);
+    }
+
+    public boolean isYearOK () {
+        return year > 1900;
+    }
+
+    public boolean isMonthOK () {
+        return month >= 1 && month <= 12;
+    }
+
+    public boolean isDayOK () {
+        return day >= 1 && day <= 31;
+    }
+
     public boolean isValid () {
-        boolean userOK = username != null && !username.isEmpty();
-        boolean pass1OK = password1 != null && !password1.isEmpty() && password1.length() >= 8;
-        boolean pass2OK = password2 != null && !password2.isEmpty() && password2.length() >= 8;
-        boolean passSame = password1 != null && password2 != null && password1.equals(password2);
-        boolean yearOK = year > 1900;
-        boolean monthOK = month >= 1 && month <= 12;
-        boolean dayOK = day >= 1 && day <= 30;
-        return userOK && pass1OK && pass2OK && passSame && yearOK && monthOK && dayOK;
+        return isUserOK() && isPassword1OK() && isPassword2OK() && arePasswordsSame() && isParentEmailOK() && isYearOK() && isMonthOK() && isDayOK();
+    }
+
+    public String getParentEmail () {
+        return parentEmail;
     }
 
     public String getUsername () {

@@ -7,8 +7,8 @@ import android.widget.Button;
 
 import com.jakewharton.rxbinding.view.RxView;
 
+import kws.superawesome.tv.kwssdk.KWS;
 import superawesome.tv.kwsdemoapp.R;
-import superawesome.tv.kwsdemoapp.aux.KWSSingleton;
 import superawesome.tv.kwsdemoapp.aux.UniversalNotifier;
 import superawesome.tv.kwsdemoapp.aux.ViewModel;
 
@@ -23,7 +23,7 @@ public class FeaturesAppDataRowViewModel implements ViewModel {
             v = LayoutInflater.from(context).inflate(R.layout.listitem_features_appdata, null);
         }
 
-        boolean isLogged = KWSSingleton.getInstance().isUserLogged();
+        boolean isLogged = KWS.sdk.getLoggedUser() != null;
 
         Button docButton = (Button) v.findViewById(R.id.appdataDocs);
         Button seeButton = (Button) v.findViewById(R.id.appdataSee);

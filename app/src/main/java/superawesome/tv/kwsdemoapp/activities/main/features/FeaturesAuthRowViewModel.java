@@ -1,21 +1,16 @@
 package superawesome.tv.kwsdemoapp.activities.main.features;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
 
 import kws.superawesome.tv.kwssdk.KWS;
-import kws.superawesome.tv.kwssdk.models.user.KWSUser;
-import rx.functions.Action1;
+import kws.superawesome.tv.kwssdk.models.oauth.KWSLoggedUser;
 import superawesome.tv.kwsdemoapp.R;
-import superawesome.tv.kwsdemoapp.aux.KWSModel;
-import superawesome.tv.kwsdemoapp.aux.KWSSingleton;
 import superawesome.tv.kwsdemoapp.aux.UniversalNotifier;
 import superawesome.tv.kwsdemoapp.aux.ViewModel;
 
@@ -33,11 +28,11 @@ public class FeaturesAuthRowViewModel implements ViewModel {
         Button authButton = (Button) v.findViewById(R.id.authAction);
         Button docsButton = (Button) v.findViewById(R.id.authDocs);
 
-        boolean isLogged = KWSSingleton.getInstance().isUserLogged();
-        KWSModel local = KWSSingleton.getInstance().getUser();
+        boolean isLogged = KWS.sdk.getLoggedUser() != null;
+        KWSLoggedUser local = KWS.sdk.getLoggedUser();
 
         authButton.setText(isLogged ?
-                context.getString(R.string.feature_cell_auth_button_1_loggedout) + local.username :
+                context.getString(R.string.feature_cell_auth_button_1_loggedin) + " " + local.username :
                 context.getString(R.string.feature_cell_auth_button_1_loggedout));
 
         RxView.clicks(docsButton).subscribe(aVoid -> UniversalNotifier.postNotification("DOCS_NOTIFICATION"));

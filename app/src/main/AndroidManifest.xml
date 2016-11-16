@@ -23,6 +23,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activities.login.LoginActivity"
+            android:label="@string/login_name"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".activities.signup.SignUpActivity"
             android:label="@string/signin_name"
             android:screenOrientation="portrait"/>

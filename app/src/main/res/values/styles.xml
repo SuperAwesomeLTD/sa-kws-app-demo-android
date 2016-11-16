@@ -42,4 +42,8 @@
         <item name="android:textColor">@color/textColorWhite</item>
         <item name="android:background">@drawable/mybutton3_state</item>
     </style>
+
+		<style name="ButtonStyleText">
+			<item name="android:textColor">@color/textColorBlue</item>
+		</style>
 </resources>

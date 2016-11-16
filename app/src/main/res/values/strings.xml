@@ -3,6 +3,7 @@
 
     <string name="app_name">KWS</string>
     <string name="main_name">KWS</string>
+    <string name="login_name">Log In</string>
     <string name="signin_name">Sign In</string>
     <string name="logout_name">Log Out</string>
     <string name="leaderboard_name">Leaderboard</string>
@@ -90,12 +91,25 @@
     <string name="feature_friend_email_popup_error_message">An error occurred while inviting %1$@ to your app through KWS. Please try again!</string>
     <string name="feature_popup_dismiss_button">Got it</string>
 
+		<!-- log in -->
+		<string name="login_vc_title">Log in to KWS</string>
+		<string name="login_username_placeholder">Enter username</string>
+		<string name="login_password_placeholder">Enter password</string>
+		<string name="login_button_login">Login</string>
+		<string name="login_button_create">Create new user</string>
+		<string name="login_popup_error_title">Oops - something went wrong!</string>
+		<string name="login_popup_error_message">Seems like either the username or password you supplied were incorrect</string>
+		<string name="login_popup_error_network_title">Oops - something went wrong!</string>
+		<string name="login_popup_error_network_message">Seems like either the username or password you supplied were incorrect</string>
+		<string name="login_popup_dismiss_button">Got it</string>
+
     <!-- documentation
      sign-up -->
     <string name="sign_up_vc_title">Sign up to KWS</string>
     <string name="sign_up_username_placeholder">Enter a username</string>
     <string name="sign_up_password1_placeholder">Enter a password</string>
     <string name="sign_up_password2_placeholder">Repeat the password</string>
+    <string name="sign_up_parentemail_placeholder">A parent email</string>
     <string name="sign_up_year_placeholder">YYYY</string>
     <string name="sign_up_month_placeholder">MM</string>
     <string name="sign_up_day_placeholder">DD</string>
@@ -103,6 +117,8 @@
     <string name="sign_up_popup_warning_title">Hey</string>
     <string name="sign_up_popup_error_title">Oops - something went wrong!</string>
     <string name="sign_up_popup_dismiss_button">Got it</string>
+    <string name="sign_up_popup_warning_duplicate_title">Hey</string>
+    <string name="sign_up_popup_warning_duplicate_message">The username you chose is already in use. Pleae try another</string>
     <string name="sign_up_popup_warning_message_username">Please enter a different username</string>
     <string name="sign_up_popup_warning_message_password1">Please enter a password that is longer than 8 characters</string>
     <string name="sign_up_popup_warning_message_password2">Please make sure the two passwords match (and are both longer than 8 characters)</string>
