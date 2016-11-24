@@ -1,41 +1,19 @@
 package superawesome.tv.kwsdemoapp.activities.user;
 
 import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import superawesome.tv.kwsdemoapp.aux.GBAdapter;
-import superawesome.tv.kwsdemoapp.aux.ViewModel;
+import superawesome.tv.kwsdemoapp.aux.GenericAdapter;
 
 /**
  * Created by gabriel.coman on 09/08/16.
  */
-public class UserAdapter extends ArrayAdapter<ViewModel> implements GBAdapter {
-
-    private List<ViewModel> items = new ArrayList<>();
+public class UserAdapter extends GenericAdapter {
 
     public UserAdapter (Context context) {
-        super(context, 0);
+        super(context);
     }
 
-    @Override
-    public void updateData (List<ViewModel> newItems) {
-        items = newItems;
-        notifyDataSetChanged();
-    }
-
-    @Override public int getCount() { return items.size(); }
-
-    @Override public int getItemViewType(int position) { return items.get(position) instanceof UserHeaderViewModel ? 0 : 1; }
+    @Override public int getItemViewType(int position) { return data.get(position) instanceof UserHeaderViewModel ? 0 : 1; }
 
     @Override public int getViewTypeCount() { return 2; }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        return items.get(position).representationAsRow(getContext(), convertView);
-    }
 }

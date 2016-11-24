@@ -5,13 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
-import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.models.leaderboard.KWSLeader;
-import rx.Observable;
 import rx.functions.Func1;
 import superawesome.tv.kwsdemoapp.R;
-import superawesome.tv.kwsdemoapp.activities.login.LoginActivity;
-import superawesome.tv.kwsdemoapp.aux.ViewModel;
+import superawesome.tv.kwsdemoapp.aux.GenericViewModelInterface;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
@@ -41,7 +38,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         LeaderboardSource source = new LeaderboardSource();
         source.getLeaderboard(LeaderboardActivity.this).
                 doOnSubscribe(() -> SAProgressDialog.getInstance().showProgress(c)).
-                map((Func1<KWSLeader, ViewModel>) kwsLeader -> new LeaderRowViewModel(kwsLeader.rank, kwsLeader.score, kwsLeader.user)).
+                map((Func1<KWSLeader, GenericViewModelInterface>) kwsLeader -> new LeaderRowViewModel(kwsLeader.rank, kwsLeader.score, kwsLeader.user)).
                 toList().
                 doOnError(throwable -> SAProgressDialog.getInstance().hideProgress()).
                 doOnCompleted(() -> SAProgressDialog.getInstance().hideProgress()).

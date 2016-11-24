@@ -6,26 +6,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kws.superawesome.tv.kwssdk.KWS;
-import kws.superawesome.tv.kwssdk.models.user.KWSUser;
-import kws.superawesome.tv.kwssdk.services.kws.KWSGetUserInterface;
 import rx.Observable;
 import superawesome.tv.kwsdemoapp.R;
-import superawesome.tv.kwsdemoapp.aux.ViewModel;
+import superawesome.tv.kwsdemoapp.aux.GenericViewModelInterface;
 
 /**
  * Created by gabriel.coman on 31/08/16.
  */
 public class UserSource {
 
-    public Observable<ViewModel> getUser (Context context) {
-        return Observable.create((Observable.OnSubscribe<ViewModel>) subscriber -> {
+    public Observable<GenericViewModelInterface> getUser (Context context) {
+        return Observable.create((Observable.OnSubscribe<GenericViewModelInterface>) subscriber -> {
 
             KWS.sdk.getUser(context, kwsUser -> {
                 if (kwsUser == null) {
                     subscriber.onError(new Throwable());
                 } else {
 
-                    List<ViewModel> items1 = new ArrayList<>();
+                    List<GenericViewModelInterface> items1 = new ArrayList<>();
 
                     items1.add(new UserHeaderViewModel(kwsUser.username));
                     items1.add(new UserRowViewModel(context.getString(R.string.user_row_details_first_name), kwsUser.firstName));
@@ -72,7 +70,7 @@ public class UserSource {
                     }
 
                     // send messages
-                    for (ViewModel item : items1) {
+                    for (GenericViewModelInterface item : items1) {
                         subscriber.onNext(item);
                     }
                     subscriber.onCompleted();

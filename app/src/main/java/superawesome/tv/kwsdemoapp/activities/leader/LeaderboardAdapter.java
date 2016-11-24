@@ -1,33 +1,26 @@
 package superawesome.tv.kwsdemoapp.activities.leader;
 
 import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import superawesome.tv.kwsdemoapp.aux.GBAdapter;
-import superawesome.tv.kwsdemoapp.aux.ViewModel;
+import superawesome.tv.kwsdemoapp.aux.GenericAdapter;
+import superawesome.tv.kwsdemoapp.aux.GenericViewModelInterface;
 
 /**
  * Created by gabriel.coman on 09/08/16.
  */
-public class LeaderboardAdapter extends ArrayAdapter<ViewModel> implements GBAdapter {
-
-    // internal list
-    private List<ViewModel> leaders = new ArrayList<>();
+public class LeaderboardAdapter extends GenericAdapter {
 
     public LeaderboardAdapter (Context context) {
-        super(context, 0);
+        super(context);
     }
 
-    @Override
-    public void updateData (List<ViewModel> newLeaders) {
-        leaders = new ArrayList<>();
-        leaders.add(new LeaderHeaderViewModel());
-        leaders.addAll(newLeaders);
+    @Override public void updateData (List<GenericViewModelInterface> newLeaders) {
+        data = new ArrayList<>();
+        data.add(new LeaderHeaderViewModel());
+        data.addAll(newLeaders);
         notifyDataSetChanged();
     }
 
@@ -35,9 +28,4 @@ public class LeaderboardAdapter extends ArrayAdapter<ViewModel> implements GBAda
 
     @Override public int getViewTypeCount() { return 2; }
 
-    @Override public int getCount() { return leaders.size(); }
-
-    @Override public View getView(int position, View convertView, ViewGroup parent) {
-        return leaders.get(position).representationAsRow(getContext(), convertView);
-    }
 }

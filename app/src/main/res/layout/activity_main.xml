@@ -19,8 +19,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            style="@style/ToolBarStyle"
-            app:layout_scrollFlags="scroll|enterAlways">
+            style="@style/ToolBarStyle">
 
             <LinearLayout
                 android:layout_width="match_parent"

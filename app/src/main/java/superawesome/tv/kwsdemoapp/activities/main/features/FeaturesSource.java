@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
-import rx.Subscriber;
-import superawesome.tv.kwsdemoapp.aux.ViewModel;
+import superawesome.tv.kwsdemoapp.aux.GenericViewModelInterface;
 
 /**
  * Created by gabriel.coman on 31/08/16.
  */
 public class FeaturesSource {
 
-    public Observable<ViewModel> getFeatures () {
-        return Observable.create((Observable.OnSubscribe<ViewModel>) subscriber -> {
+    public Observable<GenericViewModelInterface> getFeatures () {
+        return Observable.create((Observable.OnSubscribe<GenericViewModelInterface>) subscriber -> {
 
             // add data
-            List<ViewModel> rows = new ArrayList<>();
+            List<GenericViewModelInterface> rows = new ArrayList<>();
             rows.add(new FeaturesAuthRowViewModel());
             rows.add(new FeaturesNotifRowViewModel());
             rows.add(new FeaturesPermRowViewModel());
@@ -25,7 +24,7 @@ public class FeaturesSource {
             rows.add(new FeaturesAppDataRowViewModel());
 
             // emmit it
-            for (ViewModel row : rows) {
+            for (GenericViewModelInterface row : rows) {
                 subscriber.onNext(row);
             }
             subscriber.onCompleted();

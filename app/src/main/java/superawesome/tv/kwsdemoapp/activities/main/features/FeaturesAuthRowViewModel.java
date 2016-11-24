@@ -1,9 +1,9 @@
 package superawesome.tv.kwsdemoapp.activities.main.features;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.jakewharton.rxbinding.view.RxView;
@@ -12,17 +12,17 @@ import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.models.oauth.KWSLoggedUser;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.aux.UniversalNotifier;
-import superawesome.tv.kwsdemoapp.aux.ViewModel;
+import superawesome.tv.kwsdemoapp.aux.GenericViewModelInterface;
 
 /**
  * Created by gabriel.coman on 16/08/16.
  */
-public class FeaturesAuthRowViewModel implements ViewModel {
+public class FeaturesAuthRowViewModel implements GenericViewModelInterface {
 
-    @Override public View representationAsRow(Context context, View convertView) {
+    @Override public View representationAsRow(Context context, View convertView, ViewGroup parent) {
         View v = convertView;
         if (v == null) {
-            v = LayoutInflater.from(context).inflate(R.layout.listitem_features_auth, null);
+            v = LayoutInflater.from(context).inflate(R.layout.listitem_features_auth, parent, false);
         }
 
         Button authButton = (Button) v.findViewById(R.id.authAction);

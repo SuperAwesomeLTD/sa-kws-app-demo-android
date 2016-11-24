@@ -16,7 +16,8 @@ import rx.Observable;
 import rx.functions.Func1;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.setappdata.SetAppDataActivity;
-import superawesome.tv.kwsdemoapp.aux.ViewModel;
+import superawesome.tv.kwsdemoapp.aux.GenericAdapter;
+import superawesome.tv.kwsdemoapp.aux.GenericViewModelInterface;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
@@ -29,8 +30,8 @@ public class GetAppDataActivity extends AppCompatActivity {
     private static final int SET_REQ_CODE = 111;
 
     // private vars
-    Observable<List<ViewModel>> appDataObservable = null;
-    GetAppDataAdapter adapter = null;
+    Observable<List<GenericViewModelInterface>> appDataObservable = null;
+    GenericAdapter adapter = null;
     GetAppDataSource source = null;
 
     @Override
@@ -47,56 +48,44 @@ public class GetAppDataActivity extends AppCompatActivity {
         Button addButton = (Button) findViewById(R.id.appDataAdd);
         ListView appDataListView = (ListView) findViewById(R.id.appDataListView);
 
-        adapter = new GetAppDataAdapter(this);
+        adapter = new GenericAdapter(this);
         appDataListView.setAdapter(adapter);
 
         source = new GetAppDataSource();
         appDataObservable = source.getAppData(GetAppDataActivity.this).
                 doOnSubscribe(() -> SAProgressDialog.getInstance().showProgress(GetAppDataActivity.this)).
-                map((Func1<KWSAppData, ViewModel>) kwsAppData -> new GetAppDataRowViewModel(kwsAppData.name, kwsAppData.value)).
+                map((Func1<KWSAppData, GenericViewModelInterface>) kwsAppData -> new GetAppDataRowViewModel(kwsAppData.name, kwsAppData.value)).
                 toList().
-                doOnError(throwable -> {
-                    SAProgressDialog.getInstance().hideProgress();
-                    SAAlert.getInstance().show(GetAppDataActivity.this,
-                            getString(R.string.get_app_data_popup_error_title),
-                            getString(R.string.get_app_data_popup_error_message),
-                            getString(R.string.get_app_data_popup_dismiss_button),
-                            null,
-                            false,
-                            0,
-                            null);
-                }).
+                doOnError(throwable -> SAProgressDialog.getInstance().hideProgress()).
                 doOnCompleted(() -> SAProgressDialog.getInstance().hideProgress());
 
-        appDataObservable.
-                subscribe(appDataRowViewModels -> {
-                    adapter.updateData(appDataRowViewModels);
-                }, throwable -> {
-                    // do nothing
-                }, () -> {
-                    // do nothing
-                });
+        appDataObservable.subscribe(rows -> adapter.updateData(rows), throwable -> errorAlert());
 
-        RxView.clicks(addButton).
-                subscribe(aVoid -> {
-                    Intent setappdata = new Intent(GetAppDataActivity.this, SetAppDataActivity.class);
-                    startActivityForResult(setappdata, SET_REQ_CODE);
-                });
-
+        RxView.clicks(addButton).subscribe(aVoid -> startActivity());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == SET_REQ_CODE && resultCode == RESULT_OK) {
-            appDataObservable.
-                    subscribe(appDataRowViewModels -> {
-                        adapter.updateData(appDataRowViewModels);
-                    }, throwable -> {
-                        // do nothing
-                    }, () -> {
-                        // do nothing
-                    });
+            appDataObservable.subscribe(rows -> adapter.updateData(rows), throwable -> errorAlert());
         }
+    }
+
+    private void startActivity () {
+        Intent setappdata = new Intent(GetAppDataActivity.this, SetAppDataActivity.class);
+        startActivityForResult(setappdata, SET_REQ_CODE);
+    }
+
+    private void errorAlert () {
+        SAAlert.getInstance().show(GetAppDataActivity.this,
+                getString(R.string.get_app_data_popup_error_title),
+                getString(R.string.get_app_data_popup_error_message),
+                getString(R.string.get_app_data_popup_dismiss_button),
+                null,
+                false,
+                0,
+                null);
     }
 }
