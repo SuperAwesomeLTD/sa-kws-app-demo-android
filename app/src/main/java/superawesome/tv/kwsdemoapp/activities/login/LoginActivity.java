@@ -16,9 +16,6 @@ import superawesome.tv.kwsdemoapp.aux.UniversalNotifier;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
-/**
- * Created by gabriel.coman on 11/11/16.
- */
 public class LoginActivity extends AppCompatActivity {
 
     // private constants

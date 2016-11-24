@@ -1,8 +1,5 @@
 package superawesome.tv.kwsdemoapp.activities.login;
 
-/**
- * Created by gabriel.coman on 11/11/16.
- */
 public class LoginModel {
 
     private String username;

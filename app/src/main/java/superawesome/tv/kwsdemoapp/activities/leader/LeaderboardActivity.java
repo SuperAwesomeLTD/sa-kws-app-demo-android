@@ -12,9 +12,6 @@ import superawesome.tv.kwsdemoapp.aux.GenericViewModelInterface;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
-/**
- * Created by gabriel.coman on 09/08/16.
- */
 public class LeaderboardActivity extends AppCompatActivity {
 
     @Override

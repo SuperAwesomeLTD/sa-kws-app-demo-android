@@ -21,9 +21,6 @@ import superawesome.tv.kwsdemoapp.aux.GenericViewModelInterface;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
-/**
- * Created by gabriel.coman on 31/08/16.
- */
 public class GetAppDataActivity extends AppCompatActivity {
 
     // private constants

@@ -6,9 +6,6 @@ import java.util.List;
 import rx.Observable;
 import superawesome.tv.kwsdemoapp.aux.GenericViewModelInterface;
 
-/**
- * Created by gabriel.coman on 31/08/16.
- */
 public class FeaturesSource {
 
     public Observable<GenericViewModelInterface> getFeatures () {

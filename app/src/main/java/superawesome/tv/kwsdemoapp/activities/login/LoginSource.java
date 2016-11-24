@@ -5,9 +5,6 @@ import android.content.Context;
 import kws.superawesome.tv.kwssdk.KWS;
 import rx.Observable;
 
-/**
- * Created by gabriel.coman on 16/11/16.
- */
 public class LoginSource {
 
     public Observable<Boolean> login (final Context context, final String username, final String password) {

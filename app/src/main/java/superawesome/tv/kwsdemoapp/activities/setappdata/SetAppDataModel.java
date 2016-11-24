@@ -1,8 +1,5 @@
 package superawesome.tv.kwsdemoapp.activities.setappdata;
 
-/**
- * Created by gabriel.coman on 01/09/16.
- */
 public class SetAppDataModel {
 
     private static final int INVALID_VALUE = -Integer.MAX_VALUE;

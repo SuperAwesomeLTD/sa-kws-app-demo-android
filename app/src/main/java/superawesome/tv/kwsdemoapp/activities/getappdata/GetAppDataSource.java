@@ -2,16 +2,10 @@ package superawesome.tv.kwsdemoapp.activities.getappdata;
 
 import android.content.Context;
 
-import java.util.List;
-
 import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.models.appdata.KWSAppData;
-import kws.superawesome.tv.kwssdk.services.kws.KWSGetAppDataInterface;
 import rx.Observable;
 
-/**
- * Created by gabriel.coman on 31/08/16.
- */
 public class GetAppDataSource {
 
     public Observable<KWSAppData> getAppData (Context context) {

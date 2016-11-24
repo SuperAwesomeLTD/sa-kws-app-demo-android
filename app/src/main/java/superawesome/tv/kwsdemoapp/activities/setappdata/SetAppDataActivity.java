@@ -3,26 +3,17 @@ package superawesome.tv.kwsdemoapp.activities.setappdata;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
-import kws.superawesome.tv.kwssdk.KWS;
-import kws.superawesome.tv.kwssdk.services.kws.KWSSetAppDataInterface;
 import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.functions.Func2;
 import superawesome.tv.kwsdemoapp.R;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
-/**
- * Created by gabriel.coman on 31/08/16.
- */
 public class SetAppDataActivity extends AppCompatActivity {
 
     private SetAppDataModel currentModel;

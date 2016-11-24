@@ -10,9 +10,6 @@ import android.webkit.WebView;
 
 import superawesome.tv.kwsdemoapp.R;
 
-/**
- * Created by gabriel.coman on 15/06/16.
- */
 public class DocumentationFragment extends Fragment {
 
     // webview

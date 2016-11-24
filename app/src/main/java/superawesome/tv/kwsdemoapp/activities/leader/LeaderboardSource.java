@@ -6,9 +6,6 @@ import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.models.leaderboard.KWSLeader;
 import rx.Observable;
 
-/**
- * Created by gabriel.coman on 16/11/16.
- */
 public class LeaderboardSource {
     public Observable<KWSLeader> getLeaderboard(Context context) {
         return Observable.create((Observable.OnSubscribe<KWSLeader>) subscriber -> {

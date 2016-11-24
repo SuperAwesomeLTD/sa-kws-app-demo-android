@@ -15,9 +15,6 @@ import superawesome.tv.kwsdemoapp.R;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
-/**
- * Created by gabriel.coman on 16/06/16.
- */
 public class SignUpActivity extends AppCompatActivity {
 
     private SignUpModel currentModel;

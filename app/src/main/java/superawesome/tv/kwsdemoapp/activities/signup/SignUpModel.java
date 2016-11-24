@@ -1,12 +1,7 @@
 package superawesome.tv.kwsdemoapp.activities.signup;
 
-import android.util.Log;
-
 import tv.superawesome.lib.sautils.SAUtils;
 
-/**
- * Created by gabriel.coman on 31/08/16.
- */
 public class SignUpModel {
 
     // constants

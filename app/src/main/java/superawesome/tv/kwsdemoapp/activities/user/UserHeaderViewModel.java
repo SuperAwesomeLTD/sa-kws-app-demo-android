@@ -9,9 +9,6 @@ import android.widget.TextView;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.aux.GenericViewModelInterface;
 
-/**
- * Created by gabriel.coman on 15/08/16.
- */
 public class UserHeaderViewModel implements GenericViewModelInterface {
 
     private String headerTxt = null;

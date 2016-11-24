@@ -5,9 +5,6 @@ import android.content.Context;
 import kws.superawesome.tv.kwssdk.KWS;
 import rx.Observable;
 
-/**
- * Created by gabriel.coman on 16/11/16.
- */
 public class SetAppDataSource {
 
     public Observable<Boolean> submitData(final Context context, final String name, final Integer value) {

@@ -13,9 +13,6 @@ import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.aux.UniversalNotifier;
 import superawesome.tv.kwsdemoapp.aux.GenericViewModelInterface;
 
-/**
- * Created by gabriel.coman on 31/08/16.
- */
 public class FeaturesInviteRowViewModel implements GenericViewModelInterface {
 
     @Override

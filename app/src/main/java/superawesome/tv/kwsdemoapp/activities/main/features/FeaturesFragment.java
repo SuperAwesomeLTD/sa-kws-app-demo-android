@@ -24,9 +24,6 @@ import superawesome.tv.kwsdemoapp.aux.UniversalNotifier;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
-/**
- * Created by gabriel.coman on 15/06/16.
- */
 public class FeaturesFragment extends Fragment {
 
     private static final String CLIENT = "sa-mobile-app-sdk-client-0";

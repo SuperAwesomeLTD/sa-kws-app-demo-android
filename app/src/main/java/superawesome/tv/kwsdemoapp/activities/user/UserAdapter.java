@@ -4,9 +4,6 @@ import android.content.Context;
 
 import superawesome.tv.kwsdemoapp.aux.GenericAdapter;
 
-/**
- * Created by gabriel.coman on 09/08/16.
- */
 public class UserAdapter extends GenericAdapter {
 
     public UserAdapter (Context context) {

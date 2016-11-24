@@ -10,9 +10,6 @@ import rx.Observable;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.aux.GenericViewModelInterface;
 
-/**
- * Created by gabriel.coman on 31/08/16.
- */
 public class UserSource {
 
     public Observable<GenericViewModelInterface> getUser (Context context) {

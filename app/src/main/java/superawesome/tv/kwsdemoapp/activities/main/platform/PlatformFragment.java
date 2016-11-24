@@ -12,12 +12,8 @@ import android.widget.Button;
 
 import com.jakewharton.rxbinding.view.RxView;
 
-import rx.functions.Action1;
 import superawesome.tv.kwsdemoapp.R;
 
-/**
- * Created by gabriel.coman on 15/06/16.
- */
 public class PlatformFragment extends Fragment {
 
     private final String KWSURL = "http://www.superawesome.tv/en/";
