@@ -27,8 +27,10 @@ public class UserActivity extends AppCompatActivity {
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.userToolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         ListView userDetailsListView = (ListView) findViewById(R.id.userDetailsListView);
@@ -41,25 +43,26 @@ public class UserActivity extends AppCompatActivity {
                 toList().
                 doOnError(throwable -> SAProgressDialog.getInstance().hideProgress()).
                 doOnCompleted(() -> SAProgressDialog.getInstance().hideProgress()).
-                subscribe(viewModels -> {
-                    adapter.updateData(viewModels);
-                }, throwable -> {
-                    SAAlert.getInstance().show(UserActivity.this,
-                            getString(R.string.user_popup_error_title),
-                            getString(R.string.user_popup_error_message),
-                            getString(R.string.user_popup_dismiss_button),
-                            null,
-                            false,
-                            0,
-                            null);
-                });
+                subscribe(adapter::updateData, throwable -> errorAlert());
 
-        RxView.clicks(logoutButton).
-                subscribe(aVoid -> {
-                    KWS.sdk.logoutUser(UserActivity.this);
-                    UniversalNotifier.postNotification("RECEIVED_LOGOUT");
-                    onBackPressed();
-                });
+        RxView.clicks(logoutButton).subscribe(aVoid -> logout());
 
+    }
+
+    private void logout () {
+        KWS.sdk.logoutUser(UserActivity.this);
+        UniversalNotifier.postNotification("RECEIVED_LOGOUT");
+        onBackPressed();
+    }
+
+    private void errorAlert () {
+        SAAlert.getInstance().show(UserActivity.this,
+                getString(R.string.user_popup_error_title),
+                getString(R.string.user_popup_error_message),
+                getString(R.string.user_popup_dismiss_button),
+                null,
+                false,
+                0,
+                null);
     }
 }

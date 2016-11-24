@@ -34,8 +34,10 @@ public class SetAppDataActivity extends AppCompatActivity {
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.appDataSetToolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         TextView nameTextView = (TextView) findViewById(R.id.appDataName);
@@ -59,19 +61,23 @@ public class SetAppDataActivity extends AppCompatActivity {
                     doOnSubscribe(() -> SAProgressDialog.getInstance().showProgress(SetAppDataActivity.this)).
                     doOnError((throwable)-> SAProgressDialog.getInstance().hideProgress()).
                     doOnCompleted(() -> SAProgressDialog.getInstance().hideProgress()).
-                    subscribe(aBoolean -> {
-                        setResult(RESULT_OK);
-                        finish();
-                    }, throwable -> {
-                        SAAlert.getInstance().show(SetAppDataActivity.this,
-                                getString(R.string.add_app_data_popup_error_title),
-                                getString(R.string.add_app_data_error_message),
-                                getString(R.string.add_app_data_popup_dismiss_button),
-                                null,
-                                false,
-                                0,
-                                null);
-                    });
+                    subscribe(this::finishOK, this::errorAlert);
         });
+    }
+
+    private void finishOK (Boolean finish) {
+        setResult(RESULT_OK);
+        finish();
+    }
+
+    private void errorAlert (Throwable error) {
+        SAAlert.getInstance().show(SetAppDataActivity.this,
+                getString(R.string.add_app_data_popup_error_title),
+                getString(R.string.add_app_data_error_message),
+                getString(R.string.add_app_data_popup_dismiss_button),
+                null,
+                false,
+                0,
+                null);
     }
 }

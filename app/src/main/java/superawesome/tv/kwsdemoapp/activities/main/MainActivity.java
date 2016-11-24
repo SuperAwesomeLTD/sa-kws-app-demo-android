@@ -30,13 +30,15 @@ public class MainActivity extends AppCompatActivity {
         // UI stuff
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
         tabs = Arrays.asList(
                 getString(R.string.tab_platform),
                 getString(R.string.tab_features),
                 getString(R.string.tab_doc));
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         MainAdapter adapter = new MainAdapter(getSupportFragmentManager());

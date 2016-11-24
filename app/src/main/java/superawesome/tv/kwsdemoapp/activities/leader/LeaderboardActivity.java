@@ -24,8 +24,10 @@ public class LeaderboardActivity extends AppCompatActivity {
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.leaderboardToolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         Context c = this;
@@ -42,18 +44,18 @@ public class LeaderboardActivity extends AppCompatActivity {
                 toList().
                 doOnError(throwable -> SAProgressDialog.getInstance().hideProgress()).
                 doOnCompleted(() -> SAProgressDialog.getInstance().hideProgress()).
-                subscribe(adapter::updateData, throwable -> {
-                    SAAlert.getInstance().show(c,
-                            getString(R.string.leader_popup_error_title),
-                            getString(R.string.leader_popup_error_message),
-                            getString(R.string.leader_popup_dismiss_button),
-                            null,
-                            false,
-                            0,
-                            null);
-                }, () -> {
-                    // do nothing
-                });
+                subscribe(adapter::updateData, this::errorAlert);
 
+    }
+
+    private void errorAlert (Throwable err) {
+        SAAlert.getInstance().show(this,
+                getString(R.string.leader_popup_error_title),
+                getString(R.string.leader_popup_error_message),
+                getString(R.string.leader_popup_dismiss_button),
+                null,
+                false,
+                0,
+                null);
     }
 }

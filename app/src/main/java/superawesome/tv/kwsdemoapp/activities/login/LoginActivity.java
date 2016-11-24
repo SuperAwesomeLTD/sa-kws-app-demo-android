@@ -34,8 +34,10 @@ public class LoginActivity extends AppCompatActivity {
         // set toolbar
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.loginToolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         EditText usernameEdit = (EditText) findViewById(R.id.usernameEdit);
@@ -59,37 +61,11 @@ public class LoginActivity extends AppCompatActivity {
 
         RxView.clicks(login).
                 subscribe(aVoid -> {
-
                     source.login(LoginActivity.this, currentModel.getUsername(), currentModel.getPassword()).
                             doOnSubscribe(() -> SAProgressDialog.getInstance().showProgress(LoginActivity.this)).
                             doOnError(throwable -> SAProgressDialog.getInstance().hideProgress()).
                             doOnCompleted(() -> SAProgressDialog.getInstance().hideProgress()).
-                            subscribe(aBoolean -> {
-                                if (aBoolean) {
-                                    UniversalNotifier.postNotification("RECEIVED_SIGNUP");
-                                    onBackPressed();
-                                } else {
-                                    SAAlert.getInstance().show(LoginActivity.this,
-                                            getString(R.string.login_popup_error_title),
-                                            getString(R.string.login_popup_error_message),
-                                            getString(R.string.login_popup_dismiss_button),
-                                            null,
-                                            false,
-                                            0,
-                                            null);
-                                }
-                            }, throwable -> {
-                                SAAlert.getInstance().show(LoginActivity.this,
-                                        getString(R.string.login_popup_error_network_title),
-                                        getString(R.string.login_popup_error_network_message),
-                                        getString(R.string.login_popup_dismiss_button),
-                                        null,
-                                        false,
-                                        0,
-                                        null);
-                            } , () -> {
-                                // do nothing
-                            });
+                            subscribe(this::finishOK, this::errorAlert);
                 });
     }
 
@@ -100,6 +76,33 @@ public class LoginActivity extends AppCompatActivity {
             UniversalNotifier.postNotification("RECEIVED_SIGNUP");
             onBackPressed();
         }
+    }
+
+    private void finishOK (boolean status) {
+        if (status) {
+            UniversalNotifier.postNotification("RECEIVED_SIGNUP");
+            onBackPressed();
+        } else {
+            SAAlert.getInstance().show(LoginActivity.this,
+                    getString(R.string.login_popup_error_title),
+                    getString(R.string.login_popup_error_message),
+                    getString(R.string.login_popup_dismiss_button),
+                    null,
+                    false,
+                    0,
+                    null);
+        }
+    }
+
+    private void errorAlert (Throwable err) {
+        SAAlert.getInstance().show(LoginActivity.this,
+                getString(R.string.login_popup_error_network_title),
+                getString(R.string.login_popup_error_network_message),
+                getString(R.string.login_popup_dismiss_button),
+                null,
+                false,
+                0,
+                null);
     }
 
     private void create () {
