@@ -1,6 +1,6 @@
 dependencies:
   pre:
-    - echo y | android update sdk --no-ui --all --filter build-tools-23.0.3
+    - echo y | android update sdk --no-ui --all --filter tools,android-24,build-tools-24.0.0
 
 checkout:
   post:
