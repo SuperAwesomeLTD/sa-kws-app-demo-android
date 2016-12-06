@@ -1,5 +1,6 @@
 package superawesome.tv.kwsdemoapp.activities.signup;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 
 import rx.Observable;
 import superawesome.tv.kwsdemoapp.R;
+import superawesome.tv.kwsdemoapp.aux.RxKWS;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
@@ -33,7 +35,9 @@ public class SignUpActivity extends AppCompatActivity {
         }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        // get edits
+        Context context = this;
+        SAProgressDialog dialog = SAProgressDialog.getInstance();
+
         EditText usernameEdit = (EditText) findViewById(R.id.usernameEdit);
         EditText password1Edit = (EditText) findViewById(R.id.password1Edit);
         EditText password2Edit = (EditText) findViewById(R.id.password2Edit);
@@ -91,13 +95,11 @@ public class SignUpActivity extends AppCompatActivity {
                 map(aBoolean -> aBoolean || currentModel.isDayOK()).
                 subscribe(aBoolean -> setFieldColor(dayEdit, aBoolean));
 
-        SignUpSource source = new SignUpSource();
-
         RxView.clicks(submit).subscribe(aVoid -> {
-            source.signUp(SignUpActivity.this, currentModel.getUsername(), currentModel.getPassword(), currentModel.getDate(), currentModel.getParentEmail()).
-                    doOnSubscribe(() -> SAProgressDialog.getInstance().showProgress(SignUpActivity.this)).
-                    doOnError(throwable -> SAProgressDialog.getInstance().hideProgress()).
-                    doOnCompleted(() -> SAProgressDialog.getInstance().hideProgress()).
+            RxKWS.signUp(context, currentModel.getUsername(), currentModel.getPassword(), currentModel.getDate(), currentModel.getParentEmail()).
+                    doOnSubscribe(() -> dialog.showProgress(context)).
+                    doOnError(throwable -> dialog.hideProgress()).
+                    doOnCompleted(dialog::hideProgress).
                     subscribe(this::clickAction, this::errorAlert);
         });
     }

@@ -1,5 +1,6 @@
 package superawesome.tv.kwsdemoapp.activities.setappdata;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 
 import rx.Observable;
 import superawesome.tv.kwsdemoapp.R;
+import superawesome.tv.kwsdemoapp.aux.RxKWS;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
@@ -31,6 +33,9 @@ public class SetAppDataActivity extends AppCompatActivity {
         }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
+        Context context = SetAppDataActivity.this;
+        SAProgressDialog dialog = SAProgressDialog.getInstance();
+
         TextView nameTextView = (TextView) findViewById(R.id.appDataName);
         TextView valueTextView = (TextView) findViewById(R.id.appDataValue);
         Button submitButton = (Button) findViewById(R.id.appDataSubmit);
@@ -45,13 +50,11 @@ public class SetAppDataActivity extends AppCompatActivity {
                 map(SetAppDataModel::isValid).
                 subscribe(submitButton::setEnabled);
 
-        SetAppDataSource source = new SetAppDataSource();
-
         RxView.clicks(submitButton).subscribe(aVoid -> {
-            source.submitData(SetAppDataActivity.this, currentModel.getName(), currentModel.getValue()).
-                    doOnSubscribe(() -> SAProgressDialog.getInstance().showProgress(SetAppDataActivity.this)).
-                    doOnError((throwable)-> SAProgressDialog.getInstance().hideProgress()).
-                    doOnCompleted(() -> SAProgressDialog.getInstance().hideProgress()).
+            RxKWS.submitData(context, currentModel.getName(), currentModel.getValue()).
+                    doOnSubscribe(() -> dialog.showProgress(context)).
+                    doOnError((throwable)-> dialog.hideProgress()).
+                    doOnCompleted(dialog::hideProgress).
                     subscribe(this::finishOK, this::errorAlert);
         });
     }

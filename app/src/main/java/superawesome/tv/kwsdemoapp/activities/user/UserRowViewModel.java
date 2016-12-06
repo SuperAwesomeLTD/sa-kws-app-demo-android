@@ -2,30 +2,34 @@ package superawesome.tv.kwsdemoapp.activities.user;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
+import rx.Observable;
 import superawesome.tv.kwsdemoapp.R;
-import superawesome.tv.kwsdemoapp.aux.GenericViewModelInterface;
+import superawesome.tv.kwsdemoapp.aux.GenericViewModel;
 
-public class UserRowViewModel implements GenericViewModelInterface {
+class UserRowViewModel extends GenericViewModel {
 
     private String itemTxt = null;
     private Object value = null;
     private String valueTxt = null;
     private int valueColor = Color.BLACK;
 
-    public UserRowViewModel (String item, Object value) {
+    UserRowViewModel(String item, Object value) {
         itemTxt = item;
         this.value = value;
     }
 
-    private void processValue(Context c, String item, Object value) {
+    static UserRowViewModel create (Context context, int id, Object value) {
+        String item = context.getString(id);
+        UserRowViewModel viewModel = new UserRowViewModel(item, value);
+        viewModel.processValue(context);
+        return viewModel;
+    }
+
+    void processValue(Context c) {
         if (value != null) {
             valueTxt = "" + value;
-            if (value instanceof Integer && !item.equals("ID")) {
+            if (value instanceof Integer && !itemTxt.equals("ID")) {
                 if ((Integer)value > 0) {
                     valueColor = Color.rgb(57, 97, 4);
                 } else {
@@ -51,25 +55,19 @@ public class UserRowViewModel implements GenericViewModelInterface {
         }
     }
 
-    @Override
-    public View representationAsRow(Context context, View convertView, ViewGroup parent) {
-        View v = convertView;
-        if (v == null) {
-            v = LayoutInflater.from(context).inflate(R.layout.listitem_user_row, parent, false);
-        }
+    String getItemTxt() {
+        return itemTxt;
+    }
 
-        TextView itemTitleTextView = (TextView) v.findViewById(R.id.UserItemTitle);
-        TextView itemValueTextView = (TextView) v.findViewById(R.id.UserItemValue);
+    public Object getValue() {
+        return value;
+    }
 
-        if (itemTitleTextView != null) {
-            itemTitleTextView.setText(itemTxt);
-        }
-        if (itemValueTextView != null) {
-            processValue(context, itemTxt, value);
-            itemValueTextView.setText(valueTxt);
-            itemValueTextView.setTextColor(valueColor);
-        }
+    String getValueTxt() {
+        return valueTxt;
+    }
 
-        return v;
+    int getValueColor() {
+        return valueColor;
     }
 }

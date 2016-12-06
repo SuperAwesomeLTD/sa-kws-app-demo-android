@@ -1,5 +1,6 @@
 package superawesome.tv.kwsdemoapp.activities.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.design.widget.TabLayout;
@@ -49,5 +50,10 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
