@@ -20,7 +20,6 @@ import gabrielcoman.com.rxdatasource.RxDataSource;
 import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.models.oauth.KWSLoggedUser;
 import rx.Observable;
-import rx.functions.Action2;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.base.BaseFragment;
 import superawesome.tv.kwsdemoapp.activities.getappdata.GetAppDataActivity;
@@ -43,17 +42,13 @@ public class FeaturesFragment extends BaseFragment {
 
     private RxDataSource <GenericViewModel> dataSource = null;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        KWS.sdk.startSession(getContext(), CLIENT, SECRET, API);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // get views
         View view = inflater.inflate(R.layout.fragment_features, container, false);
+
+        KWS.sdk.startSession(getContext(), CLIENT, SECRET, API);
 
         ListView featureListView = (ListView) view.findViewById(R.id.FeaturesListView);
 
@@ -110,8 +105,8 @@ public class FeaturesFragment extends BaseFragment {
 
                         Observable <Void> subButtonRx = RxView.clicks(subButton).share();
 
-                        subButtonRx.filter(aVoid -> isRegistered).
-                                flatMap(aVoid -> RxKWS.disableNotifications(context))
+                        subButtonRx.filter(aVoid -> isRegistered)
+                                .flatMap(aVoid -> RxKWS.disableNotifications(context))
                                 .subscribe(aBoolean -> {
 
                                     dataSource.update();

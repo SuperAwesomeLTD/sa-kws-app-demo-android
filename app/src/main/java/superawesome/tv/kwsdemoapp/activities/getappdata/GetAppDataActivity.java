@@ -14,7 +14,6 @@ import java.util.List;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
 import rx.Observable;
-import rx.functions.Action2;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.activities.setappdata.SetAppDataActivity;

@@ -3,7 +3,6 @@ package superawesome.tv.kwsdemoapp.activities.login;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -11,7 +10,6 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import rx.Observable;
-import rx.functions.Action2;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.activities.signup.SignUpActivity;

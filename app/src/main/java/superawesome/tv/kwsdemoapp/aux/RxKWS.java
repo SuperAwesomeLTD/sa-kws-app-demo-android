@@ -10,7 +10,6 @@ import kws.superawesome.tv.kwssdk.models.user.KWSScore;
 import kws.superawesome.tv.kwssdk.models.user.KWSUser;
 import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionType;
 import rx.Observable;
-import rx.Subscriber;
 import superawesome.tv.kwsdemoapp.R;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;

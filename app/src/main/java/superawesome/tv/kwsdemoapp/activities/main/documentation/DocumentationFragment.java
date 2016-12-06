@@ -12,16 +12,6 @@ import superawesome.tv.kwsdemoapp.activities.base.BaseFragment;
 
 public class DocumentationFragment extends BaseFragment {
 
-    // constructor
-    public DocumentationFragment () {
-
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

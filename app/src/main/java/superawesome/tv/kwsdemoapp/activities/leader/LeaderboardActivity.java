@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
-import kws.superawesome.tv.kwssdk.models.leaderboard.KWSLeader;
-import rx.functions.Func1;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.aux.GenericViewModel;

@@ -16,15 +16,6 @@ import superawesome.tv.kwsdemoapp.activities.base.BaseFragment;
 
 public class PlatformFragment extends BaseFragment {
 
-    // constructor
-    public PlatformFragment(){
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,8 +26,8 @@ public class PlatformFragment extends BaseFragment {
     }
 
     private void onClick () {
-        String KWSURL = "http://www.superawesome.tv/en/";
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(KWSURL));
+        String KwsUrl = "http://www.superawesome.tv/en/";
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(KwsUrl));
         getContext().startActivity(browserIntent);
     }
 }
