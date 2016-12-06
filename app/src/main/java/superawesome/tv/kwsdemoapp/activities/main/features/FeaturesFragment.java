@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,24 +14,24 @@ import android.widget.ListView;
 
 import com.jakewharton.rxbinding.view.RxView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
 import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.models.oauth.KWSLoggedUser;
-import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionType;
 import rx.Observable;
+import rx.functions.Action2;
 import superawesome.tv.kwsdemoapp.R;
+import superawesome.tv.kwsdemoapp.activities.base.BaseFragment;
 import superawesome.tv.kwsdemoapp.activities.getappdata.GetAppDataActivity;
 import superawesome.tv.kwsdemoapp.activities.leader.LeaderboardActivity;
 import superawesome.tv.kwsdemoapp.activities.login.LoginActivity;
 import superawesome.tv.kwsdemoapp.activities.user.UserActivity;
 import superawesome.tv.kwsdemoapp.aux.GenericViewModel;
+import superawesome.tv.kwsdemoapp.aux.RxKWS;
 import tv.superawesome.lib.sautils.SAAlert;
-import tv.superawesome.lib.sautils.SAProgressDialog;
 
-public class FeaturesFragment extends Fragment {
+public class FeaturesFragment extends BaseFragment {
 
     // private constants
     private static final int LOGOUT_REQ_CODE = 112;
@@ -44,11 +42,6 @@ public class FeaturesFragment extends Fragment {
     private static final String API = "https://kwsapi.demo.superawesome.tv/";
 
     private RxDataSource <GenericViewModel> dataSource = null;
-
-    // constructor
-    public FeaturesFragment() {
-        // do nothing
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,109 +59,203 @@ public class FeaturesFragment extends Fragment {
 
         Context context = getContext();
 
-        getFeatures()
-                .toList()
-                .subscribe(genericViewModels -> {
+        Observable.from(Arrays.asList(
+                new FeaturesAuthRowViewModel(),
+                new FeaturesNotifRowViewModel(),
+                new FeaturesPermRowViewModel(),
+                new FeaturesEventsRowViewModel(),
+                new FeaturesInviteRowViewModel(),
+                new FeaturesAppDataRowViewModel()
+        )).toList().subscribe(genericViewModels -> {
 
-                    dataSource = RxDataSource.from(context, genericViewModels);
-                    dataSource
-                            .bindTo(featureListView)
-                            .customiseRow(R.layout.listitem_features_auth, FeaturesAuthRowViewModel.class, (viewModel, view1) -> {
+            dataSource = RxDataSource.from(context, genericViewModels);
+            dataSource
+                    .bindTo(featureListView)
+                    //
+                    // the Login & Logout Row
+                    .customiseRow(R.layout.listitem_features_auth, FeaturesAuthRowViewModel.class, (viewModel, v) -> {
 
-                                Button authButton = (Button) view1.findViewById(R.id.authAction);
-                                Button docButton = (Button) view1.findViewById(R.id.authDocs);
+                        Button authButton = (Button) v.findViewById(R.id.authAction);
+                        Button docButton = (Button) v.findViewById(R.id.authDocs);
 
-                                boolean isLogged = KWS.sdk.getLoggedUser() != null;
-                                KWSLoggedUser local = KWS.sdk.getLoggedUser();
+                        final boolean isLogged = KWS.sdk.getLoggedUser() != null;
+                        KWSLoggedUser local = KWS.sdk.getLoggedUser();
 
-                                authButton.setText(isLogged ?
-                                        context.getString(R.string.feature_cell_auth_button_1_loggedin) + " " + local.username :
-                                        context.getString(R.string.feature_cell_auth_button_1_loggedout));
+                        authButton.setText(isLogged ?
+                                context.getString(R.string.feature_cell_auth_button_1_loggedin) + " " + local.username :
+                                context.getString(R.string.feature_cell_auth_button_1_loggedout));
 
-                                RxView.clicks(authButton).subscribe(this::authFunc);
-                                RxView.clicks(docButton).subscribe(this::documentationFunc);
+                        RxView.clicks(authButton).subscribe(aVoid -> {
+                            Intent authIntent = new Intent(getActivity(), !isLogged ? LoginActivity.class : UserActivity.class);
+                            startActivityForResult(authIntent, !isLogged ? AUTH_REQ_CODE : LOGOUT_REQ_CODE);
+                        });
 
-                            })
-                            .customiseRow(R.layout.listitem_features_notif, FeaturesNotifRowViewModel.class, (viewModel, view12) -> {
+                        RxView.clicks(docButton).subscribe(this::documentationFunc);
 
-                                boolean isLogged = KWS.sdk.getLoggedUser() != null;
-                                boolean isRegistered = KWS.sdk.getLoggedUser() != null && KWS.sdk.getLoggedUser().isRegisteredForNotifications();
+                    })
+                    //
+                    // the Notifications Row
+                    .customiseRow(R.layout.listitem_features_notif, FeaturesNotifRowViewModel.class, (viewModel, v) -> {
 
-                                Button docButton = (Button) view12.findViewById(R.id.notifDocs);
-                                Button subButton = (Button) view12.findViewById(R.id.notifEnableDisable);
+                        final boolean isLogged = KWS.sdk.getLoggedUser() != null;
+                        final boolean isRegistered = KWS.sdk.getLoggedUser() != null && KWS.sdk.getLoggedUser().isRegisteredForNotifications();
 
-                                subButton.setEnabled(isLogged);
-                                subButton.setText(isRegistered ?
-                                        context.getString(R.string.feature_cell_notif_button_1_disable) :
-                                        context.getString(R.string.feature_cell_notif_button_1_enable));
+                        Button docButton = (Button) v.findViewById(R.id.notifDocs);
+                        Button subButton = (Button) v.findViewById(R.id.notifEnableDisable);
 
-                                RxView.clicks(subButton).subscribe(this::notificationFunc);
-                                RxView.clicks(docButton).subscribe(this::documentationFunc);
+                        subButton.setEnabled(isLogged);
+                        subButton.setText(isRegistered ?
+                                context.getString(R.string.feature_cell_notif_button_1_disable) :
+                                context.getString(R.string.feature_cell_notif_button_1_enable));
 
-                            })
-                            .customiseRow(R.layout.listitem_features_perm, FeaturesPermRowViewModel.class, (viewModel, view13) -> {
+                        Observable <Void> subButtonRx = RxView.clicks(subButton).share();
 
-                                boolean isLogged = KWS.sdk.getLoggedUser() != null;
+                        subButtonRx.filter(aVoid -> isRegistered).
+                                flatMap(aVoid -> RxKWS.disableNotifications(context))
+                                .subscribe(aBoolean -> {
 
-                                Button addPermission = (Button) view13.findViewById(R.id.permissionAddButton);
-                                Button docButton = (Button) view13.findViewById(R.id.permissionDocs);
+                                    dataSource.update();
+                                    alert(getString(R.string.feature_notif_unreg_popup_success_title),
+                                            getString(R.string.feature_notif_unreg_popup_success_message));
+                                });
 
-                                addPermission.setEnabled(isLogged);
+                        subButtonRx.filter(aVoid -> !isRegistered)
+                                .flatMap(aVoid -> RxKWS.enableNotifications(context))
+                                .filter(aBoolean -> aBoolean)
+                                .subscribe(aBoolean -> {
+                                    dataSource.update();
+                                    alert(getString(R.string.feature_notif_reg_popup_success_title),
+                                            getString(R.string.feature_notif_reg_popup_success_message));
+                                });
 
-                                RxView.clicks(addPermission).subscribe(this::permissionFunc);
-                                RxView.clicks(docButton).subscribe(this::documentationFunc);
-                            })
-                            .customiseRow(R.layout.listitem_features_events, FeaturesEventsRowViewModel.class, (viewModel, view14) -> {
+                        RxView.clicks(docButton).subscribe(this::documentationFunc);
 
-                                boolean isLogged = KWS.sdk.getLoggedUser() != null;
+                    })
+                    //
+                    // The Permissions Row
+                    .customiseRow(R.layout.listitem_features_perm, FeaturesPermRowViewModel.class, (viewModel, v) -> {
 
-                                Button add20Points = (Button) view14.findViewById(R.id.pointsAdd20);
-                                Button sub10Points = (Button) view14.findViewById(R.id.pointsSub10);
-                                Button getScore = (Button) view14.findViewById(R.id.getScore);
-                                Button seeLeaders = (Button) view14.findViewById(R.id.pointsLeader);
-                                Button docButton = (Button) view14.findViewById(R.id.pointsDocs);
+                        boolean isLogged = KWS.sdk.getLoggedUser() != null;
 
-                                add20Points.setEnabled(isLogged);
-                                sub10Points.setEnabled(isLogged);
-                                seeLeaders.setEnabled(isLogged);
-                                getScore.setEnabled(isLogged);
+                        Button addPermission = (Button) v.findViewById(R.id.permissionAddButton);
+                        Button docButton = (Button) v.findViewById(R.id.permissionDocs);
 
-                                RxView.clicks(add20Points).subscribe(this::add20PointsFunc);
-                                RxView.clicks(sub10Points).subscribe(this::sub10PointsFunc);
-                                RxView.clicks(getScore).subscribe(this::getScoreFunc);
-                                RxView.clicks(seeLeaders).subscribe(this::leaderboardFunc);
-                                RxView.clicks(docButton).subscribe(this::documentationFunc);
-                            })
-                            .customiseRow(R.layout.listitem_features_invite, FeaturesInviteRowViewModel.class, (viewModel, view15) -> {
+                        addPermission.setEnabled(isLogged);
 
-                                boolean isLogged = KWS.sdk.getLoggedUser() != null;
+                        RxView.clicks(addPermission)
+                                .flatMap(aVoid -> RxKWS.requestPermissionPopup(context))
+                                .flatMap(kwsPermissionTypes -> RxKWS.requestPermission(context, kwsPermissionTypes))
+                                .filter(aBoolean -> aBoolean)
+                                .subscribe(aBoolean -> {
+                                    alert(getString(R.string.feature_perm_popup_success_title),
+                                            getString(R.string.feature_perm_popup_success_message));
+                                });
 
-                                Button docButton = (Button) view15.findViewById(R.id.inviteDocs);
-                                Button addButton = (Button) view15.findViewById(R.id.inviteAddUser);
+                        RxView.clicks(docButton).subscribe(this::documentationFunc);
 
-                                addButton.setEnabled(isLogged);
+                    })
+                    //
+                    // The Events Row
+                    .customiseRow(R.layout.listitem_features_events, FeaturesEventsRowViewModel.class, (viewModel, v) -> {
 
-                                RxView.clicks(addButton).subscribe(this::addUserFunc);
-                                RxView.clicks(docButton).subscribe(this::documentationFunc);
-                            })
-                            .customiseRow(R.layout.listitem_features_appdata, FeaturesAppDataRowViewModel.class, (viewModel, view16) -> {
+                        boolean isLogged = KWS.sdk.getLoggedUser() != null;
 
-                                boolean isLogged = KWS.sdk.getLoggedUser() != null;
+                        Button add20Points = (Button) v.findViewById(R.id.pointsAdd20);
+                        Button sub10Points = (Button) v.findViewById(R.id.pointsSub10);
+                        Button getScore = (Button) v.findViewById(R.id.getScore);
+                        Button seeLeaders = (Button) v.findViewById(R.id.pointsLeader);
+                        Button docButton = (Button) v.findViewById(R.id.pointsDocs);
 
-                                Button docButton = (Button) view16.findViewById(R.id.appdataDocs);
-                                Button seeButton = (Button) view16.findViewById(R.id.appdataSee);
+                        add20Points.setEnabled(isLogged);
+                        sub10Points.setEnabled(isLogged);
+                        seeLeaders.setEnabled(isLogged);
+                        getScore.setEnabled(isLogged);
 
-                                seeButton.setEnabled(isLogged);
+                        RxView.clicks(add20Points)
+                                .flatMap(aVoid -> RxKWS.triggerEvent(context, "GabrielAdd20ForAwesomeApp"))
+                                .filter(aBoolean -> aBoolean)
+                                .subscribe(aBoolean -> {
+                                    alert(getString(R.string.feature_event_add20_popup_success_title),
+                                            getString(R.string.feature_event_add20_popup_success_message));
+                                });
 
-                                RxView.clicks(seeButton).subscribe(this::appDataFunc);
-                                RxView.clicks(docButton).subscribe(this::documentationFunc);
-                            })
-                            .update();
+                        RxView.clicks(sub10Points)
+                                .flatMap(aVoid -> RxKWS.triggerEvent(context, "GabrielSub10ForAwesomeApp"))
+                                .filter(aBoolean -> aBoolean)
+                                .subscribe(aBoolean -> {
+                                    alert(getString(R.string.feature_event_sub10_popup_success_title),
+                                            getString(R.string.feature_event_sub10_popup_success_message));
+                                });
 
-                });
+                        RxView.clicks(getScore)
+                                .flatMap(aVoid -> RxKWS.getScore(context))
+                                .filter(kwsScore -> kwsScore != null)
+                                .subscribe(kwsScore -> {
+                                    alert(getString(R.string.feature_event_getscore_success_title),
+                                            getString(R.string.feature_event_getscore_success_message, kwsScore.rank, kwsScore.score));
+                                });
 
-        // signal change
+
+                        RxView.clicks(seeLeaders).subscribe(aVoid -> {
+                            Intent leaderBoard = new Intent(getActivity(), LeaderboardActivity.class);
+                            startActivity(leaderBoard);
+                        });
+
+                        RxView.clicks(docButton).subscribe(this::documentationFunc);
+
+                    })
+                    //
+                    // the Invite Row
+                    .customiseRow(R.layout.listitem_features_invite, FeaturesInviteRowViewModel.class, (viewModel, v) -> {
+
+                        boolean isLogged = KWS.sdk.getLoggedUser() != null;
+
+                        Button docButton = (Button) v.findViewById(R.id.inviteDocs);
+                        Button addButton = (Button) v.findViewById(R.id.inviteAddUser);
+
+                        addButton.setEnabled(isLogged);
+
+                        RxView.clicks(addButton)
+                                .flatMap(aVoid -> RxKWS.inviteFriendPopup(context))
+                                .flatMap(s -> RxKWS.inviteFriend(context, s))
+                                .filter(aBoolean -> aBoolean)
+                                .subscribe(aBoolean -> {
+                                    alert(getString(R.string.feature_friend_email_popup_success_title),
+                                            getString(R.string.feature_friend_email_popup_success_message));
+                                });
+
+                        RxView.clicks(docButton).subscribe(this::documentationFunc);
+
+                    })
+                    //
+                    // The App Data Row
+                    .customiseRow(R.layout.listitem_features_appdata, FeaturesAppDataRowViewModel.class, (viewModel, v) -> {
+
+                        boolean isLogged = KWS.sdk.getLoggedUser() != null;
+
+                        Button docButton = (Button) v.findViewById(R.id.appdataDocs);
+                        Button seeButton = (Button) v.findViewById(R.id.appdataSee);
+
+                        seeButton.setEnabled(isLogged);
+
+                        RxView.clicks(seeButton).subscribe(aVoid -> {
+                            Intent getAppData = new Intent(getActivity(), GetAppDataActivity.class);
+                            startActivity(getAppData);
+                        });
+
+                        RxView.clicks(docButton).subscribe(this::documentationFunc);
+
+                    })
+                    .update();
+        });
+
         KWS.sdk.isRegistered(getContext(), b -> dataSource.update());
+
+        setOnActivityResult((requestCode, resultCode) -> {
+            if (resultCode == Activity.RESULT_OK) {
+                dataSource.update();
+            }
+        });
 
         return view;
     }
@@ -177,189 +264,6 @@ public class FeaturesFragment extends Fragment {
         String url = "http://doc.superawesome.tv/sa-kws-android-sdk/latest/";
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(browserIntent);
-    }
-
-    private void authFunc (Void v) {
-        boolean isLogged = KWS.sdk.getLoggedUser() != null;
-        Intent authIntent = new Intent(getActivity(), !isLogged ? LoginActivity.class : UserActivity.class);
-        startActivityForResult(authIntent, !isLogged ? AUTH_REQ_CODE : LOGOUT_REQ_CODE);
-    }
-
-    private void add20PointsFunc (Void v) {
-        KWS.sdk.triggerEvent(getContext(), "GabrielAdd20ForAwesomeApp", 20, b -> {
-            if (b) {
-                alert(getString(R.string.feature_event_add20_popup_success_title),
-                        getString(R.string.feature_event_add20_popup_success_message));
-            } else {
-                // failure
-            }
-        });
-    }
-
-    private void sub10PointsFunc (Void v) {
-        KWS.sdk.triggerEvent(getContext(), "GabrielSub10ForAwesomeApp", -10, b -> {
-            if (b) {
-                alert(getString(R.string.feature_event_sub10_popup_success_title),
-                        getString(R.string.feature_event_sub10_popup_success_message));
-            } else {
-                // failure
-            }
-        });
-    }
-
-    private void getScoreFunc (Void v) {
-        KWS.sdk.getScore(getContext(), kwsScore -> {
-            if (kwsScore != null) {
-                alert(getString(R.string.feature_event_getscore_success_title),
-                        getString(R.string.feature_event_getscore_success_message, kwsScore.rank, kwsScore.score));
-            } else {
-                // failure
-            }
-        });
-    }
-
-    private void leaderboardFunc (Void v) {
-        Intent leaderBoard = new Intent(getActivity(), LeaderboardActivity.class);
-        startActivity(leaderBoard);
-    }
-
-    private void addUserFunc (Void v) {
-        SAAlert.getInstance().show(getActivity(),
-                getString(R.string.feature_friend_email_popup_title),
-                getString(R.string.feature_friend_email_popup_message),
-                getString(R.string.feature_friend_email_popup_submit),
-                getString(R.string.feature_friend_email_popup_cancel),
-                true,
-                32,
-                (button, email) -> {
-                    if (button == 0) {
-
-                        SAProgressDialog.getInstance().showProgress(getActivity());
-
-                        KWS.sdk.inviteUser(getContext(), email, b -> {
-                            SAProgressDialog.getInstance().hideProgress();
-
-                            if (b) {
-                                alert(getString(R.string.feature_friend_email_popup_success_title),
-                                        getString(R.string.feature_friend_email_popup_success_message, email));
-                            } else {
-                                alert(getString(R.string.feature_friend_email_popup_error_title),
-                                        getString(R.string.feature_friend_email_popup_error_message, email));
-                            }
-                        });
-                    }
-                });
-    }
-
-    private void appDataFunc (Void v) {
-        Intent getAppData = new Intent(getActivity(), GetAppDataActivity.class);
-        startActivity(getAppData);
-    }
-
-    private void permissionFunc (Void v) {
-        Context c = getContext();
-        KWSPermissionType types[] = new KWSPermissionType[] {
-                KWSPermissionType.accessEmail,
-                KWSPermissionType.accessAddress,
-                KWSPermissionType.accessFirstName,
-                KWSPermissionType.accessLastName,
-                KWSPermissionType.accessPhoneNumber,
-                KWSPermissionType.sendNewsletter
-        };
-        CharSequence titles[] = new CharSequence[] {
-                "Access email",
-                "Access address",
-                "Access first name",
-                "Access last name",
-                "Access phone number",
-                "Send newsletter"
-        };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(c);
-        builder.setTitle(getString(R.string.feature_perm_alert_title));
-        builder.setItems(titles, (dialog, which) -> {
-            KWSPermissionType[] requestedType = new KWSPermissionType[] { types[which] };
-            SAProgressDialog.getInstance().showProgress(getActivity());
-
-            KWS.sdk.requestPermission(getContext(), requestedType, kwsPermissionStatus -> {
-
-                SAProgressDialog.getInstance().hideProgress();
-
-                switch (kwsPermissionStatus) {
-                    case Success: {
-                        alert(getString(R.string.feature_perm_popup_success_title),
-                                getString(R.string.feature_perm_popup_success_message));
-                        break;
-                    }
-                    case NoParentEmail: {
-                        // this should not happen anymore, I think
-                        break;
-                    }
-                    case NeworkError: {
-                        alert(getString(R.string.feature_perm_popup_error_title),
-                                getString(R.string.feature_perm_popup_error_message));
-                        break;
-                    }
-                }
-            });
-        });
-        builder.show();
-    }
-
-    private void notificationFunc (Void v) {
-
-        boolean isRegistered = KWS.sdk.getLoggedUser() != null && KWS.sdk.getLoggedUser().isRegisteredForNotifications();
-
-        if (isRegistered) {
-            SAProgressDialog.getInstance().showProgress(getActivity());
-            KWS.sdk.unregister(getContext(), b -> {
-                SAProgressDialog.getInstance().hideProgress();
-                if (b) {
-                    dataSource.update();
-                    alert(getString(R.string.feature_notif_unreg_popup_success_title),
-                            getString(R.string.feature_notif_unreg_popup_success_message));
-                } else {
-                    alert(getString(R.string.feature_notif_unreg_popup_error_title),
-                            getString(R.string.feature_notif_unreg_popup_error_message));
-                }
-            });
-        } else {
-            SAProgressDialog.getInstance().showProgress(getActivity());
-            KWS.sdk.register(getContext(), kwsNotificationStatus -> {
-                SAProgressDialog.getInstance().hideProgress();
-                switch (kwsNotificationStatus) {
-                    case ParentDisabledNotifications:
-                    case UserDisabledNotifications:
-                    case NoParentEmail:
-                    case FirebaseNotSetup:
-                    case FirebaseCouldNotGetToken: {
-                        break;
-                    }
-                    case NetworkError: {
-                        alert(getString(R.string.feature_notif_reg_popup_error_title),
-                                getString(R.string.feature_notif_reg_popup_error_message));
-                        break;
-                    }
-                    case Success: {
-                        dataSource.update();
-                        alert(getString(R.string.feature_notif_reg_popup_success_title),
-                                getString(R.string.feature_notif_reg_popup_success_message));
-                        break;
-                    }
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == Activity.RESULT_OK) {
-            // no matter if requestCode == LOGOUT_REQ_CODE or AUTH_REQ_CODE
-            // just do an update
-            dataSource.update();
-        }
     }
 
     private void alert(String title, String message) {
@@ -372,26 +276,5 @@ public class FeaturesFragment extends Fragment {
                 false,
                 0,
                 null);
-    }
-
-    private Observable<GenericViewModel> getFeatures () {
-        return Observable.create(subscriber -> {
-
-            // add data
-            List<GenericViewModel> rows = new ArrayList<>();
-            rows.add(new FeaturesAuthRowViewModel());
-            rows.add(new FeaturesNotifRowViewModel());
-            rows.add(new FeaturesPermRowViewModel());
-            rows.add(new FeaturesEventsRowViewModel());
-            rows.add(new FeaturesInviteRowViewModel());
-            rows.add(new FeaturesAppDataRowViewModel());
-
-            // emmit it
-            for (GenericViewModel row : rows) {
-                subscriber.onNext(row);
-            }
-            subscriber.onCompleted();
-
-        });
     }
 }

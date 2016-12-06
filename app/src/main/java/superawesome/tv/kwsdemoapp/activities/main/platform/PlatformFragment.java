@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +12,9 @@ import android.widget.Button;
 import com.jakewharton.rxbinding.view.RxView;
 
 import superawesome.tv.kwsdemoapp.R;
+import superawesome.tv.kwsdemoapp.activities.base.BaseFragment;
 
-public class PlatformFragment extends Fragment {
-
-    private final String KWSURL = "http://www.superawesome.tv/en/";
+public class PlatformFragment extends BaseFragment {
 
     // constructor
     public PlatformFragment(){
@@ -37,6 +35,7 @@ public class PlatformFragment extends Fragment {
     }
 
     private void onClick () {
+        String KWSURL = "http://www.superawesome.tv/en/";
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(KWSURL));
         getContext().startActivity(browserIntent);
     }

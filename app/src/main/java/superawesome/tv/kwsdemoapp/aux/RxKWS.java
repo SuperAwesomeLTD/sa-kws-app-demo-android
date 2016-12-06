@@ -1,12 +1,19 @@
 package superawesome.tv.kwsdemoapp.aux;
 
 import android.content.Context;
+import android.support.v7.app.AlertDialog;
 
 import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.models.appdata.KWSAppData;
 import kws.superawesome.tv.kwssdk.models.leaderboard.KWSLeader;
+import kws.superawesome.tv.kwssdk.models.user.KWSScore;
 import kws.superawesome.tv.kwssdk.models.user.KWSUser;
+import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionType;
 import rx.Observable;
+import rx.Subscriber;
+import superawesome.tv.kwsdemoapp.R;
+import tv.superawesome.lib.sautils.SAAlert;
+import tv.superawesome.lib.sautils.SAProgressDialog;
 
 /**
  * Created by gabriel.coman on 06/12/2016.
@@ -30,7 +37,7 @@ public class RxKWS {
         });
     }
 
-    public static Observable <KWSLeader> getLeaderboard (Context context) {
+    public static Observable <KWSLeader> getLeaderBoard(Context context) {
 
         return Observable.create(subscriber -> {
 
@@ -139,4 +146,193 @@ public class RxKWS {
         });
 
     }
-}
+
+    public static Observable <Boolean> triggerEvent (Context context, String evt) {
+
+        return Observable.create(subscriber -> {
+
+            KWS.sdk.triggerEvent(context, evt, 20, b -> {
+
+                subscriber.onNext(b);
+                subscriber.onCompleted();
+
+            });
+
+        });
+
+    }
+
+    public static Observable <KWSScore> getScore (Context context) {
+
+        return Observable.create(subscriber -> {
+
+            KWS.sdk.getScore(context, kwsScore -> {
+
+                subscriber.onNext(kwsScore);
+                subscriber.onCompleted();
+
+            });
+
+        });
+
+    }
+
+    public static Observable <Boolean> inviteUser (Context context, String email) {
+
+        return Observable.create(subscriber -> {
+
+            KWS.sdk.inviteUser(context, email, b -> {
+
+                subscriber.onNext(b);
+                subscriber.onCompleted();
+
+            });
+
+        });
+
+    }
+
+    public static Observable <String> inviteFriendPopup (Context context) {
+
+        return Observable.create(subscriber -> {
+
+            SAAlert.getInstance().show(context,
+                    context.getString(R.string.feature_friend_email_popup_title),
+                    context.getString(R.string.feature_friend_email_popup_message),
+                    context.getString(R.string.feature_friend_email_popup_submit),
+                    context.getString(R.string.feature_friend_email_popup_cancel),
+                    true,
+                    32,
+                    (button, email) -> {
+
+                        if (button == 0) {
+                            subscriber.onNext(email);
+                            subscriber.onCompleted();
+                        }
+                    });
+
+        });
+
+    }
+
+    public static Observable <Boolean> inviteFriend (Context context, String email) {
+
+        return Observable.create(subscriber -> {
+
+            KWS.sdk.inviteUser(context, email, b -> {
+
+                subscriber.onNext(b);
+                subscriber.onCompleted();
+
+            });
+
+        });
+
+    }
+
+    public static Observable <Boolean> disableNotifications (Context context) {
+
+        return Observable.create(subscriber -> {
+
+            KWS.sdk.unregister(context, b -> {
+
+                subscriber.onNext(b);
+                subscriber.onCompleted();
+
+            });
+
+        });
+
+    }
+
+    public static Observable <Boolean> enableNotifications (Context context) {
+
+        return Observable.create(subscriber -> {
+
+            KWS.sdk.register(context, kwsNotificationStatus -> {
+
+                SAProgressDialog.getInstance().hideProgress();
+                switch (kwsNotificationStatus) {
+                    case ParentDisabledNotifications:
+                    case UserDisabledNotifications:
+                    case NoParentEmail:
+                    case FirebaseNotSetup:
+                    case FirebaseCouldNotGetToken:
+                    case NetworkError: {
+                        subscriber.onNext(false);
+                        subscriber.onCompleted();
+                        break;
+                    }
+                    case Success: {
+                        subscriber.onNext(true);
+                        subscriber.onCompleted();
+                        break;
+                    }
+                }
+            });
+
+        });
+
+    }
+
+    public static Observable <KWSPermissionType[]> requestPermissionPopup (Context context) {
+
+        return Observable.create(subscriber -> {
+
+            KWSPermissionType types[] = new KWSPermissionType[] {
+                    KWSPermissionType.accessEmail,
+                    KWSPermissionType.accessAddress,
+                    KWSPermissionType.accessFirstName,
+                    KWSPermissionType.accessLastName,
+                    KWSPermissionType.accessPhoneNumber,
+                    KWSPermissionType.sendNewsletter
+            };
+            CharSequence titles[] = new CharSequence[] {
+                    "Access email",
+                    "Access address",
+                    "Access first name",
+                    "Access last name",
+                    "Access phone number",
+                    "Send newsletter"
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(context.getString(R.string.feature_perm_alert_title));
+            builder.setItems(titles, (dialog, which) -> {
+
+                KWSPermissionType[] requestedType = new KWSPermissionType[] { types[which] };
+                subscriber.onNext(requestedType);
+                subscriber.onCompleted();
+
+            });
+            builder.show();
+
+        });
+
+    }
+
+    public static Observable<Boolean> requestPermission (Context context, KWSPermissionType[] types) {
+
+        return Observable.create(subscriber -> {
+
+            KWS.sdk.requestPermission(context, types, kwsPermissionStatus -> {
+
+                switch (kwsPermissionStatus) {
+                    case Success: {
+                        subscriber.onNext(true);
+                        subscriber.onCompleted();
+                        break;
+                    }
+                    case NoParentEmail:
+                    case NeworkError: {
+                        subscriber.onNext(false);
+                        subscriber.onCompleted();
+                        break;
+                    }
+                }
+            });
+
+        });
+
+    }
+ }

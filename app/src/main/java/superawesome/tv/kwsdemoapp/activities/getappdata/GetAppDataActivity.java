@@ -4,24 +4,31 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
 
+import java.util.List;
+
 import gabrielcoman.com.rxdatasource.RxDataSource;
+import rx.Observable;
+import rx.functions.Action2;
 import superawesome.tv.kwsdemoapp.R;
+import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.activities.setappdata.SetAppDataActivity;
 import superawesome.tv.kwsdemoapp.aux.RxKWS;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
-public class GetAppDataActivity extends AppCompatActivity {
+public class GetAppDataActivity extends BaseActivity {
 
     // private constants
     private static final int SET_REQ_CODE = 111;
+
+    private Observable <List<GetAppDataRowViewModel>> observable = null;
+    private RxDataSource <GetAppDataRowViewModel> source = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,40 +47,45 @@ public class GetAppDataActivity extends AppCompatActivity {
         Button addButton = (Button) findViewById(R.id.appDataAdd);
         RxView.clicks(addButton).subscribe(aVoid -> startActivity());
 
-
-        reloadData();
-    }
-
-    private void reloadData () {
-
         Context c = this;
         ListView appDataListView = (ListView) findViewById(R.id.appDataListView);
         SAProgressDialog dialog = SAProgressDialog.getInstance();
 
-        RxKWS.getAppData(c)
+        observable = RxKWS.getAppData(c)
                 .map(kwsAppData -> new GetAppDataRowViewModel(kwsAppData.name, kwsAppData.value))
                 .doOnSubscribe(() -> dialog.showProgress(c))
                 .doOnError(throwable -> dialog.hideProgress())
                 .doOnCompleted(dialog::hideProgress)
                 .toList()
-                .subscribe(getAppDataRowViewModels -> {
+                .share();
 
-                    RxDataSource.from(c, getAppDataRowViewModels)
-                            .bindTo(appDataListView)
-                            .customiseRow(R.layout.listitem_appdata_row, GetAppDataRowViewModel.class, (viewModel, view) -> {
+        observable.subscribe(getAppDataRowViewModels -> {
 
-                                TextView nameTextView = (TextView) view.findViewById(R.id.appDataItemName);
-                                nameTextView.setText(viewModel.getName() != null ? viewModel.getName() : c.getString(R.string.get_app_data_col_unknown_username));
+            source = RxDataSource.create(c);
+            source
+                    .bindTo(appDataListView)
+                    .customiseRow(R.layout.listitem_appdata_row, GetAppDataRowViewModel.class, (viewModel, view) -> {
 
-                                TextView valueTextView = (TextView) view.findViewById(R.id.appDataItemValue);
-                                valueTextView.setText(viewModel.getValue());
+                        TextView nameTextView = (TextView) view.findViewById(R.id.appDataItemName);
+                        nameTextView.setText(viewModel.getName() != null ? viewModel.getName() : c.getString(R.string.get_app_data_col_unknown_username));
 
-                            })
-                            .update();
+                        TextView valueTextView = (TextView) view.findViewById(R.id.appDataItemValue);
+                        valueTextView.setText(viewModel.getValue());
 
-                }, throwable -> {
-                    errorAlert();
-                });
+                    })
+                    .update(getAppDataRowViewModels);
+
+        }, throwable -> {
+            errorAlert();
+        });
+
+        setOnActivityResult((requestCode, resultCode) -> {
+
+            observable.subscribe(getAppDataRowViewModels -> {
+                source.update(getAppDataRowViewModels);
+            });
+
+        });
     }
 
     private void startActivity () {
@@ -90,14 +102,5 @@ public class GetAppDataActivity extends AppCompatActivity {
                 false,
                 0,
                 null);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == SET_REQ_CODE && resultCode == RESULT_OK) {
-            reloadData();
-        }
     }
 }

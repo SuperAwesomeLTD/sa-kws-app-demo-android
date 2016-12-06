@@ -6,7 +6,7 @@ class UserHeaderViewModel extends GenericViewModel {
 
     private String headerTxt = null;
 
-    UserHeaderViewModel (String header) {
+    private UserHeaderViewModel(String header) {
         this.headerTxt = header;
     }
 

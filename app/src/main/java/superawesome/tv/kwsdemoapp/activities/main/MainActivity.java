@@ -13,11 +13,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import superawesome.tv.kwsdemoapp.R;
+import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.activities.main.documentation.DocumentationFragment;
 import superawesome.tv.kwsdemoapp.activities.main.features.FeaturesFragment;
 import superawesome.tv.kwsdemoapp.activities.main.platform.PlatformFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     // private vars
     private List<Fragment> fragments = Arrays.asList(new PlatformFragment(), new FeaturesFragment(), new DocumentationFragment());
@@ -50,10 +51,5 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
     }
 }

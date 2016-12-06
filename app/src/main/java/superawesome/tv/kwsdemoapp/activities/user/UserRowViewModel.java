@@ -14,7 +14,7 @@ class UserRowViewModel extends GenericViewModel {
     private String valueTxt = null;
     private int valueColor = Color.BLACK;
 
-    UserRowViewModel(String item, Object value) {
+    private UserRowViewModel(String item, Object value) {
         itemTxt = item;
         this.value = value;
     }

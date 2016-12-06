@@ -2,5 +2,4 @@ package superawesome.tv.kwsdemoapp.activities.main.features;
 
 import superawesome.tv.kwsdemoapp.aux.GenericViewModel;
 
-class FeaturesAuthRowViewModel extends GenericViewModel {
-}
+class FeaturesAuthRowViewModel extends GenericViewModel {}

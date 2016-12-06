@@ -2,7 +2,6 @@ package superawesome.tv.kwsdemoapp.activities.leader;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -10,13 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gabrielcoman.com.rxdatasource.RxDataSource;
+import kws.superawesome.tv.kwssdk.models.leaderboard.KWSLeader;
+import rx.functions.Func1;
 import superawesome.tv.kwsdemoapp.R;
+import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.aux.GenericViewModel;
 import superawesome.tv.kwsdemoapp.aux.RxKWS;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
-public class LeaderboardActivity extends AppCompatActivity {
+public class LeaderboardActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class LeaderboardActivity extends AppCompatActivity {
         ListView leadersListView = (ListView) findViewById(R.id.leadersListView);
         SAProgressDialog dialog = SAProgressDialog.getInstance();
 
-        RxKWS.getLeaderboard(c)
+        RxKWS.getLeaderBoard(c)
                 .map(kwsLeader -> (GenericViewModel) new LeaderRowViewModel(kwsLeader.rank, kwsLeader.score, kwsLeader.user))
                 .doOnSubscribe(() -> dialog.showProgress(c))
                 .doOnError(throwable -> dialog.hideProgress())

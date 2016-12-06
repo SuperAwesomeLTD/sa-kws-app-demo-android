@@ -12,11 +12,12 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 
 import rx.Observable;
 import superawesome.tv.kwsdemoapp.R;
+import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.aux.RxKWS;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
-public class SetAppDataActivity extends AppCompatActivity {
+public class SetAppDataActivity extends BaseActivity {
 
     private SetAppDataModel currentModel;
 

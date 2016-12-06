@@ -86,7 +86,7 @@
     <string name="feature_friend_email_popup_submit">Submit</string>
     <string name="feature_friend_email_popup_cancel">Cancel</string>
     <string name="feature_friend_email_popup_success_title">Hey!</string>
-    <string name="feature_friend_email_popup_success_message">You successfully invited %1$s to your app through KWS!</string>
+    <string name="feature_friend_email_popup_success_message">You successfully invited your friend to your app through KWS!</string>
     <string name="feature_friend_email_popup_error_title">Something went wrong...</string>
     <string name="feature_friend_email_popup_error_message">An error occurred while inviting %1$@ to your app through KWS. Please try again!</string>
     <string name="feature_popup_dismiss_button">Got it</string>

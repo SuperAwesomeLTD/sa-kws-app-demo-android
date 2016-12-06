@@ -2,7 +2,6 @@ package superawesome.tv.kwsdemoapp.activities.user;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,12 +15,13 @@ import java.util.List;
 import gabrielcoman.com.rxdatasource.RxDataSource;
 import kws.superawesome.tv.kwssdk.KWS;
 import superawesome.tv.kwsdemoapp.R;
+import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.aux.GenericViewModel;
 import superawesome.tv.kwsdemoapp.aux.RxKWS;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

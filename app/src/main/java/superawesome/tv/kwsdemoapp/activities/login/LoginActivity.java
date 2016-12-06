@@ -11,13 +11,15 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import rx.Observable;
+import rx.functions.Action2;
 import superawesome.tv.kwsdemoapp.R;
+import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.activities.signup.SignUpActivity;
 import superawesome.tv.kwsdemoapp.aux.RxKWS;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     // private constants
     private static final int AUTH_REQ_CODE = 113;
@@ -66,15 +68,13 @@ public class LoginActivity extends AppCompatActivity {
                             .doOnCompleted(dialog::hideProgress)
                             .subscribe(this::finishOK, this::errorAlert);
                 });
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AUTH_REQ_CODE && resultCode == RESULT_OK) {
-            setResult(RESULT_OK);
-            finish();
-        }
+        setOnActivityResult((requestCode, resultCode) -> {
+            if (requestCode == AUTH_REQ_CODE && resultCode == RESULT_OK) {
+                setResult(RESULT_OK);
+                finish();
+            }
+        });
     }
 
     private void finishOK (boolean status) {
