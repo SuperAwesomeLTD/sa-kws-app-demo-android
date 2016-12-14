@@ -11,6 +11,7 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
 import rx.Observable;
+import rx.functions.Func1;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.aux.RxKWS;

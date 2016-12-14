@@ -10,6 +10,7 @@
     <string name="user_name">User Details</string>
     <string name="appdata_get_name">Current App Data</string>
     <string name="appdata_set_name">Add App Data</string>
+    <string name="country_name">Select country</string>
 
     <!-- tabs -->
     <string name="tab_platform">Platform</string>
@@ -20,8 +21,8 @@
     <string name="kws_popup_nav_bar_close">Close</string>
 
     <!-- platform -->
-    <string name="platform_title">Welcome to your\nKWS Demo App</string>
-    <string name="platform_content">This KWS Demo App is powered by Kids Web Services (KWS). KWS is a platform that provides a set of compliance-as-a-service tools to create a kid-safe, COPPA-compliant sites and apps; KWS allows you to focus on delivering awesome content, by handling all the legal complexity related to data-collection in the kids space in one simple, customizable package.</string>
+    <string name="platform_title">Welcome to your\nKWS App</string>
+    <string name="platform_content">This KWS App is powered by Kids Web Services (KWS). KWS is a platform that provides a set of compliance-as-a-service tools to create a kid-safe, COPPA-compliant sites and apps; KWS allows you to focus on delivering awesome content, by handling all the legal complexity related to data-collection in the kids space in one simple, customizable package.</string>
     <string name="platform_feature_1">Verifiable\nparental\nconsent</string>
     <string name="platform_feature_2">Loyalty\nplatform\nfor kids</string>
     <string name="platform_feature_3">Federated\nIdentity</string>

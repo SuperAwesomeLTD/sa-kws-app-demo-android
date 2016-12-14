@@ -29,10 +29,6 @@ public class MainActivity extends BaseActivity {
         // UI stuff
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
 
         tabs = Arrays.asList(
                 getString(R.string.tab_platform),

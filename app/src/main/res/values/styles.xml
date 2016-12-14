@@ -15,6 +15,7 @@
     <!-- ToolBar Style -->
     <style name="ToolBarStyle" parent="Theme.AppCompat">
         <item name="android:background">@color/navigationBarColor</item>
+        <item name="contentInsetStart">0dp</item>
     </style>
 
     <style name="TabBarStyle" parent="Theme.AppCompat">

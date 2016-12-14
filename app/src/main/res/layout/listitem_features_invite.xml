@@ -23,7 +23,7 @@
                 android:padding="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/feat_icon2"/>
+                android:src="@drawable/ico_invite_friends"/>
 
             <TextView
                 android:layout_width="wrap_content"

@@ -176,21 +176,6 @@ public class RxKWS {
 
     }
 
-    public static Observable <Boolean> inviteUser (Context context, String email) {
-
-        return Observable.create(subscriber -> {
-
-            KWS.sdk.inviteUser(context, email, b -> {
-
-                subscriber.onNext(b);
-                subscriber.onCompleted();
-
-            });
-
-        });
-
-    }
-
     public static Observable <String> inviteFriendPopup (Context context) {
 
         return Observable.create(subscriber -> {
