@@ -1,26 +1,38 @@
 package superawesome.tv.kwsdemoapp.activities.signup;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 
+import org.json.JSONObject;
+
 import rx.Observable;
-import rx.functions.Func1;
+import rx.subjects.PublishSubject;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
+import superawesome.tv.kwsdemoapp.activities.country.CountryActivity;
+import superawesome.tv.kwsdemoapp.activities.country.CountryRowViewModel;
 import superawesome.tv.kwsdemoapp.aux.RxKWS;
+import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
 
 public class SignUpActivity extends BaseActivity {
 
+    // private constants
+    private static final int COUNTRY_CODE = 113;
+
     private SignUpModel currentModel;
+    private PublishSubject<String> countrySubject = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +48,9 @@ public class SignUpActivity extends BaseActivity {
         }
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
+        // create the country subject
+        countrySubject = PublishSubject.create();
+
         Context context = this;
         SAProgressDialog dialog = SAProgressDialog.getInstance();
 
@@ -46,7 +61,9 @@ public class SignUpActivity extends BaseActivity {
         EditText yearEdit = (EditText) findViewById(R.id.yearEdit);
         EditText monthEdit = (EditText) findViewById(R.id.monthEdit);
         EditText dayEdit = (EditText) findViewById(R.id.dayEdit);
+        Button selectCountry = (Button) findViewById(R.id.SelectCountry);
         Button submit = (Button) findViewById(R.id.RegisterUserButton);
+        ImageView flag = (ImageView) findViewById(R.id.CountryFlag);
 
         Observable<String> rxUsername = RxTextView.textChanges(usernameEdit).
                 map(charSequence -> charSequence.toString().trim());
@@ -63,7 +80,7 @@ public class SignUpActivity extends BaseActivity {
         Observable<String> rxDay = RxTextView.textChanges(dayEdit).
                 map(charSequence -> charSequence.toString().trim());
 
-        Observable.combineLatest(rxUsername, rxPassword1, rxPassword2, rxParentEmail, rxYear, rxMonth, rxDay, SignUpModel::new).
+        Observable.combineLatest(rxUsername, rxPassword1, rxPassword2, rxParentEmail, rxYear, rxMonth, rxDay, countrySubject.asObservable(), SignUpModel::new).
                 doOnNext(signUpModel -> currentModel = signUpModel).
                 map(SignUpModel::isValid).
                 subscribe(submit::setEnabled);
@@ -97,12 +114,52 @@ public class SignUpActivity extends BaseActivity {
                 subscribe(aBoolean -> setFieldColor(dayEdit, aBoolean));
 
         RxView.clicks(submit).subscribe(aVoid -> {
-            RxKWS.signUp(context, currentModel.getUsername(), currentModel.getPassword(), currentModel.getDate(), currentModel.getParentEmail()).
+            RxKWS.signUp(context, currentModel.getUsername(), currentModel.getPassword(), currentModel.getDate(), currentModel.getParentEmail(), currentModel.getISOCode()).
                     doOnSubscribe(() -> dialog.showProgress(context)).
                     doOnError(throwable -> dialog.hideProgress()).
                     doOnCompleted(dialog::hideProgress).
                     subscribe(this::clickAction, this::errorAlert);
         });
+
+        RxView.clicks(selectCountry).subscribe(aVoid -> {
+            Intent createIntent = new Intent(SignUpActivity.this, CountryActivity.class);
+            startActivityForResult(createIntent, COUNTRY_CODE);
+        });
+
+        // when coming back from the country selection
+        setOnActivityResult((requestCode, resultCode, data) -> {
+
+            if (requestCode == COUNTRY_CODE && resultCode == RESULT_OK && data != null) {
+
+                // get the data
+                String countryString = data.getStringExtra("k_COUNTRY_DATA");
+                JSONObject countryJson = SAJsonParser.newObject(countryString);
+                CountryRowViewModel tmp = new CountryRowViewModel(countryJson);
+
+                // update UI
+
+                Resources resources = SignUpActivity.this.getResources();
+                String packageName = SignUpActivity.this.getPackageName();
+
+                selectCountry.setText(tmp.getCountryName());
+                selectCountry.setTextColor(resources.getColor(R.color.textColorBlack));
+
+                try {
+                    int flagId = resources.getIdentifier(tmp.getCountryFlagString(), "drawable", packageName);
+                    flag.setImageDrawable(resources.getDrawable(flagId));
+                } catch (Exception e){
+                    int flagId = resources.getIdentifier(tmp.getDefaultCountryFlagString(), "drawable", packageName);
+                    flag.setImageDrawable(resources.getDrawable(flagId));
+                }
+
+                // update country subject
+                countrySubject.onNext(tmp.getCountryISOCode());
+
+            }
+        });
+
+        // start with empty country
+        countrySubject.onNext(null);
     }
 
     private void setFieldColor (EditText editText, boolean valid) {
@@ -120,9 +177,9 @@ public class SignUpActivity extends BaseActivity {
         }
         else {
             SAAlert.getInstance().show(SignUpActivity.this,
-                    getString(R.string.sign_up_popup_warning_duplicate_title),
-                    getString(R.string.sign_up_popup_warning_duplicate_message),
-                    getString(R.string.sign_up_popup_dismiss_button),
+                    getString(R.string.page_signup_popup_error_create_title),
+                    getString(R.string.page_signup_popup_error_create_message),
+                    getString(R.string.page_signup_popup_error_create_ok_button),
                     null,
                     false,
                     0,
@@ -132,9 +189,9 @@ public class SignUpActivity extends BaseActivity {
 
     private void errorAlert (Throwable err) {
         SAAlert.getInstance().show(SignUpActivity.this,
-                getString(R.string.sign_up_popup_error_title),
-                getString(R.string.sign_up_popup_error_message),
-                getString(R.string.sign_up_popup_dismiss_button),
+                getString(R.string.page_signup_popup_error_network_title),
+                getString(R.string.page_signup_popup_error_network_message),
+                getString(R.string.page_signup_popup_error_network_ok_button),
                 null,
                 false,
                 0,

@@ -17,7 +17,7 @@
         <!--toolbar-->
         <android.support.v7.widget.Toolbar
             android:id="@+id/appDataSetToolbar"
-            android:title="@string/add_app_data_vc_title"
+            android:title="@string/page_setappdata_title"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimaryDark"
@@ -39,7 +39,7 @@
             android:id="@+id/appDataName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/add_app_data_name_placeholder"
+            android:hint="@string/page_setappdata_textfield_name_placeholder"
             android:textColor="@color/textColorDarkGray"
             android:textColorHint="@color/textColorGray"
             android:inputType="text" />
@@ -48,7 +48,7 @@
             android:id="@+id/appDataValue"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/add_app_data_value_placeholder"
+            android:hint="@string/page_setappdata_textfield_value_placeholder"
             android:textColor="@color/textColorDarkGray"
             android:textColorHint="@color/textColorGray"
             android:inputType="number" />
@@ -60,7 +60,7 @@
             android:layout_height="40dp"
             android:layout_gravity="end"
             style="@style/ButtonStyle3"
-            android:text="@string/add_app_data_submit"/>
+            android:text="@string/page_setappdata_button_submit"/>
 
     </LinearLayout>
 

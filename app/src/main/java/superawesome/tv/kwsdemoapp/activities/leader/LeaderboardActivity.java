@@ -53,43 +53,32 @@ public class LeaderboardActivity extends BaseActivity {
                             .customiseRow(R.layout.listitem_leader_header, LeaderHeaderViewModel.class, (genericViewModel, view) -> {
 
                                 TextView rankTextView = (TextView) view.findViewById(R.id.leaderRank);
-                                rankTextView.setText(c.getString(R.string.leader_col_1_title));
+                                rankTextView.setText(c.getString(R.string.page_leader_header_rank));
 
                                 TextView usernameTextView = (TextView) view.findViewById(R.id.leaderUsername);
-                                usernameTextView.setText(c.getString(R.string.leader_col_2_title));
+                                usernameTextView.setText(c.getString(R.string.page_leader_header_username));
 
                                 TextView scoreTextView = (TextView) view.findViewById(R.id.leaderPoints);
-                                scoreTextView.setText(c.getString(R.string.leader_col_3_title));
+                                scoreTextView.setText(c.getString(R.string.page_leader_header_score));
                             })
                             .customiseRow(R.layout.listitem_leader_row, LeaderRowViewModel.class, (genericViewModel, view) -> {
 
                                 LeaderRowViewModel row = (LeaderRowViewModel) genericViewModel;
 
                                 TextView rankTextView = (TextView) view.findViewById(R.id.leaderRank);
-                                rankTextView.setText(row.getRankTxt() != null ? row.getRankTxt() : c.getString(R.string.leader_col_1_default));
+                                rankTextView.setText(row.getRankTxt() != null ? row.getRankTxt() : c.getString(R.string.page_leader_row_rank_default));
 
                                 TextView usernameTextView = (TextView) view.findViewById(R.id.leaderUsername);
-                                usernameTextView.setText(row.getUsernameTxt() != null ? row.getUsernameTxt() : c.getString(R.string.leader_col_2_default));
+                                usernameTextView.setText(row.getUsernameTxt() != null ? row.getUsernameTxt() : c.getString(R.string.page_leader_row_username_default));
 
                                 TextView scoreTextView = (TextView) view.findViewById(R.id.leaderPoints);
-                                scoreTextView.setText(row.getScoreTxt() != null ? row.getScoreTxt() : c.getString(R.string.leader_col_3_default));
+                                scoreTextView.setText(row.getScoreTxt() != null ? row.getScoreTxt() : c.getString(R.string.page_leader_row_score_default));
 
                             })
                             .update();
 
                 }, throwable -> {
-                    errorAlert();
+                    // do nothing
                 });
-    }
-
-    private void errorAlert () {
-        SAAlert.getInstance().show(this,
-                getString(R.string.leader_popup_error_title),
-                getString(R.string.leader_popup_error_message),
-                getString(R.string.leader_popup_dismiss_button),
-                null,
-                false,
-                0,
-                null);
     }
 }

@@ -66,7 +66,7 @@ public class GetAppDataActivity extends BaseActivity {
                     .customiseRow(R.layout.listitem_appdata_row, GetAppDataRowViewModel.class, (viewModel, view) -> {
 
                         TextView nameTextView = (TextView) view.findViewById(R.id.appDataItemName);
-                        nameTextView.setText(viewModel.getName() != null ? viewModel.getName() : c.getString(R.string.get_app_data_col_unknown_username));
+                        nameTextView.setText(viewModel.getName() != null ? viewModel.getName() : c.getString(R.string.page_getappdata_row_name_default));
 
                         TextView valueTextView = (TextView) view.findViewById(R.id.appDataItemValue);
                         valueTextView.setText(viewModel.getValue());
@@ -78,12 +78,10 @@ public class GetAppDataActivity extends BaseActivity {
             errorAlert();
         });
 
-        setOnActivityResult((requestCode, resultCode) -> {
-
+        setOnActivityResult((requestCode, resultCode, intent) -> {
             observable.subscribe(getAppDataRowViewModels -> {
                 source.update(getAppDataRowViewModels);
             });
-
         });
     }
 
@@ -94,9 +92,9 @@ public class GetAppDataActivity extends BaseActivity {
 
     private void errorAlert () {
         SAAlert.getInstance().show(GetAppDataActivity.this,
-                getString(R.string.get_app_data_popup_error_title),
-                getString(R.string.get_app_data_popup_error_message),
-                getString(R.string.get_app_data_popup_dismiss_button),
+                getString(R.string.page_getappdata_popup_error_network_title),
+                getString(R.string.page_getappdata_popup_error_network_message),
+                getString(R.string.page_getappdata_popup_error_network_ok_button),
                 null,
                 false,
                 0,

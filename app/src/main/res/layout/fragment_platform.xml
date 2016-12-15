@@ -29,7 +29,7 @@
             android:textStyle="bold"
             android:lines="2"
             android:maxLines="2"
-            android:text="@string/platform_title"/>
+            android:text="@string/page_platform_text_welcome"/>
 
         <!-- content -->
         <TextView
@@ -37,7 +37,7 @@
             android:paddingTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/platform_content"
+            android:text="@string/page_platform_text_content"
             android:textColor="@color/textColorGray"
             android:gravity="center"/>
 
@@ -80,7 +80,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/platform_feature_1"
+                    android:text="@string/page_platform_text_feature_1"
                     style="@style/PlatformCellStyle"/>
 
 
@@ -88,7 +88,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/platform_feature_2"
+                    android:text="@string/page_platform_text_feature_2"
                     style="@style/PlatformCellStyle"/>
 
             </LinearLayout>
@@ -125,14 +125,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/platform_feature_3"
+                    android:text="@string/page_platform_text_feature_3"
                     style="@style/PlatformCellStyle"/>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/platform_feature_4"
+                    android:text="@string/page_platform_text_feature_4"
                     style="@style/PlatformCellStyle"/>
 
             </LinearLayout>
@@ -145,7 +145,7 @@
             android:layout_marginTop="40dp"
             android:layout_width="match_parent"
             android:layout_height="34dp"
-            android:text="@string/platform_main_button"
+            android:text="@string/page_platform_button_more"
             style="@style/ButtonStyle"/>
 
     </LinearLayout>

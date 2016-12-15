@@ -17,7 +17,7 @@
         <!--toolbar-->
         <android.support.v7.widget.Toolbar
             android:id="@+id/appDataGetToolbar"
-            android:title="@string/get_app_data_vc_title"
+            android:title="@string/page_getappdata_title"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimaryDark"
@@ -55,7 +55,7 @@
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 style="@style/ButtonStyle3"
-                android:text="@string/get_app_data_add_button"/>
+                android:text="@string/page_getappdata_button_add"/>
         </LinearLayout>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

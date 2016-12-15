@@ -49,52 +49,54 @@ public class UserActivity extends BaseActivity {
 
                     List<GenericViewModel> list = new ArrayList<>();
 
+
+
                     list.addAll(Arrays.asList(
                             UserHeaderViewModel.create(usr.username),
-                            UserRowViewModel.create(context, R.string.user_row_details_first_name, usr.firstName),
-                            UserRowViewModel.create(context, R.string.user_row_details_last_name, usr.lastName),
-                            UserRowViewModel.create(context, R.string.user_row_details_birth_date, usr.dateOfBirth),
-                            UserRowViewModel.create(context, R.string.user_row_details_email, usr.email),
-                            UserRowViewModel.create(context, R.string.user_row_details_phone, usr.phoneNumber),
-                            UserRowViewModel.create(context, R.string.user_row_details_gender, usr.gender),
-                            UserRowViewModel.create(context, R.string.user_row_details_language, usr.language)
+                            UserRowViewModel.create(context, R.string.page_user_row_details_first_name_title, usr.firstName),
+                            UserRowViewModel.create(context, R.string.page_user_row_details_last_name_title, usr.lastName),
+                            UserRowViewModel.create(context, R.string.page_user_row_details_birth_date_title, usr.dateOfBirth),
+                            UserRowViewModel.create(context, R.string.page_user_row_details_email_title, usr.email),
+                            UserRowViewModel.create(context, R.string.page_user_row_details_phone_title, usr.phoneNumber),
+                            UserRowViewModel.create(context, R.string.page_user_row_details_gender_title, usr.gender),
+                            UserRowViewModel.create(context, R.string.page_user_row_details_language_title, usr.language)
                     ));
 
                     if (usr.address != null) {
                         list.addAll(Arrays.asList(
-                                UserHeaderViewModel.create(context.getString(R.string.user_header_address)),
-                                UserRowViewModel.create(context, R.string.user_row_address_street, usr.address.street),
-                                UserRowViewModel.create(context, R.string.user_row_address_post_code, usr.address.postCode),
-                                UserRowViewModel.create(context, R.string.user_row_address_city, usr.address.city),
-                                UserRowViewModel.create(context, R.string.user_row_address_country, usr.address.country)
+                                UserHeaderViewModel.create(context.getString(R.string.page_user_header_address)),
+                                UserRowViewModel.create(context, R.string.page_user_row_address_street_title, usr.address.street),
+                                UserRowViewModel.create(context, R.string.page_user_row_address_post_code_title, usr.address.postCode),
+                                UserRowViewModel.create(context, R.string.page_user_row_address_city_title, usr.address.city),
+                                UserRowViewModel.create(context, R.string.page_user_row_address_country_title, usr.address.country)
                         ));
                     }
 
                     if (usr.points != null) {
                         list.addAll(Arrays.asList(
-                                UserHeaderViewModel.create(context.getString(R.string.user_header_points)),
-                                UserRowViewModel.create(context, R.string.user_row_points_received, usr.points.totalReceived),
-                                UserRowViewModel.create(context, R.string.user_row_points_total, usr.points.total),
-                                UserRowViewModel.create(context, R.string.user_row_points_app, usr.points.totalPointsReceivedInCurrentApp),
-                                UserRowViewModel.create(context, R.string.user_row_points_available, usr.points.availableBalance),
-                                UserRowViewModel.create(context, R.string.user_row_points_pending, usr.points.pending)
+                                UserHeaderViewModel.create(context.getString(R.string.page_user_header_points)),
+                                UserRowViewModel.create(context, R.string.page_user_row_points_received_title, usr.points.totalReceived),
+                                UserRowViewModel.create(context, R.string.page_user_row_points_total_title, usr.points.total),
+                                UserRowViewModel.create(context, R.string.page_user_row_points_app_title, usr.points.totalPointsReceivedInCurrentApp),
+                                UserRowViewModel.create(context, R.string.page_user_row_points_available_title, usr.points.availableBalance),
+                                UserRowViewModel.create(context, R.string.page_user_row_points_pending_title, usr.points.pending)
                         ));
                     }
 
                     if (usr.applicationPermissions != null) {
                         list.addAll(Arrays.asList(
-                                UserHeaderViewModel.create(context.getString(R.string.user_header_perm)),
-                                UserRowViewModel.create(context, R.string.user_row_perm_address, usr.applicationPermissions.accessAddress),
-                                UserRowViewModel.create(context, R.string.user_row_perm_phone, usr.applicationPermissions.accessPhoneNumber),
-                                UserRowViewModel.create(context, R.string.user_row_perm_first_name, usr.applicationPermissions.accessFirstName),
-                                UserRowViewModel.create(context, R.string.user_row_perm_last_name, usr.applicationPermissions.accessLastName),
-                                UserRowViewModel.create(context, R.string.user_row_perm_email, usr.applicationPermissions.accessEmail),
-                                UserRowViewModel.create(context, R.string.user_row_perm_street, usr.applicationPermissions.accessStreetAddress),
-                                UserRowViewModel.create(context, R.string.user_row_perm_city, usr.applicationPermissions.accessCity),
-                                UserRowViewModel.create(context, R.string.user_row_perm_post_code, usr.applicationPermissions.accessPostalCode),
-                                UserRowViewModel.create(context, R.string.user_row_perm_country, usr.applicationPermissions.accessCountry),
-                                UserRowViewModel.create(context, R.string.user_row_perm_notifications, usr.applicationPermissions.sendPushNotification),
-                                UserRowViewModel.create(context, R.string.user_row_perm_newsletter, usr.applicationPermissions.sendNewsletter)
+                                UserHeaderViewModel.create(context.getString(R.string.page_user_header_permissions)),
+                                UserRowViewModel.create(context, R.string.page_user_row_perm_address_title, usr.applicationPermissions.accessAddress),
+                                UserRowViewModel.create(context, R.string.page_user_row_perm_phone, usr.applicationPermissions.accessPhoneNumber),
+                                UserRowViewModel.create(context, R.string.page_user_row_perm_first_name_title, usr.applicationPermissions.accessFirstName),
+                                UserRowViewModel.create(context, R.string.page_user_row_perm_last_name_title, usr.applicationPermissions.accessLastName),
+                                UserRowViewModel.create(context, R.string.page_user_row_perm_email_title, usr.applicationPermissions.accessEmail),
+                                UserRowViewModel.create(context, R.string.page_user_row_perm_street_title, usr.applicationPermissions.accessStreetAddress),
+                                UserRowViewModel.create(context, R.string.page_user_row_perm_city_title, usr.applicationPermissions.accessCity),
+                                UserRowViewModel.create(context, R.string.page_user_row_perm_post_code_title, usr.applicationPermissions.accessPostalCode),
+                                UserRowViewModel.create(context, R.string.page_user_row_perm_country_title, usr.applicationPermissions.accessCountry),
+                                UserRowViewModel.create(context, R.string.page_user_row_perm_notifications_title, usr.applicationPermissions.sendPushNotification),
+                                UserRowViewModel.create(context, R.string.page_user_row_perm_newsletter_title, usr.applicationPermissions.sendNewsletter)
                         ));
                     }
 
@@ -142,9 +144,9 @@ public class UserActivity extends BaseActivity {
 
     private void errorAlert () {
         SAAlert.getInstance().show(UserActivity.this,
-                getString(R.string.user_popup_error_title),
-                getString(R.string.user_popup_error_message),
-                getString(R.string.user_popup_dismiss_button),
+                getString(R.string.page_user_popup_error_network_title),
+                getString(R.string.page_user_popup_error_network_message),
+                getString(R.string.page_user_popup_error_network_ok_button),
                 null,
                 false,
                 0,

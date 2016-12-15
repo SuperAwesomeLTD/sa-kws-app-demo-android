@@ -67,7 +67,7 @@ public class LoginActivity extends BaseActivity {
                             .subscribe(this::finishOK, this::errorAlert);
                 });
 
-        setOnActivityResult((requestCode, resultCode) -> {
+        setOnActivityResult((requestCode, resultCode, data) -> {
             if (requestCode == AUTH_REQ_CODE && resultCode == RESULT_OK) {
                 setResult(RESULT_OK);
                 finish();
@@ -81,9 +81,9 @@ public class LoginActivity extends BaseActivity {
             finish();
         } else {
             SAAlert.getInstance().show(LoginActivity.this,
-                    getString(R.string.login_popup_error_title),
-                    getString(R.string.login_popup_error_message),
-                    getString(R.string.login_popup_dismiss_button),
+                    getString(R.string.page_login_popup_error_auth_title),
+                    getString(R.string.page_login_popup_error_auth_message),
+                    getString(R.string.page_login_popup_error_auth_ok_button),
                     null,
                     false,
                     0,
@@ -93,9 +93,9 @@ public class LoginActivity extends BaseActivity {
 
     private void errorAlert (Throwable err) {
         SAAlert.getInstance().show(LoginActivity.this,
-                getString(R.string.login_popup_error_network_title),
-                getString(R.string.login_popup_error_network_message),
-                getString(R.string.login_popup_dismiss_button),
+                getString(R.string.page_login_popup_error_network_title),
+                getString(R.string.page_login_popup_error_network_message),
+                getString(R.string.page_login_popup_error_network_ok_button),
                 null,
                 false,
                 0,

@@ -19,7 +19,10 @@ import java.util.Arrays;
 import gabrielcoman.com.rxdatasource.RxDataSource;
 import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.models.oauth.KWSLoggedUser;
+import kws.superawesome.tv.kwssdk.process.KWSNotificationStatus;
+import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionStatus;
 import rx.Observable;
+import rx.functions.Action1;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.base.BaseFragment;
 import superawesome.tv.kwsdemoapp.activities.getappdata.GetAppDataActivity;
@@ -77,8 +80,8 @@ public class FeaturesFragment extends BaseFragment {
                         KWSLoggedUser local = KWS.sdk.getLoggedUser();
 
                         authButton.setText(isLogged ?
-                                context.getString(R.string.feature_cell_auth_button_1_loggedin) + " " + local.username :
-                                context.getString(R.string.feature_cell_auth_button_1_loggedout));
+                                context.getString(R.string.page_features_row_auth_button_login_logged) + " " + local.username :
+                                context.getString(R.string.page_features_row_auth_button_login_not_logged));
 
                         RxView.clicks(authButton).subscribe(aVoid -> {
                             Intent authIntent = new Intent(getActivity(), !isLogged ? LoginActivity.class : UserActivity.class);
@@ -100,8 +103,8 @@ public class FeaturesFragment extends BaseFragment {
 
                         subButton.setEnabled(isLogged);
                         subButton.setText(isRegistered ?
-                                context.getString(R.string.feature_cell_notif_button_1_disable) :
-                                context.getString(R.string.feature_cell_notif_button_1_enable));
+                                context.getString(R.string.page_features_row_notif_button_disable) :
+                                context.getString(R.string.page_features_row_notif_button_enable));
 
                         Observable <Void> subButtonRx = RxView.clicks(subButton).share();
 
@@ -110,17 +113,52 @@ public class FeaturesFragment extends BaseFragment {
                                 .subscribe(aBoolean -> {
 
                                     dataSource.update();
-                                    alert(getString(R.string.feature_notif_unreg_popup_success_title),
-                                            getString(R.string.feature_notif_unreg_popup_success_message));
+
+                                    if (aBoolean) {
+                                        alert(getString(R.string.page_features_row_notif_popup_unreg_success_title),
+                                                getString(R.string.page_features_row_notif_popup_unreg_success_message));
+                                    } else {
+                                        alert(getString(R.string.page_features_row_notif_popup_unreg_error_network_title),
+                                                getString(R.string.page_features_row_notif_popup_unreg_error_network_message));
+                                    }
                                 });
 
                         subButtonRx.filter(aVoid -> !isRegistered)
                                 .flatMap(aVoid -> RxKWS.enableNotifications(context))
-                                .filter(aBoolean -> aBoolean)
-                                .subscribe(aBoolean -> {
-                                    dataSource.update();
-                                    alert(getString(R.string.feature_notif_reg_popup_success_title),
-                                            getString(R.string.feature_notif_reg_popup_success_message));
+                                .subscribe(kwsNotificationStatus -> {
+
+                                    switch (kwsNotificationStatus) {
+
+                                        case ParentDisabledNotifications:
+                                            alert(getString(R.string.page_features_row_notif_popup_reg_error_disable_parent_title),
+                                                    getString(R.string.page_features_row_notif_popup_reg_error_disable_parent_message));
+                                            break;
+                                        case UserDisabledNotifications:
+                                            alert(getString(R.string.page_features_row_notif_popup_reg_error_disable_user_title),
+                                                    getString(R.string.page_features_row_notif_popup_reg_error_disable_user_message));
+                                            break;
+                                        case NoParentEmail:
+                                            alert(getString(R.string.page_features_row_notif_popup_reg_error_no_email_title),
+                                                    getString(R.string.page_features_row_notif_popup_reg_error_no_email_message));
+                                            break;
+                                        case FirebaseNotSetup:
+                                            alert(getString(R.string.page_features_row_notif_popup_reg_error_firebase_not_setup_title),
+                                                    getString(R.string.page_features_row_notif_popup_reg_error_firebase_not_setup_message));
+                                            break;
+                                        case FirebaseCouldNotGetToken:
+                                            alert(getString(R.string.page_features_row_notif_popup_reg_error_firebase_nil_token_title),
+                                                    getString(R.string.page_features_row_notif_popup_reg_error_firebase_nil_token_message));
+                                            break;
+                                        case NetworkError:
+                                            alert(getString(R.string.page_features_row_notif_popup_reg_error_network_title),
+                                                    getString(R.string.page_features_row_notif_popup_reg_error_network_message));
+                                            break;
+                                        case Success:
+                                            alert(getString(R.string.page_features_row_notif_popup_reg_success_title),
+                                                    getString(R.string.page_features_row_notif_popup_reg_success_message));
+                                            break;
+                                    }
+
                                 });
 
                         RxView.clicks(docButton).subscribe(this::documentationFunc);
@@ -140,10 +178,24 @@ public class FeaturesFragment extends BaseFragment {
                         RxView.clicks(addPermission)
                                 .flatMap(aVoid -> RxKWS.requestPermissionPopup(context))
                                 .flatMap(kwsPermissionTypes -> RxKWS.requestPermission(context, kwsPermissionTypes))
-                                .filter(aBoolean -> aBoolean)
-                                .subscribe(aBoolean -> {
-                                    alert(getString(R.string.feature_perm_popup_success_title),
-                                            getString(R.string.feature_perm_popup_success_message));
+                                .subscribe(kwsPermissionStatus -> {
+
+                                    switch (kwsPermissionStatus) {
+
+                                        case Success:
+                                            alert(getString(R.string.page_features_row_perm_popup_success_title),
+                                                    getString(R.string.page_features_row_perm_popup_success_message));
+                                            break;
+                                        case NoParentEmail:
+                                            alert(getString(R.string.page_features_row_perm_popup_error_no_email_title),
+                                                    getString(R.string.page_features_row_perm_popup_error_no_email_message));
+                                            break;
+                                        case NeworkError:
+                                            alert(getString(R.string.page_features_row_perm_popup_error_network_title),
+                                                    getString(R.string.page_features_row_perm_popup_error_network_message));
+                                            break;
+                                    }
+
                                 });
 
                         RxView.clicks(docButton).subscribe(this::documentationFunc);
@@ -170,24 +222,40 @@ public class FeaturesFragment extends BaseFragment {
                                 .flatMap(aVoid -> RxKWS.triggerEvent(context, "GabrielAdd20ForAwesomeApp"))
                                 .filter(aBoolean -> aBoolean)
                                 .subscribe(aBoolean -> {
-                                    alert(getString(R.string.feature_event_add20_popup_success_title),
-                                            getString(R.string.feature_event_add20_popup_success_message));
+                                    if (aBoolean) {
+                                        alert(getString(R.string.page_features_row_events_popup_success_20pcts_title),
+                                                getString(R.string.page_features_row_events_popup_success_20pcts_message));
+                                    } else {
+                                        alert(getString(R.string.page_features_row_events_popup_error_network_title),
+                                                getString(R.string.page_features_row_events_popup_error_network_message));
+                                    }
+
                                 });
 
                         RxView.clicks(sub10Points)
                                 .flatMap(aVoid -> RxKWS.triggerEvent(context, "GabrielSub10ForAwesomeApp"))
                                 .filter(aBoolean -> aBoolean)
                                 .subscribe(aBoolean -> {
-                                    alert(getString(R.string.feature_event_sub10_popup_success_title),
-                                            getString(R.string.feature_event_sub10_popup_success_message));
+                                    if (aBoolean) {
+                                        alert(getString(R.string.page_features_row_events_popup_success_10pcts_title),
+                                                getString(R.string.page_features_row_events_popup_success_10pcts_message));
+                                    } else {
+                                        alert(getString(R.string.page_features_row_events_popup_error_network_title),
+                                                getString(R.string.page_features_row_events_popup_error_network_message));
+                                    }
                                 });
 
                         RxView.clicks(getScore)
                                 .flatMap(aVoid -> RxKWS.getScore(context))
                                 .filter(kwsScore -> kwsScore != null)
                                 .subscribe(kwsScore -> {
-                                    alert(getString(R.string.feature_event_getscore_success_title),
-                                            getString(R.string.feature_event_getscore_success_message, kwsScore.rank, kwsScore.score));
+                                    if (kwsScore != null) {
+                                        alert(getString(R.string.page_features_row_events_popup_success_score_title),
+                                                getString(R.string.page_features_row_events_popup_success_score_message, kwsScore.rank, kwsScore.score));
+                                    } else {
+                                        alert(getString(R.string.page_features_row_events_popup_error_network_title),
+                                                getString(R.string.page_features_row_events_popup_error_network_message));
+                                    }
                                 });
 
 
@@ -215,8 +283,14 @@ public class FeaturesFragment extends BaseFragment {
                                 .flatMap(s -> RxKWS.inviteFriend(context, s))
                                 .filter(aBoolean -> aBoolean)
                                 .subscribe(aBoolean -> {
-                                    alert(getString(R.string.feature_friend_email_popup_success_title),
-                                            getString(R.string.feature_friend_email_popup_success_message));
+                                    if (aBoolean) {
+                                        alert(getString(R.string.page_features_row_invite_popup_success_title),
+                                                getString(R.string.page_features_row_invite_popup_success_message));
+                                    } else {
+                                        alert(getString(R.string.page_features_row_invite_popup_error_network_title),
+                                                getString(R.string.page_features_row_invite_popup_error_network_message));
+                                    }
+
                                 });
 
                         RxView.clicks(docButton).subscribe(this::documentationFunc);
@@ -266,7 +340,7 @@ public class FeaturesFragment extends BaseFragment {
                 getActivity(),
                 title,
                 message,
-                getString(R.string.feature_popup_dismiss_button),
+                getString(R.string.page_features_row_popup_button_ok_generic),
                 null,
                 false,
                 0,

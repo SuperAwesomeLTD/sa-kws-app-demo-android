@@ -29,7 +29,18 @@
     <LinearLayout
         android:layout_marginTop="?attr/actionBarSize"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/SearchCountry"
+            android:layout_margin="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:textColor="@color/textColorDarkGray"
+            android:textColorHint="@color/textColorGray"
+            android:hint="@string/page_country_textfield_search_placeholder"/>
 
         <ListView
             android:id="@+id/countryListView"

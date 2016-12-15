@@ -66,9 +66,9 @@ public class SetAppDataActivity extends BaseActivity {
 
     private void errorAlert (Throwable error) {
         SAAlert.getInstance().show(SetAppDataActivity.this,
-                getString(R.string.add_app_data_popup_error_title),
-                getString(R.string.add_app_data_error_message),
-                getString(R.string.add_app_data_popup_dismiss_button),
+                getString(R.string.page_setappdata_popup_error_network_title),
+                getString(R.string.page_setappdata_popup_error_network_message),
+                getString(R.string.page_setappdata_popup_error_network_ok_button),
                 null,
                 false,
                 0,

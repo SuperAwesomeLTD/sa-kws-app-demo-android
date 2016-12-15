@@ -10,11 +10,12 @@ class SignUpModel {
     private String password1;
     private String password2;
     private String parentEmail;
+    private String isoCode;
     private Integer year;
     private Integer month;
     private Integer day;
 
-    SignUpModel(String username, String password1, String password2, String parentEmail, String year, String month, String day) {
+    SignUpModel(String username, String password1, String password2, String parentEmail, String year, String month, String day, String isoCode) {
         this.username = username;
         this.password1 = password1;
         this.password2 = password2;
@@ -22,6 +23,7 @@ class SignUpModel {
         this.year = year != null && !year.isEmpty() ? Integer.parseInt(year) : INVALID_DATE;
         this.month = month != null && !month.isEmpty() ? Integer.parseInt(month) : INVALID_DATE;
         this.day = day != null && !day.isEmpty() ? Integer.parseInt(day) : INVALID_DATE;
+        this.isoCode = isoCode;
     }
 
     boolean isUserOK() {
@@ -56,8 +58,12 @@ class SignUpModel {
         return day >= 1 && day <= 31;
     }
 
+    boolean isISOCodeOK () {
+        return isoCode != null;
+    }
+
     boolean isValid() {
-        return isUserOK() && isPassword1OK() && isPassword2OK() && arePasswordsSame() && isParentEmailOK() && isYearOK() && isMonthOK() && isDayOK();
+        return isUserOK() && isPassword1OK() && isPassword2OK() && arePasswordsSame() && isParentEmailOK() && isYearOK() && isMonthOK() && isDayOK() && isISOCodeOK();
     }
 
     String getParentEmail() {
@@ -74,5 +80,9 @@ class SignUpModel {
 
     String getDate() {
         return (year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day));
+    }
+
+    String getISOCode () {
+        return isoCode;
     }
 }

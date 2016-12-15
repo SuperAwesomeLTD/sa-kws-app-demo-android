@@ -11,22 +11,22 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:text="@string/leader_col_1_default"
         android:gravity="center"
         android:textSize="18sp"
+        android:text="@string/page_leader_row_rank_default"
         android:textStyle="bold"/>
     <TextView
         android:id="@+id/leaderUsername"
         android:layout_width="0dp"
         android:layout_weight="7"
         android:layout_height="match_parent"
-        android:text="@string/leader_col_2_default"
+        android:text="@string/page_leader_row_username_default"
         android:gravity="center_vertical"/>
     <TextView
         android:id="@+id/leaderPoints"
         android:layout_width="0dp"
         android:layout_weight="2"
         android:layout_height="match_parent"
-        android:text="@string/leader_col_3_default"
+        android:text="@string/page_leader_row_score_default"
         android:gravity="center"/>
 </LinearLayout>

@@ -31,9 +31,9 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         tabs = Arrays.asList(
-                getString(R.string.tab_platform),
-                getString(R.string.tab_features),
-                getString(R.string.tab_doc));
+                getString(R.string.page_platform_title),
+                getString(R.string.page_features_title),
+                getString(R.string.page_documentation_title));
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         MainAdapter adapter = new MainAdapter(getSupportFragmentManager());

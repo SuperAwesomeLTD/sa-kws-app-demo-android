@@ -8,6 +8,8 @@ import kws.superawesome.tv.kwssdk.models.appdata.KWSAppData;
 import kws.superawesome.tv.kwssdk.models.leaderboard.KWSLeader;
 import kws.superawesome.tv.kwssdk.models.user.KWSScore;
 import kws.superawesome.tv.kwssdk.models.user.KWSUser;
+import kws.superawesome.tv.kwssdk.process.KWSNotificationStatus;
+import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionStatus;
 import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionType;
 import rx.Observable;
 import superawesome.tv.kwsdemoapp.R;
@@ -94,11 +96,11 @@ public class RxKWS {
         });
     }
 
-    public static rx.Observable<Boolean> signUp (Context context, final String username, final String password, final String dateOfBirth, final String parentEmail) {
+    public static rx.Observable<Boolean> signUp (Context context, final String username, final String password, final String dateOfBirth, final String parentEmail, final String countryISOCode) {
 
         return rx.Observable.create(subscriber -> {
 
-            KWS.sdk.createUser(context, username, password, dateOfBirth, "US", parentEmail, kwsCreateUserStatus -> {
+            KWS.sdk.createUser(context, username, password, dateOfBirth, countryISOCode.toUpperCase(), parentEmail, kwsCreateUserStatus -> {
 
                 switch (kwsCreateUserStatus) {
                     case Success: {
@@ -181,10 +183,10 @@ public class RxKWS {
         return Observable.create(subscriber -> {
 
             SAAlert.getInstance().show(context,
-                    context.getString(R.string.feature_friend_email_popup_title),
-                    context.getString(R.string.feature_friend_email_popup_message),
-                    context.getString(R.string.feature_friend_email_popup_submit),
-                    context.getString(R.string.feature_friend_email_popup_cancel),
+                    context.getString(R.string.page_features_row_invite_popup_email_title),
+                    context.getString(R.string.page_features_row_invite_popup_email_message),
+                    context.getString(R.string.page_features_row_invite_popup_email_button_ok),
+                    context.getString(R.string.page_features_row_invite_popup_email_button_cancel),
                     true,
                     32,
                     (button, email) -> {
@@ -229,30 +231,15 @@ public class RxKWS {
 
     }
 
-    public static Observable <Boolean> enableNotifications (Context context) {
+    public static Observable <KWSNotificationStatus> enableNotifications (Context context) {
 
         return Observable.create(subscriber -> {
 
             KWS.sdk.register(context, kwsNotificationStatus -> {
 
-                SAProgressDialog.getInstance().hideProgress();
-                switch (kwsNotificationStatus) {
-                    case ParentDisabledNotifications:
-                    case UserDisabledNotifications:
-                    case NoParentEmail:
-                    case FirebaseNotSetup:
-                    case FirebaseCouldNotGetToken:
-                    case NetworkError: {
-                        subscriber.onNext(false);
-                        subscriber.onCompleted();
-                        break;
-                    }
-                    case Success: {
-                        subscriber.onNext(true);
-                        subscriber.onCompleted();
-                        break;
-                    }
-                }
+                subscriber.onNext(kwsNotificationStatus);
+                subscriber.onCompleted();
+
             });
 
         });
@@ -268,20 +255,18 @@ public class RxKWS {
                     KWSPermissionType.accessAddress,
                     KWSPermissionType.accessFirstName,
                     KWSPermissionType.accessLastName,
-                    KWSPermissionType.accessPhoneNumber,
                     KWSPermissionType.sendNewsletter
             };
             CharSequence titles[] = new CharSequence[] {
-                    "Access email",
-                    "Access address",
-                    "Access first name",
-                    "Access last name",
-                    "Access phone number",
-                    "Send newsletter"
+                    context.getString(R.string.page_features_row_perm_popup_perm_option_email),
+                    context.getString(R.string.page_features_row_perm_popup_perm_option_address),
+                    context.getString(R.string.page_features_row_perm_popup_perm_option_first_name),
+                    context.getString(R.string.page_features_row_perm_popup_perm_option_last_name),
+                    context.getString(R.string.page_features_row_perm_popup_perm_option_newsletter)
             };
 
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle(context.getString(R.string.feature_perm_alert_title));
+            builder.setTitle(context.getString(R.string.page_features_row_perm_popup_perm_title));
             builder.setItems(titles, (dialog, which) -> {
 
                 KWSPermissionType[] requestedType = new KWSPermissionType[] { types[which] };
@@ -295,25 +280,15 @@ public class RxKWS {
 
     }
 
-    public static Observable<Boolean> requestPermission (Context context, KWSPermissionType[] types) {
+    public static Observable<KWSPermissionStatus> requestPermission (Context context, KWSPermissionType[] types) {
 
         return Observable.create(subscriber -> {
 
             KWS.sdk.requestPermission(context, types, kwsPermissionStatus -> {
 
-                switch (kwsPermissionStatus) {
-                    case Success: {
-                        subscriber.onNext(true);
-                        subscriber.onCompleted();
-                        break;
-                    }
-                    case NoParentEmail:
-                    case NeworkError: {
-                        subscriber.onNext(false);
-                        subscriber.onCompleted();
-                        break;
-                    }
-                }
+                subscriber.onNext(kwsPermissionStatus);
+                subscriber.onCompleted();
+
             });
 
         });

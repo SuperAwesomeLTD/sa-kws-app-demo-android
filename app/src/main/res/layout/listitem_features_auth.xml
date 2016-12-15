@@ -26,7 +26,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/feature_cell_auth_title"
+                android:text="@string/page_features_row_auth_title"
                 android:textColor="@color/textColorBlack"
                 android:textStyle="bold"
                 android:textSize="20sp"
@@ -42,7 +42,7 @@
             android:textColor="@color/textColorDarkGray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/feature_cell_auth_content"/>
+            android:text="@string/page_features_row_auth_content"/>
 
         <!-- button -->
         <Button
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             style="@style/ButtonStyle2"
-            android:text="@string/feature_cell_auth_button_1_loggedout"/>
+            android:text="@string/page_features_row_auth_button_login_not_logged"/>
 
         <Button
             android:id="@+id/authDocs"
@@ -63,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             style="@style/ButtonStyle2"
-            android:text="@string/feature_cell_auth_button_2"/>
+            android:text="@string/page_features_row_auth_button_doc"/>
 
     </LinearLayout>
 </LinearLayout>
