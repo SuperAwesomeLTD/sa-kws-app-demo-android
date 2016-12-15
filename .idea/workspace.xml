@@ -17,73 +17,7 @@
     <option name="TOOL_WINDOW_REGEXP_FILTER" value="false" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="295da00b-7677-493f-a658-b37cd49ccaf1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/outputFileStates.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/outputFileStates.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" afterPath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/2.10/tasks/_app_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_notif.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ic_notif.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ico_app_data.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ico_app_data.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ico_events_and_points.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ico_events_and_points.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ico_invite_friends.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ico_invite_friends.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ico_login.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ico_login.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ico_manage_permissions.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ico_manage_permissions.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ico_notif.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/ico_notif.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/logo_3sa.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/logo_3sa.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/plat_icon1.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/plat_icon1.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/plat_icon2.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/plat_icon2.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/plat_icon3.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/plat_icon3.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/plat_icon4.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/plat_icon4.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_notif.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ic_notif.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ico_app_data.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ico_app_data.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ico_events_and_points.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ico_events_and_points.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ico_invite_friends.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ico_invite_friends.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ico_login.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ico_login.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ico_manage_permissions.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ico_manage_permissions.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ico_notif.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/ico_notif.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/logo_3sa.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/logo_3sa.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/plat_icon1.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/plat_icon1.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/plat_icon2.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/plat_icon2.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/plat_icon3.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/plat_icon3.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/plat_icon4.png" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/plat_icon4.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/base/BaseActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/base/BaseActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/country/CountryActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/country/CountryActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/country/CountryRowViewModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/country/CountryRowViewModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/getappdata/GetAppDataActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/getappdata/GetAppDataActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/leader/LeaderboardActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/leader/LeaderboardActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/login/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/login/LoginActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/main/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/main/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/main/features/FeaturesFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/main/features/FeaturesFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/setappdata/SetAppDataActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/setappdata/SetAppDataActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/signup/SignUpActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/signup/SignUpActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/signup/SignUpModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/signup/SignUpModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/user/UserActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/user/UserActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/user/UserRowViewModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/activities/user/UserRowViewModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/aux/RxKWS.java" afterPath="$PROJECT_DIR$/app/src/main/java/superawesome/tv/kwsdemoapp/aux/RxKWS.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_appdata_get.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_appdata_get.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_appdata_set.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_appdata_set.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_country.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_country.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_signup.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_signup.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_user.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_user.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_platform.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_platform.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/listitem_features_appdata.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/listitem_features_appdata.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/listitem_features_auth.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/listitem_features_auth.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/listitem_features_events.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/listitem_features_events.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/listitem_features_invite.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/listitem_features_invite.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/listitem_features_notif.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/listitem_features_notif.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/listitem_features_perm.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/listitem_features_perm.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/listitem_leader_header.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/listitem_leader_header.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/listitem_leader_row.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/listitem_leader_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-    </list>
+    <list default="true" id="295da00b-7677-493f-a658-b37cd49ccaf1" name="Default" comment="" />
     <ignored path="sa-kws-app-demo-android.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
