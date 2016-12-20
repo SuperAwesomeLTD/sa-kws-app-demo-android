@@ -66,7 +66,7 @@ public class GetAppDataActivity extends BaseActivity {
                     .customiseRow(R.layout.listitem_appdata_row, GetAppDataRowViewModel.class, (viewModel, view) -> {
 
                         TextView nameTextView = (TextView) view.findViewById(R.id.appDataItemName);
-                        nameTextView.setText(viewModel.getName() != null ? viewModel.getName() : c.getString(R.string.page_getappdata_row_name_default));
+                        nameTextView.setText(viewModel.getName() != null ? viewModel.getName() : "");
 
                         TextView valueTextView = (TextView) view.findViewById(R.id.appDataItemValue);
                         valueTextView.setText(viewModel.getValue());

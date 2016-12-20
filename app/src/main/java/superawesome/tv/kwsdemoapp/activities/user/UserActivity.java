@@ -87,7 +87,7 @@ public class UserActivity extends BaseActivity {
                         list.addAll(Arrays.asList(
                                 UserHeaderViewModel.create(context.getString(R.string.page_user_header_permissions)),
                                 UserRowViewModel.create(context, R.string.page_user_row_perm_address_title, usr.applicationPermissions.accessAddress),
-                                UserRowViewModel.create(context, R.string.page_user_row_perm_phone, usr.applicationPermissions.accessPhoneNumber),
+                                UserRowViewModel.create(context, R.string.page_user_row_perm_phone_title, usr.applicationPermissions.accessPhoneNumber),
                                 UserRowViewModel.create(context, R.string.page_user_row_perm_first_name_title, usr.applicationPermissions.accessFirstName),
                                 UserRowViewModel.create(context, R.string.page_user_row_perm_last_name_title, usr.applicationPermissions.accessLastName),
                                 UserRowViewModel.create(context, R.string.page_user_row_perm_email_title, usr.applicationPermissions.accessEmail),
