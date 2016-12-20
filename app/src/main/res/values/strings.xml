@@ -153,7 +153,7 @@
     <string name="page_login_popup_error_auth_ok_button">Got it</string>
 
     <string name="page_login_popup_error_network_title">Oops - something went wrong!</string>
-    <string name="page_login_popup_error_network_message">Seems like either the username or password you supplied were incorrect</string>
+    <string name="page_login_popup_error_network_message">There was a network error trying to login. Try again later!</string>
     <string name="page_login_popup_error_network_ok_button">Got it</string>
 
     <!-- *******************************************************************************************

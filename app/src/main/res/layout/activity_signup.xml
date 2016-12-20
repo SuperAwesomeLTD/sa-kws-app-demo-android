@@ -35,19 +35,39 @@
         android:layout_height="match_parent"
         android:padding="16dp">
 
-        <EditText
-            android:id="@+id/usernameEdit"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/page_signup_textfield_username_placeholder"
-            android:textColor="@color/textColorDarkGray"
-            android:textColorHint="@color/textColorGray"
-            android:inputType="text" />
+            android:adjustViewBounds="true"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/ReloadRandomUsername"
+                android:layout_width="30dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/refresh_username"
+                android:background="#00000000"
+                android:scaleType="fitCenter"/>
+
+            <EditText
+                android:id="@+id/usernameEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:hint="@string/page_signup_textfield_username_placeholder"
+                android:textColor="@color/textColorDarkGray"
+                android:textColorHint="@color/textColorGray"
+                android:inputType="text" />
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/password1Edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
             android:hint="@string/page_signup_textfield_password1_placeholder"
             android:textColor="@color/textColorDarkGray"
             android:textColorHint="@color/textColorGray"
@@ -57,6 +77,7 @@
             android:id="@+id/password2Edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
             android:hint="@string/page_signup_textfield_password2_placeholder"
             android:textColor="@color/textColorDarkGray"
             android:textColorHint="@color/textColorGray"

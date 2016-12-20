@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.jakewharton.rxbinding.view.RxView;
@@ -33,6 +34,7 @@ public class SignUpActivity extends BaseActivity {
 
     private SignUpModel currentModel;
     private PublishSubject<String> countrySubject = null;
+    private Observable<String> reloadNameRx = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class SignUpActivity extends BaseActivity {
         EditText dayEdit = (EditText) findViewById(R.id.dayEdit);
         Button selectCountry = (Button) findViewById(R.id.SelectCountry);
         Button submit = (Button) findViewById(R.id.RegisterUserButton);
+        ImageButton reload = (ImageButton) findViewById(R.id.ReloadRandomUsername);
         ImageView flag = (ImageView) findViewById(R.id.CountryFlag);
 
         Observable<String> rxUsername = RxTextView.textChanges(usernameEdit).
@@ -126,6 +129,15 @@ public class SignUpActivity extends BaseActivity {
             startActivityForResult(createIntent, COUNTRY_CODE);
         });
 
+        // get a first random name
+        reloadNameRx = RxKWS.getRandomName(this).share();
+        reloadNameRx.subscribe(usernameEdit::setText);
+
+        // on click reload the name
+        RxView.clicks(reload).subscribe(aVoid -> {
+            reloadNameRx.subscribe(usernameEdit::setText);
+        });
+
         // when coming back from the country selection
         setOnActivityResult((requestCode, resultCode, data) -> {
 
@@ -142,7 +154,7 @@ public class SignUpActivity extends BaseActivity {
                 String packageName = SignUpActivity.this.getPackageName();
 
                 selectCountry.setText(tmp.getCountryName());
-                selectCountry.setTextColor(resources.getColor(R.color.textColorBlack));
+                selectCountry.setTextColor(resources.getColor(R.color.countryBtnGray));
 
                 try {
                     int flagId = resources.getIdentifier(tmp.getCountryFlagString(), "drawable", packageName);

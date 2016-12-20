@@ -39,9 +39,10 @@ public class FeaturesFragment extends BaseFragment {
     private static final int LOGOUT_REQ_CODE = 112;
     private static final int AUTH_REQ_CODE = 113;
 
-    private static final String CLIENT = "sa-mobile-app-sdk-client-0";
-    private static final String SECRET = "_apikey_5cofe4ppp9xav2t9";
-    private static final String API = "https://kwsapi.demo.superawesome.tv/";
+    private static final String CLIENT_ID = "sa-mobile-app-sdk-client-0";
+    private static final int    APP_ID = 313;
+    private static final String CLIENT_SECRET = "_apikey_5cofe4ppp9xav2t9";
+    private static final String KWS_API = "https://kwsapi.demo.superawesome.tv/";
 
     private RxDataSource <GenericViewModel> dataSource = null;
 
@@ -51,7 +52,7 @@ public class FeaturesFragment extends BaseFragment {
         // get views
         View view = inflater.inflate(R.layout.fragment_features, container, false);
 
-        KWS.sdk.startSession(getContext(), CLIENT, SECRET, API);
+        KWS.sdk.startSession(getContext(), CLIENT_ID, APP_ID, CLIENT_SECRET, KWS_API);
 
         ListView featureListView = (ListView) view.findViewById(R.id.FeaturesListView);
 

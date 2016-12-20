@@ -11,7 +11,9 @@ import kws.superawesome.tv.kwssdk.models.user.KWSUser;
 import kws.superawesome.tv.kwssdk.process.KWSNotificationStatus;
 import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionStatus;
 import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionType;
+import kws.superawesome.tv.kwssdk.services.kws.KWSRandomNameInterface;
 import rx.Observable;
+import rx.Subscriber;
 import superawesome.tv.kwsdemoapp.R;
 import tv.superawesome.lib.sautils.SAAlert;
 import tv.superawesome.lib.sautils.SAProgressDialog;
@@ -289,6 +291,19 @@ public class RxKWS {
                 subscriber.onNext(kwsPermissionStatus);
                 subscriber.onCompleted();
 
+            });
+
+        });
+
+    }
+
+    public static Observable<String> getRandomName (Context context) {
+
+        return Observable.create(subscriber -> {
+
+            KWS.sdk.generateRandomName(context, name -> {
+                subscriber.onNext(name);
+                subscriber.onCompleted();
             });
 
         });

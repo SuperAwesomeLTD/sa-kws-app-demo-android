@@ -47,6 +47,7 @@
             android:id="@+id/passwordEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
             android:hint="@string/page_login_textfield_password_placeholder"
             android:textColor="@color/textColorDarkGray"
             android:textColorHint="@color/textColorGray"

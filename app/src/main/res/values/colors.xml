@@ -8,6 +8,7 @@
     <color name="textColorSecondary">#929292</color>
     <color name="textColorBlack">#303030</color>
     <color name="textColorGray">#9E9E9E</color>
+    <color name="countryBtnGray">#545454</color>
     <color name="textColorDarkGray">#4A4A4A</color>
     <color name="textColorBlue">#4A90E2</color>
     <color name="windowBackground">#f7f7f7</color>
