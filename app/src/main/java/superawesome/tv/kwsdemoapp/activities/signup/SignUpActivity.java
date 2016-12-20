@@ -17,6 +17,8 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import org.json.JSONObject;
 
 import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.subjects.PublishSubject;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
@@ -34,7 +36,6 @@ public class SignUpActivity extends BaseActivity {
 
     private SignUpModel currentModel;
     private PublishSubject<String> countrySubject = null;
-    private Observable<String> reloadNameRx = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,7 +84,7 @@ public class SignUpActivity extends BaseActivity {
         Observable<String> rxDay = RxTextView.textChanges(dayEdit).
                 map(charSequence -> charSequence.toString().trim());
 
-        Observable.combineLatest(rxUsername, rxPassword1, rxPassword2, rxParentEmail, rxYear, rxMonth, rxDay, countrySubject.asObservable(), SignUpModel::new).
+        Observable.combineLatest(rxUsername, rxPassword1, rxPassword2, rxParentEmail, rxYear, rxMonth, rxDay, countrySubject.asObservable().startWith(""), SignUpModel::new).
                 doOnNext(signUpModel -> currentModel = signUpModel).
                 map(SignUpModel::isValid).
                 subscribe(submit::setEnabled);
@@ -129,14 +130,12 @@ public class SignUpActivity extends BaseActivity {
             startActivityForResult(createIntent, COUNTRY_CODE);
         });
 
-        // get a first random name
-        reloadNameRx = RxKWS.getRandomName(this).share();
-        reloadNameRx.subscribe(usernameEdit::setText);
-
-        // on click reload the name
-        RxView.clicks(reload).subscribe(aVoid -> {
-            reloadNameRx.subscribe(usernameEdit::setText);
-        });
+        // for the name reload
+        RxView.clicks(reload)
+                .map(aVoid -> "")
+                .startWith("")
+                .flatMap(aVoid -> RxKWS.getRandomName(SignUpActivity.this))
+                .subscribe(usernameEdit::setText);
 
         // when coming back from the country selection
         setOnActivityResult((requestCode, resultCode, data) -> {
@@ -166,12 +165,8 @@ public class SignUpActivity extends BaseActivity {
 
                 // update country subject
                 countrySubject.onNext(tmp.getCountryISOCode());
-
             }
         });
-
-        // start with empty country
-        countrySubject.onNext(null);
     }
 
     private void setFieldColor (EditText editText, boolean valid) {
