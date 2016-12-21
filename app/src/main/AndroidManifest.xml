@@ -46,12 +46,8 @@
             android:name=".activities.setappdata.SetAppDataActivity"
             android:label="@string/appdata_set_name"
             android:screenOrientation="portrait"/>
-
         <activity android:name=".activities.country.CountryActivity"
             android:label="@string/country_name"
             android:screenOrientation="portrait"/>
-
-        <!-- services -->
     </application>
-
 </manifest>

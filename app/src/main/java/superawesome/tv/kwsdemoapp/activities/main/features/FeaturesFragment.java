@@ -128,6 +128,8 @@ public class FeaturesFragment extends BaseFragment {
                                 .flatMap(aVoid -> RxKWS.enableNotifications(context))
                                 .subscribe(kwsNotificationStatus -> {
 
+                                    dataSource.update();
+
                                     switch (kwsNotificationStatus) {
 
                                         case ParentDisabledNotifications:
