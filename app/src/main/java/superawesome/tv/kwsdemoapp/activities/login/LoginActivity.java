@@ -15,7 +15,7 @@ import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.activities.signup.SignUpActivity;
 import superawesome.tv.kwsdemoapp.aux.RxKWS;
 import tv.superawesome.lib.sautils.SAAlert;
-import tv.superawesome.lib.sautils.SAProgressDialog;
+import tv.superawesome.lib.sautils.SALoadScreen;
 
 public class LoginActivity extends BaseActivity {
 
@@ -39,7 +39,7 @@ public class LoginActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         Context context = LoginActivity.this;
-        SAProgressDialog dialog = SAProgressDialog.getInstance();
+        SALoadScreen dialog = SALoadScreen.getInstance();
 
         EditText usernameEdit = (EditText) findViewById(R.id.usernameEdit);
         EditText passwordEdit = (EditText) findViewById(R.id.passwordEdit);
@@ -61,9 +61,9 @@ public class LoginActivity extends BaseActivity {
         RxView.clicks(login).
                 subscribe(aVoid -> {
                     RxKWS.login(context, currentModel.getUsername(), currentModel.getPassword())
-                            .doOnSubscribe(() -> dialog.showProgress(context))
-                            .doOnError(throwable -> dialog.hideProgress())
-                            .doOnCompleted(dialog::hideProgress)
+                            .doOnSubscribe(() -> dialog.show(context))
+                            .doOnError(throwable -> dialog.hide())
+                            .doOnCompleted(dialog::hide)
                             .subscribe(this::finishOK, this::errorAlert);
                 });
 

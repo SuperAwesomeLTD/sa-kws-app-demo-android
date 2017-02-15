@@ -8,10 +8,10 @@ import java.util.Locale;
 
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.aux.GenericViewModel;
-import tv.superawesome.lib.sajsonparser.JSONSerializable;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
+import tv.superawesome.lib.sajsonparser.SAJsonSerializable;
 
-public class CountryRowViewModel extends GenericViewModel implements JSONSerializable {
+public class CountryRowViewModel extends GenericViewModel implements SAJsonSerializable {
 
     private String defaultFlagString = null;
     private String countryISOCode = null;

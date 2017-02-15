@@ -19,10 +19,7 @@ import java.util.Arrays;
 import gabrielcoman.com.rxdatasource.RxDataSource;
 import kws.superawesome.tv.kwssdk.KWS;
 import kws.superawesome.tv.kwssdk.models.oauth.KWSLoggedUser;
-import kws.superawesome.tv.kwssdk.process.KWSNotificationStatus;
-import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionStatus;
 import rx.Observable;
-import rx.functions.Action1;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.base.BaseFragment;
 import superawesome.tv.kwsdemoapp.activities.getappdata.GetAppDataActivity;
@@ -40,7 +37,6 @@ public class FeaturesFragment extends BaseFragment {
     private static final int AUTH_REQ_CODE = 113;
 
     private static final String CLIENT_ID = "sa-mobile-app-sdk-client-0";
-    private static final int    APP_ID = 313;
     private static final String CLIENT_SECRET = "_apikey_5cofe4ppp9xav2t9";
     private static final String KWS_API = "https://kwsapi.demo.superawesome.tv/";
 
@@ -52,7 +48,7 @@ public class FeaturesFragment extends BaseFragment {
         // get views
         View view = inflater.inflate(R.layout.fragment_features, container, false);
 
-        KWS.sdk.startSession(getContext(), CLIENT_ID, APP_ID, CLIENT_SECRET, KWS_API);
+        KWS.sdk.startSession(getContext(), CLIENT_ID, CLIENT_SECRET, KWS_API);
 
         ListView featureListView = (ListView) view.findViewById(R.id.FeaturesListView);
 
@@ -81,7 +77,7 @@ public class FeaturesFragment extends BaseFragment {
                         KWSLoggedUser local = KWS.sdk.getLoggedUser();
 
                         authButton.setText(isLogged ?
-                                context.getString(R.string.page_features_row_auth_button_login_logged) + " " + local.username :
+                                context.getString(R.string.page_features_row_auth_button_login_logged) + " " + local.metadata.userId :
                                 context.getString(R.string.page_features_row_auth_button_login_not_logged));
 
                         RxView.clicks(authButton).subscribe(aVoid -> {

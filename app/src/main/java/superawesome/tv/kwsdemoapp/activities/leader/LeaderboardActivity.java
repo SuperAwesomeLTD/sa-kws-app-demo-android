@@ -13,8 +13,7 @@ import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.aux.GenericViewModel;
 import superawesome.tv.kwsdemoapp.aux.RxKWS;
-import tv.superawesome.lib.sautils.SAAlert;
-import tv.superawesome.lib.sautils.SAProgressDialog;
+import tv.superawesome.lib.sautils.SALoadScreen;
 
 public class LeaderboardActivity extends BaseActivity {
 
@@ -33,13 +32,13 @@ public class LeaderboardActivity extends BaseActivity {
 
         Context c = this;
         ListView leadersListView = (ListView) findViewById(R.id.leadersListView);
-        SAProgressDialog dialog = SAProgressDialog.getInstance();
+        SALoadScreen dialog = SALoadScreen.getInstance();
 
         RxKWS.getLeaderBoard(c)
                 .map(kwsLeader -> (GenericViewModel) new LeaderRowViewModel(kwsLeader.rank, kwsLeader.score, kwsLeader.user))
-                .doOnSubscribe(() -> dialog.showProgress(c))
-                .doOnError(throwable -> dialog.hideProgress())
-                .doOnCompleted(dialog::hideProgress)
+                .doOnSubscribe(() -> dialog.show(c))
+                .doOnError(throwable -> dialog.hide())
+                .doOnCompleted(dialog::hide)
                 .toList()
                 .subscribe(leaderRowViewModels -> {
 

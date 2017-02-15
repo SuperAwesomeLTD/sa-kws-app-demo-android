@@ -19,7 +19,7 @@ import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.activities.setappdata.SetAppDataActivity;
 import superawesome.tv.kwsdemoapp.aux.RxKWS;
 import tv.superawesome.lib.sautils.SAAlert;
-import tv.superawesome.lib.sautils.SAProgressDialog;
+import tv.superawesome.lib.sautils.SALoadScreen;
 
 public class GetAppDataActivity extends BaseActivity {
 
@@ -48,13 +48,13 @@ public class GetAppDataActivity extends BaseActivity {
 
         Context c = this;
         ListView appDataListView = (ListView) findViewById(R.id.appDataListView);
-        SAProgressDialog dialog = SAProgressDialog.getInstance();
+        SALoadScreen dialog = SALoadScreen.getInstance();
 
         observable = RxKWS.getAppData(c)
                 .map(kwsAppData -> new GetAppDataRowViewModel(kwsAppData.name, kwsAppData.value))
-                .doOnSubscribe(() -> dialog.showProgress(c))
-                .doOnError(throwable -> dialog.hideProgress())
-                .doOnCompleted(dialog::hideProgress)
+                .doOnSubscribe(() -> dialog.show(c))
+                .doOnError(throwable -> dialog.hide())
+                .doOnCompleted(dialog::hide)
                 .toList()
                 .share();
 

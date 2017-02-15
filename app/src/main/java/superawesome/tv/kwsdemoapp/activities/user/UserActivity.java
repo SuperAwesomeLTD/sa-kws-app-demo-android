@@ -19,7 +19,7 @@ import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.aux.GenericViewModel;
 import superawesome.tv.kwsdemoapp.aux.RxKWS;
 import tv.superawesome.lib.sautils.SAAlert;
-import tv.superawesome.lib.sautils.SAProgressDialog;
+import tv.superawesome.lib.sautils.SALoadScreen;
 
 public class UserActivity extends BaseActivity {
 
@@ -37,7 +37,7 @@ public class UserActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         Context context = this;
-        SAProgressDialog dialog = SAProgressDialog.getInstance();
+        SALoadScreen dialog = SALoadScreen.getInstance();
 
         Button logoutButton = (Button) findViewById(R.id.logoutButton);
         RxView.clicks(logoutButton).subscribe(aVoid -> logout());
@@ -102,9 +102,9 @@ public class UserActivity extends BaseActivity {
 
                     return list;
                 })
-                .doOnSubscribe(() -> dialog.showProgress(context))
-                .doOnCompleted(dialog::hideProgress)
-                .doOnError(throwable -> dialog.hideProgress())
+                .doOnSubscribe(() -> dialog.show(context))
+                .doOnCompleted(dialog::hide)
+                .doOnError(throwable -> dialog.hide())
                 .subscribe(genericViewModels -> {
 
                     RxDataSource.from(context, genericViewModels)

@@ -17,8 +17,6 @@ import com.jakewharton.rxbinding.widget.RxTextView;
 import org.json.JSONObject;
 
 import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.subjects.PublishSubject;
 import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
@@ -27,7 +25,7 @@ import superawesome.tv.kwsdemoapp.activities.country.CountryRowViewModel;
 import superawesome.tv.kwsdemoapp.aux.RxKWS;
 import tv.superawesome.lib.sajsonparser.SAJsonParser;
 import tv.superawesome.lib.sautils.SAAlert;
-import tv.superawesome.lib.sautils.SAProgressDialog;
+import tv.superawesome.lib.sautils.SALoadScreen;
 
 public class SignUpActivity extends BaseActivity {
 
@@ -55,7 +53,7 @@ public class SignUpActivity extends BaseActivity {
         countrySubject = PublishSubject.create();
 
         Context context = this;
-        SAProgressDialog dialog = SAProgressDialog.getInstance();
+        SALoadScreen dialog = SALoadScreen.getInstance();
 
         EditText usernameEdit = (EditText) findViewById(R.id.usernameEdit);
         EditText password1Edit = (EditText) findViewById(R.id.password1Edit);
@@ -119,9 +117,9 @@ public class SignUpActivity extends BaseActivity {
 
         RxView.clicks(submit).subscribe(aVoid -> {
             RxKWS.signUp(context, currentModel.getUsername(), currentModel.getPassword(), currentModel.getDate(), currentModel.getParentEmail(), currentModel.getISOCode()).
-                    doOnSubscribe(() -> dialog.showProgress(context)).
-                    doOnError(throwable -> dialog.hideProgress()).
-                    doOnCompleted(dialog::hideProgress).
+                    doOnSubscribe(() -> dialog.show(context)).
+                    doOnError(throwable -> dialog.hide()).
+                    doOnCompleted(dialog::hide).
                     subscribe(this::clickAction, this::errorAlert);
         });
 

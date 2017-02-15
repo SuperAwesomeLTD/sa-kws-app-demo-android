@@ -5,10 +5,6 @@ import android.support.v4.app.Fragment;
 
 import rx.functions.Action2;
 
-/**
- * Created by gabriel.coman on 06/12/2016.
- */
-
 public class BaseFragment extends Fragment {
 
     private Action2<Integer, Integer> onActivityResult = null;

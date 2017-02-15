@@ -3,12 +3,7 @@ package superawesome.tv.kwsdemoapp.activities.base;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
-import rx.functions.Action2;
 import rx.functions.Action3;
-
-/**
- * Created by gabriel.coman on 06/12/2016.
- */
 
 public class BaseActivity extends AppCompatActivity {
 

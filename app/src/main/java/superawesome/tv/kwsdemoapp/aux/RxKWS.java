@@ -9,18 +9,12 @@ import kws.superawesome.tv.kwssdk.models.leaderboard.KWSLeader;
 import kws.superawesome.tv.kwssdk.models.user.KWSScore;
 import kws.superawesome.tv.kwssdk.models.user.KWSUser;
 import kws.superawesome.tv.kwssdk.process.KWSNotificationStatus;
-import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionStatus;
-import kws.superawesome.tv.kwssdk.services.kws.KWSPermissionType;
-import kws.superawesome.tv.kwssdk.services.kws.KWSRandomNameInterface;
+import kws.superawesome.tv.kwssdk.services.kws.permissions.KWSPermissionStatus;
+import kws.superawesome.tv.kwssdk.services.kws.permissions.KWSPermissionType;
 import rx.Observable;
-import rx.Subscriber;
 import superawesome.tv.kwsdemoapp.R;
 import tv.superawesome.lib.sautils.SAAlert;
-import tv.superawesome.lib.sautils.SAProgressDialog;
 
-/**
- * Created by gabriel.coman on 06/12/2016.
- */
 
 public class RxKWS {
 

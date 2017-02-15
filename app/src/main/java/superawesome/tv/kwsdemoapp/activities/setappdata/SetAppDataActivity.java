@@ -14,7 +14,7 @@ import superawesome.tv.kwsdemoapp.R;
 import superawesome.tv.kwsdemoapp.activities.base.BaseActivity;
 import superawesome.tv.kwsdemoapp.aux.RxKWS;
 import tv.superawesome.lib.sautils.SAAlert;
-import tv.superawesome.lib.sautils.SAProgressDialog;
+import tv.superawesome.lib.sautils.SALoadScreen;
 
 public class SetAppDataActivity extends BaseActivity {
 
@@ -34,7 +34,7 @@ public class SetAppDataActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         Context context = SetAppDataActivity.this;
-        SAProgressDialog dialog = SAProgressDialog.getInstance();
+        SALoadScreen dialog = SALoadScreen.getInstance();
 
         TextView nameTextView = (TextView) findViewById(R.id.appDataName);
         TextView valueTextView = (TextView) findViewById(R.id.appDataValue);
@@ -52,9 +52,9 @@ public class SetAppDataActivity extends BaseActivity {
 
         RxView.clicks(submitButton).subscribe(aVoid -> {
             RxKWS.submitData(context, currentModel.getName(), currentModel.getValue()).
-                    doOnSubscribe(() -> dialog.showProgress(context)).
-                    doOnError((throwable)-> dialog.hideProgress()).
-                    doOnCompleted(dialog::hideProgress).
+                    doOnSubscribe(() -> dialog.show(context)).
+                    doOnError((throwable)-> dialog.hide()).
+                    doOnCompleted(dialog::hide).
                     subscribe(this::finishOK, this::errorAlert);
         });
     }
