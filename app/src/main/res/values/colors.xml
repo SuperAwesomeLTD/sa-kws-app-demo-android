@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#ED1C24</color>
-    <color name="textColorPrimary">#ED1C24</color>
+    <color name="colorPrimaryDark">#46237A</color>
+    <color name="textColorPrimary">#000000</color>
     <color name="textColorWhite">#ffffff</color>
-    <color name="textColorRed">#ED1C24</color>
+    <color name="textColorRed">#46237A</color>
     <color name="textColorSecondary">#929292</color>
     <color name="textColorBlack">#303030</color>
     <color name="textColorGray">#9E9E9E</color>
@@ -19,9 +19,9 @@
 
     <!-- tab bar -->
     <color name="tabBarBackground">#ffffff</color>
-    <color name="tabBarTextSelected">#ED1C24</color>
+    <color name="tabBarTextSelected">#46237A</color>
     <color name="tabBarTextUnselected">#929292</color>
-    <color name="tabBarIndicator">#ED1C24</color>
+    <color name="tabBarIndicator">#46237A</color>
 
     <!-- platform colors -->
 </resources>
