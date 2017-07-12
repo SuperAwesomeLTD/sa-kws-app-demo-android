@@ -8,8 +8,8 @@ android {
         applicationId "superawesome.tv.kwsdemoapp"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 5
-        versionName "3.1"
+        versionCode 7
+        versionName "5"
         jackOptions {
             enabled true
         }

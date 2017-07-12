@@ -250,7 +250,8 @@ public class FeaturesFragment extends BaseFragment {
                                 .subscribe(kwsScore -> {
                                     if (kwsScore != null) {
                                         alert(getString(R.string.page_features_row_events_popup_success_score_title),
-                                                getString(R.string.page_features_row_events_popup_success_score_message, kwsScore.rank, kwsScore.score));
+                                                getString(R.string.
+                                                        page_features_row_events_popup_success_score_message, kwsScore.rank, kwsScore.score));
                                     } else {
                                         alert(getString(R.string.page_features_row_events_popup_error_network_title),
                                                 getString(R.string.page_features_row_events_popup_error_network_message));
